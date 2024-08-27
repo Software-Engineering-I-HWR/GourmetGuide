@@ -1,3 +1,2 @@
- ID,Zeit,Dauer,Person, Thema
-1,01.01.2000,0 min, Max Mustermann, alle
-2,27.08.2024, 50 min, alle, Kurzbeschreibung
+ID, Zeit, Dauer, Person, Thema
+1,27.08.2024, 50 min, alle, Kurzbeschreibung
