@@ -7,25 +7,23 @@ import './App.css';
 
 const App: React.FC = () => {
     const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'Rezepte', path: '/rezepte' },
-        { name: 'Über uns', path: '/ueber-uns' },
-        { name: 'Kontakt', path: '/kontakt' },
+        { name: 'Kategorien', path: '/kategorien' },
+        { name: 'Login', path: '/log-in' },
     ];
 
     const sampleRecipes = [
-        { title: 'Spaghetti Carbonara', description: 'Ein klassisches italienisches Gericht.', imageUrl: 'https://via.placeholder.com/150' },
-        { title: 'Chicken Curry', description: 'Würziges und aromatisches Hähnchencurry.', imageUrl: 'https://via.placeholder.com/150' },
-        { title: 'Vegetable Stir-Fry', description: 'Schnelle und gesunde Gemüsepfanne.', imageUrl: 'https://via.placeholder.com/150' },
+        { title: 'Spaghetti Carbonara', description: 'Ein klassisches italienisches Gericht.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
+        { title: 'Pizzateig', description: 'Das beste Rezept für einen knusprigen Pizzateig.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
+        { title: 'Gemüselasagne', description: 'Schnelles und gesundes Mittagessen.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
     ];
 
     return (
         <div>
-            <Navbar title="Meine Rezeptseite" links={navLinks} />
+            <Navbar title="GourmetGuide: Gaumenschmaus" links={navLinks} />
             <Hero />
             <main className="main-content">
                 <section className="recipes">
-                    <h2 className="recipes__title">Beliebte Rezepte</h2>
+                    <h2 className="recipes__title">Aktuelle Rezepte</h2>
                     <div className="recipes__list">
                         {sampleRecipes.map((recipe, index) => (
                             <RecipeCard key={index} {...recipe} />

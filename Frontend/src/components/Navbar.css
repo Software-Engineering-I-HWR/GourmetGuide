@@ -1,15 +1,25 @@
 .navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #4A4A4A;
     padding: 10px 20px;
     color: #fff;
+    height: 100px;
 }
 
 .navbar__title {
-    font-size: 1.5rem;
+    font-size: 35px;
     font-weight: bold;
+    margin-right: auto; /* Pushes the title to the left */
+    margin-left: 50px;
+
+}
+
+.navbar__content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
 }
 
 .navbar__links {
@@ -30,5 +40,54 @@
 }
 
 .navbar__link:hover {
-    color: #f0a500;
+    color: #BBEAFA;
+}
+
+/* Styles für die Suchleiste */
+.navbar__search {
+    display: flex;
+    align-items: center;
+}
+
+.navbar__search-input {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin-right: 10px;
+}
+
+.navbar__search-input:focus {
+    border-color: #007acc; /* Fokus-Farbe (blau) */
+}
+
+.navbar__search-button {
+    padding: 5px 15px;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.navbar__search-button:hover {
+    background-color: #005f99;
+}
+
+/* Container für Login und Kategorien Buttons */
+.navbar__actions {
+    display: flex;
+    align-items: center;
+    margin-left: 75px;
+    gap: 15px;
+    margin-left: auto; /* Pushes the actions to the right */
+    margin: 0 100px;
+}
+
+.navbar__full_searchfield {
+    display: flex;
+    align-content: center;
 }
