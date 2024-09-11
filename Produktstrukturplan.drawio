@@ -1,18 +1,18 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 OPR/113.0.0.0" version="24.7.12">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.7">
   <diagram name="Seite-1" id="MGk_3q8jtqMFf_y7ZXC9">
-    <mxGraphModel dx="1740" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2048" dy="618" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="921Ac5daBlPCPnIT0NoH-1" value="1. GourmetGuide" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="200" y="40" width="240" height="40" as="geometry" />
+          <mxGeometry x="180" y="40" width="240" height="40" as="geometry" />
         </mxCell>
         <mxCell id="921Ac5daBlPCPnIT0NoH-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=none;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="921Ac5daBlPCPnIT0NoH-2" target="921Ac5daBlPCPnIT0NoH-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="100" y="100" as="targetPoint" />
             <Array as="points">
               <mxPoint x="-80" y="100" />
-              <mxPoint x="320" y="100" />
+              <mxPoint x="300" y="100" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -228,39 +228,41 @@
         <mxCell id="EzP8kZ21SqTE7VAjJr_d-8" value="1.4.8. Rezepte Bookmark-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="460" y="600" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" edge="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="240.28571428571433" y="380" as="targetPoint" />
             <mxPoint x="240" y="260" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-3" edge="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-3">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="240" y="380.1428571428571" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-3" value="1.3.4. Zutatensuche-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-3" value="1.3.4. Zutatensuche-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="260" y="360" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-5" edge="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-5">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="240" y="320.1428571428571" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-5" value="1.3.3. Rezeptsuche-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-5" value="1.3.3. Rezeptsuche-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="260" y="300" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-7" edge="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-7">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="720" y="100" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="720" y="90" />
-              <mxPoint x="720" y="90" />
-            </Array>
+            <mxPoint x="840" y="100" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-7" value="1.6. Datenbank" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="640" y="40" width="160" height="40" as="geometry" />
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-7" value="1.6. Datenbank" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="120" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-13" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="720" y="100" as="sourcePoint" />
+            <mxPoint x="840" y="100" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
