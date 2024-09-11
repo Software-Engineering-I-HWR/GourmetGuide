@@ -246,13 +246,20 @@
         <mxCell id="KiYQnYVC_4RO1Epw3n7Q-5" value="Rezeptsuche-Schnittstelle" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="380" y="300" width="100" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-7">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-9" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="KiYQnYVC_4RO1Epw3n7Q-7">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="740" y="100" as="targetPoint" />
+            <mxPoint x="900" y="100" as="targetPoint" />
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="KiYQnYVC_4RO1Epw3n7Q-7" value="Datenbank" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="680" y="40" width="120" height="40" as="geometry" />
+          <mxGeometry x="840" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="740" y="100" as="sourcePoint" />
+            <mxPoint x="900" y="100" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
