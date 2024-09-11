@@ -251,7 +251,7 @@
             <mxPoint x="740" y="100" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-7" value="Suche" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="KiYQnYVC_4RO1Epw3n7Q-7" value="Datenbank" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="680" y="40" width="120" height="40" as="geometry" />
         </mxCell>
       </root>
