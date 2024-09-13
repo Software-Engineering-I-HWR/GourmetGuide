@@ -19,7 +19,7 @@ const App: React.FC = () => {
 
     return (
         <div>
-            <Navbar title="GourmetGuide: Gaumenschmaus" links={navLinks} />
+            <Navbar title="GourmetGuide" links={navLinks} />
             <Hero />
             <main className="main-content">
                 <section className="recipes">
