@@ -1,21 +1,54 @@
 import express, {Request, Response} from 'express';
 import {PDFDocument} from 'pdf-lib';
+import {Recipe} from './recipe_mock';
+import fs from 'fs';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
+const exampleRecipe: Recipe = {
+    name: "Pfannkuchen ",
+    image: "https://example.com/pancakes.jpg", // Image can be a URL or base64 string
+    description:    "Mehl, Zucker, Backpulver und Salz in einer Schüssel vermischen.\n" +
+                    "Eier und Milch in einer separaten Schüssel verquirlen.\n" +
+                    "Die nassen und trockenen Zutaten zusammenmischen.\n" +
+                    "In einer heißen Pfanne backen, bis die Pfannkuchen goldbraun sind.",
+    ingredients: [
+        "2 Tassen Mehl",
+        "1 Esslöffel Zucker",
+        "1 Teelöffel Backpulver",
+        "1/2 Teelöffel Salz",
+        "1 Tasse Milch",
+        "2 Eier\n"
+    ],
+};
+
 // Mock function to generate a PDF from a recipe
-const createRecipePDF = async () => {
+const createRecipePDF = async (recipe: Recipe) => {
 
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([350, 400]);
+    const page = pdfDoc.addPage();
 
-    page.moveTo(10, 375);
+    const logoBytes = await fetch('logo.png').then((res) => res.arrayBuffer()); // If you fetch the image from a URL, use fetch instead
+    const logoImage = await pdfDoc.embedPng(Buffer.from(logoBytes));
+
+    // Get the dimensions of the logo image
+    const logoDims = logoImage.scale(0.5); // Scale the logo down by 50%
+
+    // Draw the logo at the top of the page
+    page.drawImage(logoImage, {
+        x: page.getWidth() / 2 - logoDims.width / 2 + 75,
+        y: page.getHeight() / 2 - logoDims.height,
+        width: logoDims.width,
+        height: logoDims.height,
+    })
+
+    page.moveTo(500, 750);
 
     // Title
-    page.drawText(`Recipe:`);
+    page.drawText(`Rezept: ${recipe.name}`);
 
     // Serialize the PDF to a Uint8Array
     return await pdfDoc.save();
@@ -26,7 +59,7 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 
     try {
         // Generate the PDF
-        const pdfBytes = await createRecipePDF();
+        const pdfBytes = await createRecipePDF(exampleRecipe);
 
         // Set the response headers to download the PDF
         res.setHeader('Content-Type', 'application/pdf');
