@@ -29,23 +29,23 @@ const exampleRecipe: Recipe = {
 const createRecipePDF = async (recipe: Recipe) => {
 
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
+    const page = pdfDoc.addPage([600, 800]);
 
-    const logoBytes = await fetch('logo.png').then((res) => res.arrayBuffer()); // If you fetch the image from a URL, use fetch instead
+    const logoBytes = await fetch('https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/pdf-branch/backend/assets/logo.png').then((res) => res.arrayBuffer()); // If you fetch the image from a URL, use fetch instead
     const logoImage = await pdfDoc.embedPng(Buffer.from(logoBytes));
 
     // Get the dimensions of the logo image
-    const logoDims = logoImage.scale(0.5); // Scale the logo down by 50%
+    const logoDims = logoImage.scale(0.2); // Scale the logo down by 50%
 
     // Draw the logo at the top of the page
     page.drawImage(logoImage, {
-        x: page.getWidth() / 2 - logoDims.width / 2 + 75,
-        y: page.getHeight() / 2 - logoDims.height,
+        x: 50,
+        y: 550,
         width: logoDims.width,
         height: logoDims.height,
     })
 
-    page.moveTo(500, 750);
+    page.moveTo(300, 725);
 
     // Title
     page.drawText(`Rezept: ${recipe.name}`);
