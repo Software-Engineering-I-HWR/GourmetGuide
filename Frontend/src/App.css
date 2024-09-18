@@ -1,0 +1,27 @@
+/* Allgemeines Styling für die App */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.recipes {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.recipes__title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.recipes__list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
