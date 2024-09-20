@@ -1,105 +1,178 @@
 import express, {Request, Response} from 'express';
 import {PDFDocument, StandardFonts} from 'pdf-lib';
-import {Recipe} from './recipe_mock';
+import {Recipe} from './recipe';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-const exampleRecipe: Recipe = {
-    name: "Pfannkuchen ",
-    image: "https://example.com/pancakes.jpg", // Image can be a URL or base64 string
-    description: "Mehl, Zucker, Backpulver und Salz in einer Schüssel vermischen.\n" +
-        "Eier und Milch in einer separaten Schüssel verquirlen.\n" +
-        "Die nassen und trockenen Zutaten zusammenmischen.\n" +
-        "In einer heißen Pfanne backen, bis die Pfannkuchen goldbraun sind.",
-    ingredients: [
-        "2 Tassen Mehl",
-        "1 Esslöffel Zucker",
-        "1 Teelöffel Backpulver",
-        "1/2 Teelöffel Salz",
-        "1 Tasse Milch",
-        "2 Eier\n"
-    ],
-};
-
 const page_width = 600;
 const page_height = 800;
 
+const right_border_size = 20;
+const empty_line_width = 1.5;
+const min_font_size = 5;
 
-// Mock function to generate a PDF from a recipe
-const createRecipePDF = async (recipe: Recipe) => {
+const addImageToPage = async (page: any, imageUrl: string, x: number, y: number, maxWidth: number, maxHeight: number, altText: string) => {
+    try {
+        // Try to fetch and embed the image
+        const imageBytes = await fetch(imageUrl).then((res) => res.arrayBuffer());
+        const image = await page.doc.embedPng(imageBytes);
 
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([page_width, page_height]);
+        // Scale the image proportionally
+        const { width, height } = image.scale(1);
+        let finalWidth = width;
+        let finalHeight = height;
+
+        // Resize if necessary to fit within bounds
+        if (finalWidth > maxWidth || finalHeight > maxHeight) {
+            const widthRatio = maxWidth / finalWidth;
+            const heightRatio = maxHeight / finalHeight;
+            const scaleRatio = Math.min(widthRatio, heightRatio);
+
+            finalWidth *= scaleRatio;
+            finalHeight *= scaleRatio;
+        }
+
+        // Draw the image on the page
+        page.drawImage(image, {
+            x,
+            y,
+            width: finalWidth,
+            height: finalHeight,
+        });
+    } catch (error) {
+        console.log(`Error fetching image from ${imageUrl}, showing alternative text instead.`);
+        // Draw alternative text if the image fails
+        page.drawText(altText, {
+            x,
+            y,
+            size: 12,
+            font: await page.doc.embedFont(StandardFonts.Helvetica),
+        });
+    }
+};
+
+function addLineBreaksToText(text: string, font: any, start_x: number, text_size: number): string {
+
+    const words: string [] = text.replace(/\n/g, '').split(' ')
+
+    let textWithNewLines = '';
+    let currentRow = '';
+
+    for (let word of words) {
+        if ((start_x + font.widthOfTextAtSize(currentRow + word, text_size)) > (page_width - right_border_size)) {
+            currentRow += '\n';
+            textWithNewLines += currentRow;
+            currentRow = '';
+        }
+        currentRow += word + ' ';
+    }
+
+    return textWithNewLines + currentRow;
+}
+
+function getMaximumTextSize(text: string, font: any, top_y: number, bottom_y: number, max_text_size: number): number {
+    for (let i = max_text_size; i > min_font_size; i--) {
+        if ((top_y - (font.heightAtSize(i) * (1.3) * (text.split("\n").length - 1))) > bottom_y) {
+            return i;
+        }
+    }
+    return min_font_size;
+}
+
+function getMaximumNumerationTextsize(font: any, top_y: number, bottom_y: number, max_text_size: number, elements: string[], start_x: number) {
+
+    let num_of_elements = elements.length;
+
+    //account for oversize elements as 2 elements
+    for (let element of elements) {
+        if ((addLineBreaksToText(element, font, start_x, max_text_size).split("\n").length - 1) >= 1) {
+            num_of_elements += 1;
+        }
+    }
+
+    //1 empty element for spacing
+    num_of_elements += 1;
+
+    for (let i = max_text_size; i > min_font_size; i--) {
+        if ((top_y - (font.heightAtSize(i) * empty_line_width * num_of_elements)) > bottom_y) {
+            return i;
+        }
+    }
+
+    return min_font_size;
+}
+
+const createRecipePDF = async (recipe: any) => {
+
+    let pdfDoc = await PDFDocument.create();
+    let page = pdfDoc.addPage([page_width, page_height]);
 
     const normalFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    const logoBytes = await fetch('https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/pdf-branch/backend/assets/logo.png').then((res) => res.arrayBuffer()); // If you fetch the image from a URL, use fetch instead
-    const logoImage = await pdfDoc.embedPng(Buffer.from(logoBytes));
+    await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/pdf-branch/backend/assets/logo.png', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
 
-    // Get the dimensions of the logo image
-    const logoDims = logoImage.scale(0.15); // Scale the logo down by 50%
-
-    // Draw the logo at the top of the page
-    page.drawImage(logoImage, {
-        x: 50,
-        y: 600,
-        width: logoDims.width,
-        height: logoDims.height,
-    })
-
-    page.moveTo(300, 725);
-
-    // Title
+    // title
     page.drawText(`Rezept: ${recipe.name}`, {
         x: 250,
         y: 700,
-        size: 26,
+        size: 25,
         font: boldFont,
         lineHeight: 24,
         opacity: 0.75,
     },);
 
-    // Zutaten
+    // image
+    await addImageToPage(page, recipe.image, 45, 475, 200, 200, "URL NOT FOUND OR IMAGE NOT OF PNG FORMAT");
+
+    // ingredients header
     page.drawText(`Zutaten:`, {
-        x: 300,
+        x: 275,
         y: 650,
-        size: 23,
+        size: 25,
         font: boldFont,
         lineHeight: 24,
         opacity: 0.75,
     },);
 
-    let y = 620; // Start position for drawing
+    // ingredients list
+    let enumeration = ''
 
-    // Loop through items and draw each one with a dot symbol
+    let font_size_for_enumeration = getMaximumNumerationTextsize(normalFont, 620, 370, 18, recipe.ingredients, 275);
+
     for (let i = 0; i < recipe.ingredients.length; i++) {
-        const item = recipe.ingredients[i];
-        const dot = '•'; // Dot symbol
+        let item = recipe.ingredients[i];
+        const dot = '•';
 
-        // Combine dot and item text
-        const text = `${dot} ${item}`;
+        item = addLineBreaksToText(item, normalFont, 275, font_size_for_enumeration)
 
-        // Draw text on the page
-        page.drawText(text, {
-            x: 300,
-            y: y,
-            size: 18,
-            font: normalFont,
-        });
-
-        // Move to the next line
-        y -= 30;
+        enumeration += `${dot} ${item}\n`;
     }
 
-    page.drawText(recipe.description, {
-        x: 50,
-        y: 300,
-        size: 18,
+    page.drawText(enumeration, {
+        x: 275,
+        y: 620,
+        size: font_size_for_enumeration,
         font: normalFont,
+        lineHeight: font_size_for_enumeration * empty_line_width,
+    });
+
+    // description
+    let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
+
+    let description_max_size: number = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
+
+    let final_description = addLineBreaksToText(recipe.description, normalFont, 50, description_max_size);
+
+    page.drawText(final_description, {
+        x: 50,
+        y: 350,
+        size: description_max_size,
+        font: normalFont,
+        lineHeight: description_max_size * empty_line_width,
     });
 
     //web link
@@ -116,12 +189,23 @@ const createRecipePDF = async (recipe: Recipe) => {
     return await pdfDoc.save();
 };
 
+function sanitizeText(text: string): string {
+    return text.replace(/�/g, ''); // Remove the replacement characters
+}
+
 // API endpoint to create and download the PDF
 app.post('/generate-pdf', async (req: Request, res: Response) => {
 
     try {
-        // Generate the PDF
-        const pdfBytes = await createRecipePDF(exampleRecipe);
+
+        const sanitizedRecipe: Recipe = {
+            name: sanitizeText(req.body.name),
+            image: req.body.image, // Assuming image URL is fine
+            description: sanitizeText(req.body.description),
+            ingredients: req.body.ingredients.map((ingredient: string) => sanitizeText(ingredient))
+        };
+
+        const pdfBytes = await createRecipePDF(sanitizedRecipe);
 
         // Set the response headers to download the PDF
         res.setHeader('Content-Type', 'application/pdf');
