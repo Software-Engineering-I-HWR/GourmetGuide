@@ -89,8 +89,12 @@ function addLineBreaksToText(text: string, font: any, start_x: number, text_size
 
 function getMaximumTextSize(text: string, font: any, top_y: number, bottom_y: number, max_text_size: number): number {
     for (let i = max_text_size; i > min_font_size; i--) {
-        if ((top_y - (font.heightAtSize(i) * (1.5) * (text.split("\n").length - 1))) > bottom_y) {
-            return i;
+        const lineHeight = font.heightAtSize(i) * 1.5; // Berechnung der Zeilenhöhe (1.5 für Zeilenabstand)
+        const totalHeight = lineHeight * text.split('\n').length; // Gesamthöhe basierend auf Anzahl der Zeilen
+
+        // Prüfe, ob der Text in den definierten Bereich passt
+        if ((top_y - totalHeight) > bottom_y) {
+            return i; // Wenn er passt, nimm diese Schriftgröße
         }
     }
     return min_font_size;
@@ -175,13 +179,25 @@ const createRecipePDF = async (recipe: any) => {
     });
 
     // description
+
     let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
 
-    let description_max_size: number = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
+    let description_max_size: number  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
 
-    let final_description = addLineBreaksToText(recipe.description, normalFont, 50, description_max_size);
+    for (let i = 18; i > 5; i--) {
+        description_max_size  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
+        description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, i);
+        console.log(description_with_new_lines);
+        console.log(description_max_size);
+        if (i < description_max_size) break;
+    }
 
-    page.drawText(final_description, {
+    description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, description_max_size);
+
+    console.log(description_with_new_lines);
+    console.log(description_max_size);
+
+    page.drawText(description_with_new_lines, {
         x: 50,
         y: 350,
         size: description_max_size,
