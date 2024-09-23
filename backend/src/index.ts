@@ -17,9 +17,23 @@ const min_font_size = 5;
 const addImageToPage = async (page: any, imageUrl: string, x: number, y: number, maxWidth: number, maxHeight: number, altText: string) => {
     try {
         // Try to fetch and embed the image
-        const imageBytes = await fetch(imageUrl).then((res) => res.arrayBuffer());
-        const image = await page.doc.embedPng(imageBytes);
+        const isPng = imageUrl.toLowerCase().endsWith('.png');
+        const isJpg = imageUrl.toLowerCase().endsWith('.jpg');
 
+        if (!isPng && !isJpg) {
+            altText = 'Unsupported image format';
+        }
+
+        // Fetch the image data
+        const imageBytes = await fetch(imageUrl).then((res) => res.arrayBuffer());
+
+        // Embed the image based on its format
+        let image;
+        if (isPng) {
+            image = await page.doc.embedPng(imageBytes);
+        } else if (isJpg) {
+            image = await page.doc.embedJpg(imageBytes);
+        }
         // Scale the image proportionally
         const { width, height } = image.scale(1);
         let finalWidth = width;
@@ -75,7 +89,7 @@ function addLineBreaksToText(text: string, font: any, start_x: number, text_size
 
 function getMaximumTextSize(text: string, font: any, top_y: number, bottom_y: number, max_text_size: number): number {
     for (let i = max_text_size; i > min_font_size; i--) {
-        if ((top_y - (font.heightAtSize(i) * (1.3) * (text.split("\n").length - 1))) > bottom_y) {
+        if ((top_y - (font.heightAtSize(i) * (1.5) * (text.split("\n").length - 1))) > bottom_y) {
             return i;
         }
     }
@@ -113,7 +127,7 @@ const createRecipePDF = async (recipe: any) => {
     const normalFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/pdf-branch/backend/assets/logo.png', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
+    await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/refs/heads/main/Frontend/public/images/Logo.jpg', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
 
     // title
     page.drawText(`Rezept: ${recipe.name}`, {
@@ -126,7 +140,7 @@ const createRecipePDF = async (recipe: any) => {
     },);
 
     // image
-    await addImageToPage(page, recipe.image, 45, 475, 200, 200, "URL NOT FOUND OR IMAGE NOT OF PNG FORMAT");
+    await addImageToPage(page, recipe.image, 45, 475, 200, 200, "URL NOT FOUND");
 
     // ingredients header
     page.drawText(`Zutaten:`, {
