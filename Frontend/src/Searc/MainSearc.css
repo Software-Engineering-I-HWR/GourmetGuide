@@ -1,0 +1,34 @@
+.main-content{
+    flex:auto;
+}
+
+.mehrfach-select{
+    border-radius: 20rem;
+}
+.einzel-select{
+    border-radius: 20rem;
+}
+
+.recipes-table {
+    width: 100%;
+}
+.pick-einzelnt{
+    display: flex;
+    flex-direction: column;
+}
+.mehrfach-select{
+    display: flex;
+    flex-direction: column;
+}
+.auswahl-multi{
+    display: flex;
+    align-content: stretch;
+    justify-content: flex-start;
+
+}
+.ausgewhelt{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
