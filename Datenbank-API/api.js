@@ -1,6 +1,8 @@
 const express = require('express');
 const { host, user, password, database } = require('./config.json');
 const mysql = require('mysql2');
+const cors = require('cors');
+
 const app = express();
 
 const connection = mysql.createConnection({
@@ -11,6 +13,7 @@ const connection = mysql.createConnection({
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.post('/saveRecipe', (req, res) => {
     const data = req.body;
