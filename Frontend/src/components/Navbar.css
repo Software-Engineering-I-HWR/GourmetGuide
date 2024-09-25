@@ -13,7 +13,7 @@
 }
 .navbar__logo {
     display: flex;
-    width: 20%; /* Breite des Bildes */
+    width: 30%; /* Breite des Bildes */
     height: auto; /* Höhe wird automatisch angepasst */
     margin: 0 2%; /* Abstand zwischen Bild und Text */
 }
@@ -45,12 +45,12 @@
 
 .navbar__search-input {
     display: flex;
-    padding: 5px 5px;
+    padding: 0.1% 1.1%;
     font-size: 1.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
-    margin: 0 2%;
+    margin: 2% 2%;
     width: 100%;
 }
 

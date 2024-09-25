@@ -1,0 +1,35 @@
+.category-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 15%;
+    text-align: center;
+}
+
+.category-card__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+
+.category-card__title {
+    font-size: 1.25rem;
+    margin: 0;
+    color: black;
+}
+
+.category-card[value='false'] {
+    filter:grayscale(100%);
+    color:grey;
+}
+
+.category-card[value='false']:hover {
+    filter:grayscale(100%);
+    color:black;
+}
+
+.category-card[value='true'] {
+    color: black;
+}

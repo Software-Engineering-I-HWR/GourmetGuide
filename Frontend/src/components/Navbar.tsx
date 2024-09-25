@@ -1,7 +1,7 @@
 import React, {StrictMode, useState} from 'react';
 import './Navbar.css';
 import {createRoot} from "react-dom/client";
-import MainSearc from "../Searc/MainSearc.tsx";
+import MainSearc from "./Search/MainSearc.tsx";
 
 
 interface NavbarProps {
@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
     return (
         <nav className="navbar">
             <div className="navbar__title">
-                <img src="/images/Logo%20klein.png" alt="Logo" className="navbar__logo"/>
+                <img src="/images/Logo%20klein%20keinHintergrund.png" alt="Logo" className="navbar__logo"/>
                 <a href="/" className="navbar__projectname">
                     {title}
                 </a>

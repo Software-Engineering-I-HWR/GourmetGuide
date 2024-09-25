@@ -1,0 +1,17 @@
+.categories__title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.categories__list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    padding: 1% 3%;
+}
