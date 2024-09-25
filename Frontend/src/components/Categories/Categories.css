@@ -1,6 +1,8 @@
 .categories__title {
     font-size: 2rem;
     margin-bottom: 20px;
+    width: 15%;
+    text-align: center;
 }
 
 .categories__list {
