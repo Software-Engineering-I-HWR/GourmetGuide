@@ -17,14 +17,14 @@ app.post('/saveRecipe', (req, res) => {
     console.log("Received data:", data);
 
     const query = `
-        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     console.log(query);
 
     connection.query(query, [
-        data.title, data.image, data.difficulty, data.ingredients, data.steps
+        data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen
     ], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
