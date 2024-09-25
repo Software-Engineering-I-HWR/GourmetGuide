@@ -1,7 +1,7 @@
 
 import React from 'react';
-import Hero from '../Hero.tsx';
-import RecipeCard from '../RecipeCard.tsx';
+import Hero from './Hero.tsx';
+import RecipeCard from './RecipeCard.tsx';
 import './../../App.css';
 
 const Home: React.FC = () => {
