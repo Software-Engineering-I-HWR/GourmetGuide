@@ -1,8 +1,7 @@
-
-import React from 'react';
 import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import './../../App.css';
+
 
 const Home: React.FC = () => {
     const sampleRecipes = [
@@ -18,15 +17,14 @@ const Home: React.FC = () => {
         { title: 'Quiche Lorraine', description: 'Ein klassischer französischer Kuchen mit Speck und Käse.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' }
     ];
 
-
     return (
         <div>
-            <Hero />
+            <Hero/>
             <main className="main-content">
                 <section className="recipes">
                     <h2 className="recipes__title">Aktuelle Rezepte</h2>
                     <div className="recipes__list">
-                        {sampleRecipes.map((recipe, index) => (
+                        {sampleRecipes!.map((recipe, index) => (
                             <RecipeCard key={index} {...recipe} />
                         ))}
                     </div>
@@ -34,8 +32,7 @@ const Home: React.FC = () => {
             </main>
         </div>
     );
-};
-
+}
 
 
 export default Home;

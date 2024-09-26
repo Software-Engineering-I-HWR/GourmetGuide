@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
     };
 
     const handleSearchSubmit = (event: React.FormEvent) => {
-        <a>href="/MainSearc" </a>
+        <a>href="/MainSearch" </a>
         event.preventDefault();
         console.log('Search term submitted:', searchTerm);
         // Füge hier die Suchlogik hinzu (z.B. eine API-Abfrage)
