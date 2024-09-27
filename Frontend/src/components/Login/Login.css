@@ -1,11 +1,116 @@
-.login-body{
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #7e9cac;
+}
+
+.login-body {
+    display: flex;
+    flex-direction: row;
+    background-color: #e5ebee;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 90%;
+}
+
+.login-left, .login-right {
+    flex: 1;
+    padding: 20px;
+}
+
+.login-left {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 50%;
-    height: 75%;
-    margin: 10% auto;
-    background-color: #fff;
+    justify-content: center;
+}
+
+.login-title {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-email-field,
+.login-password-field {
+    margin-bottom: 15px;
+    padding: 20px;
+}
+
+.login-email-field-input,
+.login-password-field-input {
+    width: 100%;
+    height: 100%;
+    padding: 1%;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 150%;
+    background-color: #e5ebee;
+}
+
+.login-button{
+    text-align: center;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 3% 3%;
+    background-color: #07546E;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 125%;
+    margin-right: 10px;
+}
+
+
+.register-button {
+    text-align: center;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 3% 3%;
+    background-color: #e5ebee;
+    color: #07546E;
+    text-decoration: none;
     border-radius: 8px;
+    border-color: #07546E;
+    font-size: 125%;
+    margin-right: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:hover {
+    background-color: #7e9cac;
+    color: #07546E;
+}
+
+.register-button:hover {
+    text-decoration: underline;
+}
+
+.login-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+@media screen and (max-width: 800px) {
+    .login-body {
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+
+    .login-right {
+        margin-top: 20px;
+    }
 }

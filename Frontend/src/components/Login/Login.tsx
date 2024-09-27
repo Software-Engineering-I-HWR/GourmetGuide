@@ -1,5 +1,5 @@
-import './login.css';
-import React, {useState} from 'react';
+import './Login.css';
+import React, { useState } from 'react';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -16,33 +16,39 @@ const Login: React.FC = () => {
     return (
         <div className="login-page">
             <div className="login-body">
-                <h1 className="login-title">Login</h1>
+                <div className="login-left">
+                    <h1 className="login-title">Login</h1>
 
-                <form className="login-email-field">
-                    <input
-                        type="text"
-                        placeholder="E-Mail-Addresse..."
-                        value={email}
-                        onChange={enterEmailAdress}
-                        className="login-email-field-input"
-                    />
-                </form>
-                <form className="login-password-field">
-                    <input
-                        type="text"
-                        placeholder="Passwort..."
-                        value={password}
-                        onChange={enterPassword}
-                        className="login-password-field-input"
-                    />
-                </form>
+                    <form className="login-email-field">
+                        <input
+                            type="text"
+                            placeholder="E-Mail-Adresse..."
+                            value={email}
+                            onChange={enterEmailAdress}
+                            className="login-email-field-input"
+                        />
+                    </form>
 
-                <a type="Submit" href="/" className="login-button">Anmelden</a>
-                <a type="Submit" href="/register" className="register-button">Registrieren</a>
+                    <form className="login-password-field">
+                        <input
+                            type="password"
+                            placeholder="Passwort..."
+                            value={password}
+                            onChange={enterPassword}
+                            className="login-password-field-input"
+                        />
+                    </form>
 
+                    <a type="Submit" href="/" className="login-button">Anmelden</a>
+                    <a type="Submit" href="/register" className="register-button">Registrieren</a>
+                </div>
+
+                <div className="login-right">
+                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo" />
+                </div>
             </div>
-            )
-        </div>)
+        </div>
+    )
 };
 
 export default Login;

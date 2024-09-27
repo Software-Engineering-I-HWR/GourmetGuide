@@ -1,0 +1,97 @@
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #7e9cac;
+}
+
+.register-body {
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 90%;
+    background-color: #e5ebee;
+}
+
+.register-left, .register-right {
+    flex: 1;
+    padding: 20px;
+}
+
+.register-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-title {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.register-email-field,
+.register-password-field,
+.register-password-repeat-field {
+    margin-bottom: 15px;
+}
+
+.register-email-field-input,
+.register-password-field-input,
+.register-password-repeat-field-input{
+    width: 100%;
+    height: 100%;
+    padding: 1%;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 150%;
+    background-color: #e5ebee;
+}
+
+.confirm-register-button{
+    text-align: center;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 3% 3%;
+    background-color: #07546E;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 125%;
+    margin-right: 10px;
+}
+
+.confirm-register-button:hover {
+    background-color: #7e9cac;
+    color: #07546E;
+}
+
+.register-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+@media screen and (max-width: 800px) {
+    .register-body {
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+
+    .register-right {
+        margin-top: 20px;
+    }
+}
