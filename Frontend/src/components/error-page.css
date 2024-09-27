@@ -1,0 +1,15 @@
+.errorPage {
+    background-color: #ffffff;
+    color:red;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 0;
+    display: flow-root;
+    font-size: xxx-large;
+    bottom: 0;
+    width: 100%;
+}
+
+.errorPage__Text {
+    margin: 0;
+}

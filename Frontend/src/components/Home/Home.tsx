@@ -1,0 +1,71 @@
+import Hero from './Hero.tsx';
+import RecipeCard from './RecipeCard.tsx';
+import './../../App.css';
+import React, {useEffect, useState} from "react";
+
+interface Recipe {
+    Title: string;
+    Category: string;
+    Image: string;
+}
+
+interface ListItem {
+    title: string;
+    description: string;
+    imageUrl: string;
+}
+
+async function getRecipes(): Promise<Recipe[] | null> {
+    try {
+        const response = await fetch('http://canoob.de:3007/getRecipes');
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error('API request error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+        return null;
+    }
+}
+
+const Home: React.FC = () => {
+    const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            const recipes = await getRecipes();
+            if (recipes && Array.isArray(recipes)) {
+                const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
+                    title: recipe.Title,
+                    description: recipe.Category,
+                    imageUrl: recipe.Image
+                }));
+                setSampleRecipes(lastFifteenRecipes);
+            } else {
+                console.error('No valid recipes received or the data is not an array.');
+            }
+        };
+
+        fetchRecipes();
+    }, []);
+
+    return (
+        <div>
+            <Hero />
+            <main className="main-content">
+                <section className="recipes">
+                    <h2 className="recipes__title">Aktuelle Rezepte</h2>
+                    <div className="recipes__list">
+                        {sampleRecipes.map((recipe, index) => (
+                            <RecipeCard key={index} {...recipe} />
+                        ))}
+                    </div>
+                </section>
+            </main>
+        </div>
+    );
+};
+
+export default Home;

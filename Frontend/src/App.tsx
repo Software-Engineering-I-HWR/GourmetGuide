@@ -1,38 +1,30 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import RecipeCard from './components/RecipeCard';
-import Footer from './components/Footer';
-import './App.css';
+import MainSearc from './components/Search/MainSearc';
+import Home from './components/Home/Home';
+import Footer from "./components/Footer.tsx";
+import ErrorPage from './components/errorPage.tsx';
+import Categories from "./components/Categories/Categories.tsx";
 
 const App: React.FC = () => {
     const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'Searc', path: '/mainsearc' },
         { name: 'Kategorien', path: '/kategorien' },
         { name: 'Login', path: '/log-in' },
     ];
-
-    const sampleRecipes = [
-        { title: 'Spaghetti Carbonara', description: 'Ein klassisches italienisches Gericht.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Pizzateig', description: 'Das beste Rezept für einen knusprigen Pizzateig.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Gemüselasagne', description: 'Schnelles und gesundes Mittagessen.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-    ];
-
     return (
-        <div>
+        <Router>
             <Navbar title="GourmetGuide" links={navLinks} />
-            <Hero />
-            <main className="main-content">
-                <section className="recipes">
-                    <h2 className="recipes__title">Aktuelle Rezepte</h2>
-                    <div className="recipes__list">
-                        {sampleRecipes.map((recipe, index) => (
-                            <RecipeCard key={index} {...recipe} />
-                        ))}
-                    </div>
-                </section>
-            </main>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/mainsearc" element={<MainSearc />} />
+                <Route path="/categories" element={<Categories />} />/
+                <Route path="*" element={<ErrorPage />} />
+            </Routes>
             <Footer />
-        </div>
+        </Router>
     );
 };
 

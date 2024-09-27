@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {StrictMode, useState} from 'react';
 import './Navbar.css';
+import {createRoot} from "react-dom/client";
+import MainSearc from "./Search/MainSearc.tsx";
+
 
 interface NavbarProps {
     title: string;
@@ -14,18 +17,27 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
     };
 
     const handleSearchSubmit = (event: React.FormEvent) => {
+        <a>href="/MainSearc" </a>
         event.preventDefault();
         console.log('Search term submitted:', searchTerm);
         // Füge hier die Suchlogik hinzu (z.B. eine API-Abfrage)
+        createRoot(document.getElementById('searc')!).render(
+            <StrictMode>
+                <MainSearc/>
+            </StrictMode>,
+        );
+
+        createRoot(document.getElementById('root')!).unmount();
     };
+
 
     return (
         <nav className="navbar">
             <div className="navbar__title">
-                <img src="/images/Logo%20klein.png" alt="Logo" className="navbar__logo"/>
-                <div className="navbar__projectname">
+                <img src="/images/Logo%20klein%20keinHintergrund.png" alt="Logo" className="navbar__logo"/>
+                <a href="/" className="navbar__projectname">
                     {title}
-                </div>
+                </a>
             </div>
             <form className="navbar__search" onSubmit={handleSearchSubmit}>
                 <input
@@ -35,9 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     onChange={handleSearchChange}
                     className="navbar__search-input"
                 />
-                <button type="submit" className="navbar__search-button">
-                    Suchen
-                </button>
+                <a type="Submit" href="/mainsearc" className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
                 <a href="/log-in" className="navbar__link">Backen</a>
