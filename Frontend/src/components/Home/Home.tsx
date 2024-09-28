@@ -30,9 +30,10 @@ async function getRecipes(): Promise<Recipe[] | null> {
     }
 }
 
+
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
-
+  
     useEffect(() => {
         const fetchRecipes = async () => {
             const recipes = await getRecipes();
@@ -53,12 +54,12 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            <Hero />
+            <Hero/>
             <main className="main-content">
                 <section className="recipes">
                     <h2 className="recipes__title">Aktuelle Rezepte</h2>
                     <div className="recipes__list">
-                        {sampleRecipes.map((recipe, index) => (
+                        {sampleRecipes!.map((recipe, index) => (
                             <RecipeCard key={index} {...recipe} />
                         ))}
                     </div>
