@@ -1,21 +1,56 @@
 import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import './../../App.css';
+import React, {useEffect, useState} from "react";
+
+interface Recipe {
+    Title: string;
+    Category: string;
+    Image: string;
+}
+
+interface ListItem {
+    title: string;
+    description: string;
+    imageUrl: string;
+}
+
+async function getRecipes(): Promise<Recipe[] | null> {
+    try {
+        const response = await fetch('http://canoob.de:3007/getRecipes');
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error('API request error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+        return null;
+    }
+}
 
 
 const Home: React.FC = () => {
-    const sampleRecipes = [
-        { title: 'Spaghetti Carbonara', description: 'Ein klassisches italienisches Gericht.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Pizzateig', description: 'Das beste Rezept für einen knusprigen Pizzateig.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Gemüselasagne', description: 'Schnelles und gesundes Mittagessen.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Tiramisu', description: 'Ein himmlisches Dessert aus Italien.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Griechischer Salat', description: 'Ein frischer Salat mit Tomaten, Gurken, Feta und Oliven.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Chicken Curry', description: 'Ein würziges indisches Gericht mit Huhn und aromatischen Gewürzen.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Guacamole', description: 'Eine cremige Avocado-Dip aus Mexiko.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Pancakes', description: 'Fluffige Pancakes zum Frühstück oder Brunch.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Shakshuka', description: 'Ein herzhaftes Frühstück aus pochierten Eiern in Tomatensauce.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' },
-        { title: 'Quiche Lorraine', description: 'Ein klassischer französischer Kuchen mit Speck und Käse.', imageUrl: 'https://www.publicdomainpictures.net/pictures/40000/nahled/sky-blue-1359435411mV0.jpg' }
-    ];
+    const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+  
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            const recipes = await getRecipes();
+            if (recipes && Array.isArray(recipes)) {
+                const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
+                    title: recipe.Title,
+                    description: recipe.Category,
+                    imageUrl: recipe.Image
+                }));
+                setSampleRecipes(lastFifteenRecipes);
+            } else {
+                console.error('No valid recipes received or the data is not an array.');
+            }
+        };
+
+        fetchRecipes();
+    }, []);
 
     return (
         <div>
@@ -32,7 +67,6 @@ const Home: React.FC = () => {
             </main>
         </div>
     );
-}
-
+};
 
 export default Home;
