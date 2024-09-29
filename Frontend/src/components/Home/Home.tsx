@@ -7,12 +7,14 @@ interface Recipe {
     Title: string;
     Category: string;
     Image: string;
+    ID: number
 }
 
 interface ListItem {
     title: string;
     description: string;
     imageUrl: string;
+    id: number
 }
 
 async function getRecipes(): Promise<Recipe[] | null> {
@@ -33,7 +35,7 @@ async function getRecipes(): Promise<Recipe[] | null> {
 
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
-  
+
     useEffect(() => {
         const fetchRecipes = async () => {
             const recipes = await getRecipes();
@@ -41,7 +43,8 @@ const Home: React.FC = () => {
                 const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
                     title: recipe.Title,
                     description: recipe.Category,
-                    imageUrl: recipe.Image
+                    imageUrl: recipe.Image,
+                    id: recipe.ID
                 }));
                 setSampleRecipes(lastFifteenRecipes);
             } else {
@@ -57,12 +60,19 @@ const Home: React.FC = () => {
             <Hero/>
             <main className="main-content">
                 <section className="recipes">
-                    <h2 className="recipes__title">Aktuelle Rezepte</h2>
-                    <div className="recipes__list">
+                    <h2 className="recipes__title"/>
+                    <a className="recipes__list">
                         {sampleRecipes!.map((recipe, index) => (
-                            <RecipeCard key={index} {...recipe} />
+                            <a
+                                key={index}
+                                className="recipes-link"
+                                href={`/recipe/${recipe.id}`}
+                                style={{textDecoration: 'none'}}
+                            >
+                                <RecipeCard key={index} {...recipe} />
+                            </a>
                         ))}
-                    </div>
+                    </a>
                 </section>
             </main>
         </div>

@@ -50,8 +50,8 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                 <a type="Submit" href="/mainsearc" className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
-                <a href="/log-in" className="navbar__link">Backen</a>
-                <a href="/log-in" className="navbar__link">Kochen</a>
+                <a href="/bake" className="navbar__link">Backen</a>
+                <a href="/cook" className="navbar__link">Kochen</a>
                 <a href="/categories" className="navbar__link">Kategorien</a>
                 <a href="/log-in" className="navbar__link">Login</a>
             </div>

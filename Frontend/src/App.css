@@ -21,6 +21,11 @@ body {
     margin-bottom: 20px;
 }
 
+.recipes-link {
+    text-decoration: none;
+    color: black;
+}
+
 .recipes__list {
     display: flex;
     gap: 20px;

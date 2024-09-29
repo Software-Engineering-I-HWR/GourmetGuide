@@ -121,7 +121,6 @@ const MainSearc: React.FC = () => {
                         value={selectedIngr}
                         onChange={(e) => {
                             setSelectedIngr(e.target.value);
-                            console.log("montag", e.target.value);
                         }}
                     >
                         {ingredients.map((ingredient, index) => (
