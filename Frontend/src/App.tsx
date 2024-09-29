@@ -31,7 +31,7 @@ const App: React.FC = () => {
                 <Route path="/log-in" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={<ErrorPage />} />
-                <Route path="/recipe/*" element={<ShowRecipe />} />
+                <Route path="/recipe/*" element={<ShowRecipe/>} />
             </Routes>
             {shouldShowNavbarFooter && <Footer />}
         </>

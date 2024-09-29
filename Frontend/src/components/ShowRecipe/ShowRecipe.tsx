@@ -1,5 +1,6 @@
 import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
+import {useLocation} from "react-router-dom";
 
 interface Recipe {
     Title: string;
@@ -15,19 +16,46 @@ interface ListItem {
     id: number
 }
 
-interface ShowRecipeProps {
-    id: number;
-}
+const extractAfterTarget = (
+    array: string[],
+    target: string,
+    stopAt: string
+): string[] => {
+    const result: string[] = [];
 
-const ShowRecipe: React.FC<ShowRecipeProps> = ({id}) => {
+    // Nach dem Index des Zielstrings suchen
+    const startIndex = array.indexOf(target);
+
+    // Wenn das Ziel gefunden wurde, weitermachen
+    if (startIndex !== -1) {
+        // Beginne bei der nächsten Position nach dem Zielstring
+        for (let i = startIndex + 1; i < array.length; i++) {
+            // Wenn das Stoppzeichen erreicht wird, Schleife abbrechen
+            if (array[i] === stopAt) break;
+
+            // Andernfalls das aktuelle Element in das Ergebnisarray kopieren
+            result.push(array[i]);
+        }
+    }
+
+    return result;
+};
+
+
+const ShowRecipe: React.FC = () => {
 
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+    const location = useLocation();
+    const id = extractAfterTarget(location.pathname,"recipe/", "/")
+    console.log(id);
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch(`http://canoob.de:3007/getRecipeByID?={id}`);
+            const response = await fetch(`http://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
+                method: 'GET'
+            });
             if (response.ok) {
-                const recipes: Recipe[] = await response.json();
+                const recipes = await response.json();
                 console.log(recipes);
                 return recipes;
             } else {
