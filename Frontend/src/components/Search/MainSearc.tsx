@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import './MainSearc.css';
 
 const MainSearc: React.FC = () => {
@@ -18,6 +18,41 @@ const MainSearc: React.FC = () => {
     const removeVeg = (veg: string) => {
         setSelectedVegs(prevVegs => prevVegs.filter(v => v !== veg));
     };
+
+    interface Recipe {
+        ingredient: string;
+    }
+
+    async function getAllIngredients(): Promise<Recipe[] | null> {
+        try {
+            const response = await fetch('http://canoob.de:3007/getAllIngredients');
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error('API request error:', response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
+        }
+    }
+
+    const [ingredients, setIngredients] = useState<Recipe[]>([]);
+
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            const allIngredientsJson = await getAllIngredients();
+
+            if (allIngredientsJson && Array.isArray(allIngredientsJson)) {
+                setIngredients(allIngredientsJson.sort());
+            } else {
+                console.error('No valid recipes received or the data is not an array.');
+            }
+        };
+
+        fetchRecipes();
+    }, []);
 
     return (
         <div>
@@ -81,11 +116,17 @@ const MainSearc: React.FC = () => {
                         value={selectedVeg}
                         onChange={e => setSelectedVeg(e.target.value)}
                     >
-                        <option value="cucumber">Cucumber</option>
-                        <option value="corn">Corn</option>
-                        <option value="tomato">Tomato</option>
+                        {ingredients.map((ingredient, index) => (
+                            <option key={index} value={ingredient}>
+                                {ingredient}
+                            </option>
+                        ))}
                     </select>
-                    <button onClick={addVeg} style={{marginLeft: '10px'}}>Hinzufügen</button>
+                    <button onClick={() => {
+                        addVeg;
+                        console.log(ingredients)
+                    }} style={{marginLeft: '10px'}}>Hinzufügen
+                    </button>
                 </label>
                 <div className="auswahl-multi">
                     {selectedVegs.map((veg) => (
