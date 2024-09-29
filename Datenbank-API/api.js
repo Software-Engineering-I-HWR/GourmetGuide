@@ -51,6 +51,87 @@ app.get('/getRecipes', (req, res) => {
     });
 });
 
+app.get('/getAllCategories', (req, res) => {
+    const query = 'SELECT DISTINCT Category FROM Rezept';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getAllIngredients', (req, res) => {
+    const query = 'SELECT Ingredients FROM Rezept';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Zutaten');
+        } else {
+            const unwantedWords = ['Garnish', 'Topping', 'Small', 'Big', 'chopped', 'pinch', 'as required', 'to glaze'];
+
+            let allIngredients = results.map(row => row.Ingredients)
+                .join('|')
+                .split('|')
+                .map(ingredient => {
+                    let cleanedIngredient = ingredient
+                        .replace(/\b\d+(\.\d+)?\s*\w*\b/g, '')
+                        .replace(/\/.*/g, '')
+                        .trim();
+
+                    unwantedWords.forEach(word => {
+                        const regex = new RegExp('\\b' + word + '\\b', 'gi');
+                        cleanedIngredient = cleanedIngredient.replace(regex, '');
+                    });
+
+                    cleanedIngredient = cleanedIngredient.replace(/\s\s+/g, ' ').trim();
+
+                    return cleanedIngredient
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ');
+                })
+                .filter(ingredient => ingredient !== '');
+
+            let uniqueIngredients = [...new Set(allIngredients)];
+
+            res.status(200).json(uniqueIngredients);
+        }
+    });
+});
+
+app.get('/getRecipeByID', (req, res) => {
+    const id = req.query.id;
+    const query = 'SELECT * FROM Rezept WHERE ID = ?';
+
+    connection.query(query, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRecipesByCategory', (req, res) => {
+    const category = req.query.category;
+    const query = 'SELECT * FROM Rezept WHERE Category = ?';
+
+    connection.query(query, [category], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getUserByEmail', (req, res) => {
     const email = req.query.email;
 
