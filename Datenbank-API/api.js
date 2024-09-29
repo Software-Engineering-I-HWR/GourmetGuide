@@ -73,9 +73,7 @@ app.get('/getAllIngredients', (req, res) => {
             res.status(500).send('Fehler beim Abrufen der Zutaten');
         } else {
             const unwantedWords = [
-                'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze',
-                '()', '¼', '½', '¾', '-', 'inch', 'Into', 'Tbsp', 'Tsp', 'To', 'Serve', 'Sliced', 'Can', 'Of',
-                'Beaten', '.', '(.)', ',', ''
+                'Bunch', 'Stout', 'Stock', 'The', 'Other', 'Halved', 'Pieces', 'Sprigs', 'Fresh', 'Shredded', 'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze', 'Tbsp', 'Tsp', 'Serve', 'Sliced', 'Can', 'Of', 'Into', 'inch', 'To', 'Dash', 'Finely', 'Unsalted', 'Cup', 'Piece', 'Cut', 'Handful', 'Peeled', 'And', 'Coarsely Grated', 'Diced', 'Ground', 'Stewing', 'Thin', 'Bulb', 'Pod', 'Steamed', 'Crushed', 'Top', 'Pack', 'Clove', 'Taste', 'Teaspoon'
             ];
 
             let allIngredients = results.map(row => row.Ingredients)
@@ -85,6 +83,9 @@ app.get('/getAllIngredients', (req, res) => {
                     let cleanedIngredient = ingredient
                         .replace(/\b\d+(\.\d+)?\s*\w*\b/g, '')
                         .replace(/\/.*/g, '')
+                        .replace(/[,.]\s*Beaten/g, '')
+                        .replace(/[,.]$/, '')
+                        .replace(/^\s*,/, '')
                         .replace(/[¼½¾().,-]/g, '')
                         .replace(/\binch\b/gi, '')
                         .trim();
@@ -104,6 +105,8 @@ app.get('/getAllIngredients', (req, res) => {
                 .filter(ingredient => ingredient !== '');
 
             let uniqueIngredients = [...new Set(allIngredients)];
+
+            uniqueIngredients.sort((a, b) => a.localeCompare(b));
 
             res.status(200).json(uniqueIngredients);
         }
