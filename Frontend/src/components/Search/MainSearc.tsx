@@ -6,17 +6,18 @@ const MainSearc: React.FC = () => {
     const [selectedFruit, setSelectedFruit] = useState('orange');
     const [selectedCategory, setSelectedCategory] = useState('Kuchen');
     const [selectedDifficulty, setSelectedDifficulty] = useState('einfach');
-    const [selectedVeg, setSelectedVeg] = useState('cucumber');
-    const [selectedVegs, setSelectedVegs] = useState<string[]>([]);
+    const [selectedIngr, setSelectedIngr] = useState('');
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
     const addVeg = () => {
-        if (!selectedVegs.includes(selectedVeg)) {
-            setSelectedVegs(prevVegs => [...prevVegs, selectedVeg]);
+        console.log("dienstag", selectedIngr);
+        if (!selectedIngredients.includes(selectedIngr)) {
+            setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
         }
     };
 
     const removeVeg = (veg: string) => {
-        setSelectedVegs(prevVegs => prevVegs.filter(v => v !== veg));
+        setSelectedIngredients(prevVegs => prevVegs.filter(v => v !== veg));
     };
 
     interface Recipe {
@@ -38,17 +39,21 @@ const MainSearc: React.FC = () => {
         }
     }
 
-    const [ingredients, setIngredients] = useState<Recipe[]>([]);
+    const [ingredients, setIngredients] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchRecipes = async () => {
             const allIngredientsJson = await getAllIngredients();
 
-            if (allIngredientsJson && Array.isArray(allIngredientsJson)) {
-                setIngredients(allIngredientsJson.sort());
-            } else {
-                console.error('No valid recipes received or the data is not an array.');
-            }
+            allIngredientsJson?.forEach((item) => {
+                setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
+            })
+
+            /* if (allIngredientsJson && Array.isArray(allIngredientsJson)) {
+                 setIngredients(allIngredientsJson.sort());
+             } else {
+                 console.error('No valid recipes received or the data is not an array.');
+             }*/
         };
 
         fetchRecipes();
@@ -110,11 +115,14 @@ const MainSearc: React.FC = () => {
                 </table>
                 <hr/>
                 <label>
-                    Pick Gemüse :
+                    Zutaten auswählen :
                     <select
                         className="einzel-select"
-                        value={selectedVeg}
-                        onChange={e => setSelectedVeg(e.target.value)}
+                        value={selectedIngr}
+                        onChange={(e) => {
+                            setSelectedIngr(e.target.value);
+                            console.log("montag", e.target.value);
+                        }}
                     >
                         {ingredients.map((ingredient, index) => (
                             <option key={index} value={ingredient}>
@@ -122,14 +130,11 @@ const MainSearc: React.FC = () => {
                             </option>
                         ))}
                     </select>
-                    <button onClick={() => {
-                        addVeg;
-                        console.log(ingredients)
-                    }} style={{marginLeft: '10px'}}>Hinzufügen
+                    <button onClick={addVeg} style={{marginLeft: '10px'}}>Hinzufügen
                     </button>
                 </label>
                 <div className="auswahl-multi">
-                    {selectedVegs.map((veg) => (
+                    {selectedIngredients.map((veg) => (
                         <div className='ausgewhelt' key={veg} style={{marginTop: '10px'}}>
                             {veg}
                             <button
@@ -145,7 +150,7 @@ const MainSearc: React.FC = () => {
                 <p>Ausgewählte Frucht: {selectedFruit}</p>
                 <p>Ausgewählte Kategorie: {selectedCategory}</p>
                 <p>Ausgewählte Schwierigkeit: {selectedDifficulty}</p>
-                <p>Ausgewählte Gemüse: {selectedVegs.join(', ')}</p>
+                <p>Ausgewählte Gemüse: {selectedIngredients.join(', ')}</p>
             </main>
         </div>
     );
