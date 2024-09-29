@@ -72,7 +72,11 @@ app.get('/getAllIngredients', (req, res) => {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Abrufen der Zutaten');
         } else {
-            const unwantedWords = ['Garnish', 'Topping', 'Small', 'Big', 'chopped', 'pinch', 'as required', 'to glaze'];
+            const unwantedWords = [
+                'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze',
+                '()', '¼', '½', '¾', '-', 'inch', 'Into', 'Tbsp', 'Tsp', 'To', 'Serve', 'Sliced', 'Can', 'Of',
+                'Beaten', '.', '(.)', ',', ''
+            ];
 
             let allIngredients = results.map(row => row.Ingredients)
                 .join('|')
@@ -81,6 +85,8 @@ app.get('/getAllIngredients', (req, res) => {
                     let cleanedIngredient = ingredient
                         .replace(/\b\d+(\.\d+)?\s*\w*\b/g, '')
                         .replace(/\/.*/g, '')
+                        .replace(/[¼½¾().,-]/g, '')
+                        .replace(/\binch\b/gi, '')
                         .trim();
 
                     unwantedWords.forEach(word => {
