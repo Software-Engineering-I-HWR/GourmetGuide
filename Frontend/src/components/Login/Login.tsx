@@ -99,6 +99,8 @@ const Login: React.FC = () => {
                         </form>
                     )}
 
+
+                    <a type="Submit" href="/register" className="register-button">Registrieren</a>
                     {/* Render the login message */}
                     {loginMessage && <p className="login-message">{loginMessage}</p>}
                 </div>
