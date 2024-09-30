@@ -5,9 +5,9 @@ import {useParams} from "react-router-dom";
 
 
 const MainSearc: React.FC = () => {
+    const { receptNameConst } = useParams();
+    const [receptName, setReceptName]= useState<string>(''+receptNameConst);
 
-    const { receptName } = useParams();
-    console.log(receptName);
     const [selectedFruit, setSelectedFruit] = useState('orange');
     const [selectedCategory, setSelectedCategory] = useState('Kuchen');
     const [selectedDifficulty, setSelectedDifficulty] = useState('einfach');
@@ -15,7 +15,6 @@ const MainSearc: React.FC = () => {
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
     const addVeg = () => {
-        console.log("dienstag", selectedIngr);
         if (!selectedIngredients.includes(selectedIngr)) {
             setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
         }
@@ -65,9 +64,33 @@ const MainSearc: React.FC = () => {
     }, []);
 
 
+    const handleonSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
+        event.preventDefault()
+    };
+
+    const getNameSuche = ():string => {
+        if(receptNameConst ==""||receptNameConst==undefined){
+            return "Suchen..."
+        }
+        return receptNameConst
+    }
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setReceptName(event.target.value);
+    };
+
     return (
         <div>
             <main className="main-content">
+                <form className="mainSearc__search" onSubmit={handleonSubmit}>
+                    <input
+                        type="text"
+                        placeholder= "Suche..."
+                        value={receptName}
+                        onChange={handleSearchChange}
+                        className="mainSearc__search-input"
+                    />
+                </form>
                 <table className="recipes-table">
                     <tbody>
                     <tr>
@@ -123,27 +146,27 @@ const MainSearc: React.FC = () => {
                 <label>
                     Zutaten auswählen :
                     <div className="select-mehre-add-container">
-                    <select
-                        className="einzel-select"
-                        value={selectedIngr}
-                        onChange={(e) => {
-                            setSelectedIngr(e.target.value);
-                        }}
-                    >
-                        {ingredients.map((ingredient, index) => (
-                            <option key={index} value={ingredient}>
-                                {ingredient}
-                            </option>
-                        ))}
-                    </select>
-                        <button onClick={addVeg} >Hinzufügen</button>
+                        <select
+                            className="einzel-select"
+                            value={selectedIngr}
+                            onChange={(e) => {
+                                setSelectedIngr(e.target.value);
+                            }}
+                        >
+                            {ingredients.map((ingredient, index) => (
+                                <option key={index} value={ingredient}>
+                                    {ingredient}
+                                </option>
+                            ))}
+                        </select>
+                        <button onClick={addVeg}>Hinzufügen</button>
 
                     </div>
                 </label>
                 <div className="auswahl-multi">
                     {selectedIngredients.map((veg) => (
                         <div className='ausgewhelt' key={veg} style={{marginTop: '10px'}}>
-                                {veg}
+                            {veg}
                             <button onClick={() => removeVeg(veg)}>
                                 x
                             </button>

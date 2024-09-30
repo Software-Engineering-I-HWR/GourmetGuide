@@ -11,7 +11,7 @@ function getLink(temp: string) {
     if (temp == "") {
         return "/mainsearc/";
     }
-    return "/mainsearc/"+temp; 
+    return "/mainsearc/"+temp;
 
 }
 
