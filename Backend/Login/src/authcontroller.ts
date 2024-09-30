@@ -8,21 +8,14 @@ export const login = async (req: Request, res: Response) => {
   // Find the user by email
   const user = await findUserByEmail(email);
   if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Ungültige Anmeldedaten" });
   }
 
   // Compare passwords
   const isPasswordValid = password == user.password;
   if (!isPasswordValid) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Ungültige Anmeldedaten" });
   }
 
-  // Set cookie if authentication is successful
-  res.cookie("authToken", "SECURE_TOKEN_WHICH_IS_VERY_SECURE_TRUST_ME_BRO_" + email, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-  });
-
-  return res.status(200).json({ message: "Login successful" });
+  return res.status(200).json({ message: "Login erfolgreich" });
 };

@@ -12,7 +12,7 @@ import Register from "./components/Login/Register.tsx";
 const App: React.FC = () => {
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'Searc', path: '/mainsearc' },
+        { name: 'Search', path: '/mainsearc' },
         { name: 'Kategorien', path: '/kategorien' },
         { name: 'Login', path: '/log-in' },
     ];

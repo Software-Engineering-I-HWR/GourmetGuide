@@ -13,7 +13,8 @@ app.use(cookieParser());
 app.use(cors());
 
 // mock user
-addUser("test@example.com", "password123");
+addUser("test34567@example.com", "password123");
+
 
 // Routes
 app.post("/login", login);

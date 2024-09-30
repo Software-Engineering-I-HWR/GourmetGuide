@@ -44,7 +44,7 @@
 .login-email-field-input,
 .login-password-field-input {
     width: 100%;
-    height: 100%;
+    height: 30%;
     padding: 1%;
     margin: 8px 0;
     box-sizing: border-box;
