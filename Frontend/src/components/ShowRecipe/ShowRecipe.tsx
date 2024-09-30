@@ -6,48 +6,44 @@ interface Recipe {
     Title: string;
     Category: string;
     Image: string;
-    ID: number
+    ID: number;
+    Allergen: string;
+    Ingredients: string;
+    Steps: string;
+    Vegan: boolean;
+    Vegetarian: boolean;
 }
 
 interface ListItem {
     title: string;
-    description: string;
+    category: string;
     imageUrl: string;
     id: number
+    allergen: string;
+    ingredients: string;
+    steps: string;
+    vegan: boolean;
+    vegetarian: boolean;
 }
 
-const extractAfterTarget = (
-    array: string[],
-    target: string,
-    stopAt: string
-): string[] => {
-    const result: string[] = [];
+const extractString = (str: string, startMarker: string, endMarker: string): string => {
+    const startIndex = str.indexOf(startMarker);
+    if (startIndex === -1) return ""; // Falls Startmarkierung nicht gefunden wird
 
-    // Nach dem Index des Zielstrings suchen
-    const startIndex = array.indexOf(target);
+    const start = startIndex + startMarker.length;
+    const endIndex = str.indexOf(endMarker, start);
+    if (endIndex === -1) return ""; // Falls Endmarkierung nicht gefunden wird
 
-    // Wenn das Ziel gefunden wurde, weitermachen
-    if (startIndex !== -1) {
-        // Beginne bei der nächsten Position nach dem Zielstring
-        for (let i = startIndex + 1; i < array.length; i++) {
-            // Wenn das Stoppzeichen erreicht wird, Schleife abbrechen
-            if (array[i] === stopAt) break;
-
-            // Andernfalls das aktuelle Element in das Ergebnisarray kopieren
-            result.push(array[i]);
-        }
-    }
-
-    return result;
+    return str.substring(start, endIndex);
 };
 
 
 const ShowRecipe: React.FC = () => {
-
-    const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+    const [sampleRecipe, setSampleRecipe] = useState<ListItem | undefined>(undefined);
     const location = useLocation();
-    const id = extractAfterTarget(location.pathname,"recipe/", "/")
-    console.log(id);
+    const id = extractString(location.pathname, "recipe/", "/")
+    const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
+    const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -68,30 +64,104 @@ const ShowRecipe: React.FC = () => {
         }
     }
 
+    const formatIngredients = (ingredientsAsString: string) => {
+        const ingredientsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
+        let ingredientStartIndex = 0;
+
+        for (let i = 0; i < ingredientsAsString.length; i++) {
+            if (ingredientsAsString[i] === "|") {
+                const newIngredientToAdd: string = ingredientsAsString.substring(ingredientStartIndex, i).trim(); // Trimmen, um Leerzeichen zu entfernen
+                ingredientsArray.push(newIngredientToAdd); // Füge die neue Zutat zum temporären Array hinzu
+                ingredientStartIndex = i + 1;
+            }
+        }
+
+        // Füge das letzte Element nach der Schleife hinzu
+        const lastIngredient = ingredientsAsString.substring(ingredientStartIndex).trim();
+        if (lastIngredient) {
+            ingredientsArray.push(lastIngredient);
+        }
+
+        // Aktualisiere den Zustand mit dem neuen Array
+        setIngredientsAsArray(ingredientsArray);
+    };
+
+    const formatSteps = (stepsAsString: string) => {
+        const stepsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
+        let stepStartIndex = 0;
+
+        for (let i = 0; i < stepsAsString.length; i++) {
+            if (stepsAsString[i] === ".") {
+                const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i + 1).trim(); // Trimmen, um Leerzeichen zu entfernen
+                stepsArray.push(newStepToAdd); // Füge die neue Zutat zum temporären Array hinzu
+                stepStartIndex = i + 1;
+            }
+        }
+
+        // Füge das letzte Element nach der Schleife hinzu
+        const lastStep = stepsAsString.substring(stepStartIndex).trim();
+        if (lastStep) {
+            stepsArray.push(lastStep);
+        }
+
+        // Aktualisiere den Zustand mit dem neuen Array
+        setStepsAsArray(stepsArray);
+    };
+
+
     useEffect(() => {
-        const fetchRecipes = async () => {
-            const recipes = await getRecipes();
-            if (recipes && Array.isArray(recipes)) {
-                const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
-                    title: recipe.Title,
-                    description: recipe.Category,
-                    imageUrl: recipe.Image,
-                    id: recipe.ID
-                }));
-                setSampleRecipes(lastFifteenRecipes);
+        const fetchRecipe = async () => {
+            const recipe = await getRecipes();
+            if (recipe && Array.isArray(recipe)) {
+                const newRecipe: ListItem = {
+                    title: recipe[0].Title,
+                    category: recipe[0].Category,
+                    imageUrl: recipe[0].Image,
+                    id: recipe[0].ID,
+                    allergen: recipe[0].Allergen,
+                    ingredients: recipe[0].Ingredients,
+                    steps: recipe[0].Steps,
+                    vegan: recipe[0].Vegan,
+                    vegetarian: recipe[0].Vegetarian
+                };
+                formatIngredients(newRecipe.ingredients);
+                formatSteps(newRecipe.steps);
+                setSampleRecipe(newRecipe);
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
 
-        fetchRecipes();
-    }, []);
+
+        fetchRecipe();
+
+    }, [getRecipes, id]);
 
     return (
-        <footer className="errorPage">
-            <button onClick={getRecipes}></button>
-            <p className="errorPage__text"> Fehler: Die seite die sie Aufrufen gibt es nicht.</p>
-        </footer>
+        <body className="showRecipe">
+        <div className="showRecipe-hero">
+            <div className="showRecipe-contentfield">
+                <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
+                <p className="showRecipe-category">{sampleRecipe?.category}</p>
+            </div>
+        </div>
+        <div className="showRecipe-main">
+            <img className="hero__img" src={sampleRecipe?.imageUrl} alt={sampleRecipe?.title}></img>
+            <div className="showRecipe-properties">
+                <p className="showRecipe-properties-vegetarian">vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian}</p>
+                <p className="showRecipe-properties-vegan"> vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan}</p>
+                <p className="showRecipe-properties-allergen"> Allergene: {sampleRecipe?.allergen === null ? "n.a." : sampleRecipe?.allergen}</p>
+            </div>
+            <div className="showRecipe-properties-ingredients"> Zutaten: {ingredientsAsArray.map((element) => (
+                <p className="recipes-ingredient"> {element} </p>))}
+            </div>
+            <div className="showRecipe-properties-steps">
+                <div className="showRecipe-properties-step">Zubereitung: {stepssAsArray.map((element) => (
+                    <p className="recipes-step"> {element} </p>))}
+                </div>
+            </div>
+        </div>
+        </body>
     );
 };
 
