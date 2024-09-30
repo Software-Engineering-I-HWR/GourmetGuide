@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from "react";
 import './MainSearc.css';
+import {useParams} from "react-router-dom";
+
+
 
 const MainSearc: React.FC = () => {
 
+    const { receptName } = useParams();
+    console.log(receptName);
     const [selectedFruit, setSelectedFruit] = useState('orange');
     const [selectedCategory, setSelectedCategory] = useState('Kuchen');
     const [selectedDifficulty, setSelectedDifficulty] = useState('einfach');
@@ -44,10 +49,10 @@ const MainSearc: React.FC = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             const allIngredientsJson = await getAllIngredients();
-
             allIngredientsJson?.forEach((item) => {
                 setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
             })
+            setSelectedIngr(allIngredientsJson![0] as unknown as string);
 
             /* if (allIngredientsJson && Array.isArray(allIngredientsJson)) {
                  setIngredients(allIngredientsJson.sort());
@@ -58,6 +63,7 @@ const MainSearc: React.FC = () => {
 
         fetchRecipes();
     }, []);
+
 
     return (
         <div>
@@ -116,6 +122,7 @@ const MainSearc: React.FC = () => {
                 <hr/>
                 <label>
                     Zutaten auswählen :
+                    <div className="select-mehre-add-container">
                     <select
                         className="einzel-select"
                         value={selectedIngr}
@@ -129,16 +136,15 @@ const MainSearc: React.FC = () => {
                             </option>
                         ))}
                     </select>
-                    <button onClick={addVeg} style={{marginLeft: '10px'}}>Hinzufügen
-                    </button>
+                        <button onClick={addVeg} >Hinzufügen</button>
+
+                    </div>
                 </label>
                 <div className="auswahl-multi">
                     {selectedIngredients.map((veg) => (
                         <div className='ausgewhelt' key={veg} style={{marginTop: '10px'}}>
-                            {veg}
-                            <button
-                                onClick={() => removeVeg(veg)}
-                            >
+                                {veg}
+                            <button onClick={() => removeVeg(veg)}>
                                 x
                             </button>
                         </div>

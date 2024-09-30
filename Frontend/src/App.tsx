@@ -26,7 +26,8 @@ const App: React.FC = () => {
                 {shouldShowNavbarFooter && <Navbar title="GourmetGuide" links={navLinks} />}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mainsearc" element={<MainSearc />} />
+                <Route path="/mainsearc/:receptName" element={<MainSearc />} />
+                <Route path="/mainsearc/" element={<MainSearc />} />
                 <Route path="/categories" element={<Categories />} />/
                 <Route path="/log-in" element={<Login />} />
                 <Route path="/register" element={<Register />} />
