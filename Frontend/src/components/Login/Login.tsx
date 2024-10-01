@@ -1,23 +1,31 @@
 import './Login.css';
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged-in status
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged in status
+
+    useEffect(() => {
+
+        const checkIfLoggedIn = async () => {
+            const password = localStorage.getItem('userPassword');
+            const email = localStorage.getItem('userEmail');
+
+            if (email && password) {
+                const response = await sendLoginRequest(email, password);
+                setIsLoggedIn(response.ok && response.status === 200);
+            } else {
+                setIsLoggedIn(false);
+            }
+        }
+
+        checkIfLoggedIn();
+
+    }, [])
 
     // Check for authentication cookie on component mount
-    useEffect(() => {
-        const cookie = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('authToken='));
-
-        if (cookie) {
-            setIsLoggedIn(true);
-            setEmail(localStorage.getItem('userEmail') || ''); // Get the stored email
-        }
-    }, []);
 
     const enterEmailAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -27,32 +35,37 @@ const Login: React.FC = () => {
         setPassword(event.target.value);
     };
 
+    const sendLoginRequest = async (email: string, password: string) => {
+
+        return await fetch('http://canoob.de:30156/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({email, password}),
+        });
+
+    }
+
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent default form submission
         try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
 
-            const data = await response.json();
+            const response = await sendLoginRequest(email, password);
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+            if (response.status === 200) {
+                // Store email in local storage
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userPassword', password);
+
+                // Show success message and set logged-in status
+                setLoginMessage('Login erfolgreich!');
+                setIsLoggedIn(true);
             }
 
-            // Set cookie in frontend
-            document.cookie = `authToken=${data.token}; path=/; max-age=86400;`; // 1 day expiration
-
-            // Store email in local storage
-            localStorage.setItem('userEmail', email);
-
-            // Show success message and set logged-in status
-            setLoginMessage('Login erfolgreich!');
-            setIsLoggedIn(true);
+            if (response.status === 401) {
+                setLoginMessage('Falsche Anmeldedaten');
+            }
 
         } catch (error) {
             console.error(error);
@@ -62,9 +75,9 @@ const Login: React.FC = () => {
 
     const handleLogout = () => {
         // Clear the cookie
-        document.cookie = 'authToken=; Max-Age=0; path=/'; // Clear the cookie
         localStorage.removeItem('userEmail'); // Clear stored email
-        setIsLoggedIn(false); // Update logged-in status
+        localStorage.removeItem('userPassword');
+        setIsLoggedIn(false)
         setLoginMessage('Erfolgreich abgemeldet!'); // Show logout message
     };
 
@@ -76,7 +89,7 @@ const Login: React.FC = () => {
 
                     {isLoggedIn ? (
                         <div>
-                            <p>Bereits angemeldet als: {email}</p>
+                            <p>Bereits angemeldet als: {localStorage.getItem("userEmail")}</p>
                             <button onClick={handleLogout} className="logout-button">Abmelden</button>
                         </div>
                     ) : (
@@ -106,7 +119,7 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="login-right">
-                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo" />
+                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
             </div>
         </div>

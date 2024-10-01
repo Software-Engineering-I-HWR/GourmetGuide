@@ -1,9 +1,10 @@
+
 interface User {
   email: string;
   password: string;
 }
 
-export const addUser = async (email: string, password: string): Promise<void> => {
+export const addUser = async (email: string, password: string) => {
   try {
     const postData: User = { email, password };
     const response: Response = await fetch('http://canoob.de:3007/createUser', {
@@ -17,11 +18,14 @@ export const addUser = async (email: string, password: string): Promise<void> =>
     if (response.ok) {
       const result: string = await response.text();
       console.log('API Antwort:', result);
+      return 200
     } else {
       console.error('Fehler bei der API-Anfrage:', response.status);
+      return response.status; // 500 bei mehrfachem User
     }
   } catch (error) {
     console.error('Netzwerkfehler:', error);
+    return 401;
   }
 };
 
