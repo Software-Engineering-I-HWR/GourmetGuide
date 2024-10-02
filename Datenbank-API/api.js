@@ -1,5 +1,5 @@
 const express = require('express');
-const { host, user, password, database } = require('./config.json');
+const {host, user, password, database} = require('./config.json');
 const mysql = require('mysql2');
 const cors = require('cors');
 
@@ -141,6 +141,45 @@ app.get('/getRecipesByCategory', (req, res) => {
     });
 });
 
+app.get('/getFilteredRecipes', (req, res) => {
+    const {name, difficulty, category, ingredients} = req.query;
+
+    let query = 'SELECT * FROM Rezept WHERE 1=1';
+    let queryParams = [];
+
+    if (name) {
+        query += ' AND Title LIKE ?';
+        queryParams.push(`%${name}%`);
+    }
+
+    if (difficulty) {
+        query += ' AND Difficulty = ?';
+        queryParams.push(difficulty);
+    }
+
+    if (category) {
+        query += ' AND Category = ?';
+        queryParams.push(category);
+    }
+
+    if (ingredients) {
+        const ingredientsArray = ingredients.split('%');
+        ingredientsArray.forEach((ingredient) => {
+            query += ' AND Ingredients LIKE ?';
+            queryParams.push(`%${ingredient.trim()}%`);
+        });
+    }
+
+    connection.query(query, queryParams, (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getUserByEmail', (req, res) => {
     const email = req.query.email;
 
@@ -163,7 +202,7 @@ app.get('/getUserByEmail', (req, res) => {
 });
 
 app.post('/createUser', (req, res) => {
-    const { email, password } = req.body;
+    const {email, password} = req.body;
 
     if (!email || !password) {
         return res.status(400).send('E-Mail und Passwort fehlen');
