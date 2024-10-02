@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MainSearc from './components/Search/MainSearc';
@@ -17,6 +17,7 @@ const App: React.FC = () => {
         { name: 'Login', path: '/log-in' },
     ];
     const noNavbarFooterRoutes = ['/log-in', '/register'];  // Hier alle Pfade hinzufügen, die ohne Navbar/Footer sein sollen
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
