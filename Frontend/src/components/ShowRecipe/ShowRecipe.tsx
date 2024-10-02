@@ -139,26 +139,48 @@ const ShowRecipe: React.FC = () => {
 
     return (
         <body className="showRecipe">
-        <div className="showRecipe-hero">
+        <header className="showRecipe-hero">
             <div className="showRecipe-contentfield">
-                <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
-                <p className="showRecipe-category">{sampleRecipe?.category}</p>
-            </div>
-        </div>
-        <div className="showRecipe-main">
-            <img className="hero__img" src={sampleRecipe?.imageUrl} alt={sampleRecipe?.title}></img>
-            <div className="showRecipe-properties">
-                <p className="showRecipe-properties-vegetarian">vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian}</p>
-                <p className="showRecipe-properties-vegan"> vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan}</p>
-                <p className="showRecipe-properties-allergen"> Allergene: {sampleRecipe?.allergen === null ? "n.a." : sampleRecipe?.allergen}</p>
-            </div>
-            <div className="showRecipe-properties-ingredients"> Zutaten: {ingredientsAsArray.map((element) => (
-                <p className="recipes-ingredient"> {element} </p>))}
-            </div>
-            <div className="showRecipe-properties-steps">
-                <div className="showRecipe-properties-step">Zubereitung: {stepssAsArray.map((element) => (
-                    <p className="recipes-step"> {element} </p>))}
+                <div className="showRecipe-contentfield-left">
+                    <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
+                    <p className="showRecipe-category">{sampleRecipe?.category}</p>
                 </div>
+                <div className="showRecipe-contentfield-right">
+                    <div className="showRecipe-properties">
+                        <p className="showRecipe-properties-vegetarian" style={{
+                            color: "#b1c3cd",
+                            fontSize: "2%"
+                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian}</p>
+                        <p className="showRecipe-properties-vegan" style={{
+                            color: "#b1c3cd",
+                            fontSize: "2%"
+                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan}</p>
+                        <p className="showRecipe-properties-allergen"
+                           style={{
+                               color: "#b1c3cd",
+                               fontSize: "2%"
+                           }}>Allergene: {sampleRecipe?.allergen === null ? "n.a." : sampleRecipe?.allergen}</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div className="showRecipe-main">
+            <div className="showRecipe-main-head">
+                <img className="hero__img" src={sampleRecipe?.imageUrl} alt={sampleRecipe?.title}/>
+                <div className="showRecipe-properties-ingredients">
+                    <h1 className="showRecipe-properties-ingredients-title"> Zutaten: </h1>
+                    <div
+                        className="showRecipe-properties-ingredients-map">{ingredientsAsArray.map((element, index) => (
+                        <p key={index} className="recipes-ingredient" style={{fontSize: "120%"}}>{element}</p>
+                    ))}</div>
+                </div>
+            </div>
+            <div className="separator-line"></div>
+            <div className="showRecipe-properties-steps">
+                <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
+                <div className="showRecipe-properties-step">{stepssAsArray.map((element, index) => (
+                    <p key={index} className="recipes-step" style={{fontSize: "120%"}}>{element}</p>
+                ))}</div>
             </div>
         </div>
         </body>
