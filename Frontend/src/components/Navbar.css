@@ -99,3 +99,7 @@
 .navbar__link:hover {
     color: #BBEAFA;
 }
+
+.navbar__link:disabled {
+    filter:grayscale(100%);
+}

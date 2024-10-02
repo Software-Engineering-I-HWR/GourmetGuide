@@ -8,6 +8,8 @@ import ErrorPage from './components/errorPage.tsx';
 import Categories from "./components/Categories/Categories.tsx";
 import Login from "./components/Login/Login.tsx";
 import Register from "./components/Login/Register.tsx";
+import ShowRecipe from "./components/ShowRecipe/ShowRecipe";
+
 
 const App: React.FC = () => {
     const navLinks = [
@@ -18,19 +20,22 @@ const App: React.FC = () => {
     ];
     const noNavbarFooterRoutes = ['/log-in', '/register'];  // Hier alle Pfade hinzufügen, die ohne Navbar/Footer sein sollen
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    console.log(isLoggedIn, "was?");
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
         <Router>
             <>
-                {shouldShowNavbarFooter && <Navbar title="GourmetGuide" links={navLinks} />}
+                {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} title="GourmetGuide" links={navLinks} />}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mainsearc" element={<MainSearc />} />
+                <Route path="/mainsearch" element={<MainSearc />} />
                 <Route path="/categories" element={<Categories />} />/
-                <Route path="/log-in" element={<Login />} />
+                <Route path="/log-in" element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={<ErrorPage />} />
+                <Route path="/recipe/*" element={<ShowRecipe/>} />
+                <Route path="/home" element={<ErrorPage/>} />
             </Routes>
             {shouldShowNavbarFooter && <Footer />}
         </>

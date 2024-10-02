@@ -7,33 +7,35 @@ interface Recipe {
     Title: string;
     Category: string;
     Image: string;
+    ID: number
 }
 
 interface ListItem {
     title: string;
     description: string;
     imageUrl: string;
-}
-
-async function getRecipes(): Promise<Recipe[] | null> {
-    try {
-        const response = await fetch('http://canoob.de:3007/getRecipes');
-        if (response.ok) {
-            return await response.json();
-        } else {
-            console.error('API request error:', response.status);
-            return null;
-        }
-    } catch (error) {
-        console.error('Network error:', error);
-        return null;
-    }
+    id: number
 }
 
 
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
-  
+
+    async function getRecipes(): Promise<Recipe[] | null> {
+        try {
+            const response = await fetch('http://canoob.de:3007/getRecipes');
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error('API request error:', response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
+        }
+    }
+
     useEffect(() => {
         const fetchRecipes = async () => {
             const recipes = await getRecipes();
@@ -41,13 +43,15 @@ const Home: React.FC = () => {
                 const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
                     title: recipe.Title,
                     description: recipe.Category,
-                    imageUrl: recipe.Image
+                    imageUrl: recipe.Image,
+                    id: recipe.ID
                 }));
                 setSampleRecipes(lastFifteenRecipes);
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
+
 
         fetchRecipes();
     }, []);
@@ -57,12 +61,19 @@ const Home: React.FC = () => {
             <Hero/>
             <main className="main-content">
                 <section className="recipes">
-                    <h2 className="recipes__title">Aktuelle Rezepte</h2>
-                    <div className="recipes__list">
+                    <h2 className="recipes__title"/>
+                    <a className="recipes__list">
                         {sampleRecipes!.map((recipe, index) => (
-                            <RecipeCard key={index} {...recipe} />
+                            <a
+                                key={index}
+                                className="recipes-link"
+                                href={`/recipe/${recipe.id}/`}
+                                style={{textDecoration: 'none'}}
+                            >
+                                <RecipeCard key={index} {...recipe} />
+                            </a>
                         ))}
-                    </div>
+                    </a>
                 </section>
             </main>
         </div>
