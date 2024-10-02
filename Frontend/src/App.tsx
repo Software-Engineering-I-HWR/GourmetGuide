@@ -8,6 +8,7 @@ import ErrorPage from './components/errorPage.tsx';
 import Categories from "./components/Categories/Categories.tsx";
 import Login from "./components/Login/Login.tsx";
 import Register from "./components/Login/Register.tsx";
+import ShowRecipe from "./components/ShowRecipe/ShowRecipe";
 
 const App: React.FC = () => {
     const navLinks = [
@@ -30,6 +31,7 @@ const App: React.FC = () => {
                 <Route path="/log-in" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={<ErrorPage />} />
+                <Route path="/recipe/*" element={<ShowRecipe/>} />
             </Routes>
             {shouldShowNavbarFooter && <Footer />}
         </>
