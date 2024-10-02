@@ -66,6 +66,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                 // Show success message and set logged-in status
                 setLoginMessage('Login erfolgreich!');
                 setIsUserLoggedIn(true);
+                window.location.href = '/';
             }
 
             if (response.status === 401) {
@@ -84,7 +85,12 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
         localStorage.removeItem('userPassword');
         setIsUserLoggedIn(false)
         setLoginMessage('Erfolgreich abgemeldet!'); // Show logout message
+        window.location.href = '/';
     };
+
+    useEffect(() => {
+        localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
+    }, [isUserLoggedIn]);
 
     return (
         <div className="login-page">
@@ -121,10 +127,11 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
 
                     <a type="Submit" href="/register" className="register-button">Registrieren</a>
                     {loginMessage && <p className="login-message">{loginMessage}</p>}
+                    <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
 
                 <div className="login-right">
-                    <img onClick={() => window.location.href = '/'} src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo"/>
+                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
             </div>
         </div>

@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn}) => {
                 <button onClick={() => window.location.href = '/home'} disabled={!isLoggedIn} className="navbar__link">Bereich</button>
                 <button onClick={() => window.location.href = '/create'} disabled={!isLoggedIn} className="navbar__link">Erstellen</button>
                 <button onClick={() => window.location.href = '/categories'} className="navbar__link">Kategorien</button>
-                <button onClick={() => window.location.href = '/log-in'} disabled={isLoggedIn} className="navbar__link">Login</button>
+                <button onClick={() => window.location.href = 'log-in'} className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</button>
             </div>
         </nav>
     );

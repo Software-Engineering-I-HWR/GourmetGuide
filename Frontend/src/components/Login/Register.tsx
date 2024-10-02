@@ -92,6 +92,7 @@ const Register: React.FC = () => {
                     {/* Render the login message */}
                     {registerMessage && <p className="register-message">{registerMessage}</p>}
 
+                    <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
 
                 <div className="register-right">
