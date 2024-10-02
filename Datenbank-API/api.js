@@ -163,7 +163,7 @@ app.get('/getFilteredRecipes', (req, res) => {
     }
 
     if (ingredients) {
-        const ingredientsArray = ingredients.split('%');
+        const ingredientsArray = ingredients.split(',');
         ingredientsArray.forEach((ingredient) => {
             query += ' AND Ingredients LIKE ?';
             queryParams.push(`%${ingredient.trim()}%`);
