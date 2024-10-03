@@ -1,3 +1,30 @@
+.Tabel-Row{
+    width: 33%;
+}
+.mainSearc__search-input{
+    width: 50%;
+}
+.Toggel-such-body-Button {
+    display: inline-block;
+    padding: 10px;
+    margin-left: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+.such-body[data-Hiden="Hiden"] {
+    display: none;
+}
+.such-body[data-Hiden="Showen"] {
+    display: block;
+}
+text{
+    color: #000000;
+    font-weight: bold;
+}
+.Submit-Search-Button{
+    margin-top: 10px;
+    width: 100%;
+}
 .select-mehre-add-container{
     display: flex;
 }

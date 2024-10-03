@@ -17,7 +17,7 @@ const App: React.FC = () => {
         { name: 'Kategorien', path: '/kategorien' },
         { name: 'Login', path: '/log-in' },
     ];
-    const noNavbarFooterRoutes = ['/log-in', '/register'];  // Hier alle Pfade hinzufügen, die ohne Navbar/Footer sein sollen
+    const noNavbarFooterRoutes = ['/log-in', '/register'];
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
@@ -26,8 +26,7 @@ const App: React.FC = () => {
                 {shouldShowNavbarFooter && <Navbar title="GourmetGuide" links={navLinks} />}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mainsearc/:receptName" element={<MainSearc />} />
-                <Route path="/mainsearc/" element={<MainSearc />} />
+                <Route path="/mainsearc/:receptName?/:Category?/:Difficulty?/:zutaten?/:Fruit?" element={<MainSearc />} />
                 <Route path="/categories" element={<Categories />} />/
                 <Route path="/log-in" element={<Login />} />
                 <Route path="/register" element={<Register />} />
