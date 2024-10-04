@@ -73,7 +73,7 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
 
     return (
         <div>
-            <main className="main-SearchRecezeptView">
+            <main className="main-SearchRecipeView">
                 <section className="recipes">
                     <h2 className="recipes__title"/>
                     <a className="recipes__list">
@@ -94,4 +94,4 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
     );
 };
 
-export default SearchRecezeptView;
+export default SearchRecipeView;
