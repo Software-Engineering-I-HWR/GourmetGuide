@@ -22,7 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
-    const handleonSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
+    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
         event.preventDefault()
         window.location.href = getLink(searchTerm);
     };
@@ -37,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     {title}
                 </a>
             </div>
-            <form className="navbar__search" onSubmit={handleonSubmit} >
+            <form className="navbar__search" onSubmit={handleOnSubmit} >
                 <input
                     type="text"
                     placeholder="Suche..."
