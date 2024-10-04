@@ -114,11 +114,11 @@ const ShowRecipe: React.FC = () => {
         let ingredientsArray = ["Fehler", "Aufgetreten"]
         let steps = ""
 
-        if ("ingredients" in sampleRecipe) {
+        if ("ingredients" in sampleRecipe!) {
             ingredientsArray = sampleRecipe.ingredients.split("|");
         }
 
-        if ("steps" in sampleRecipe) {
+        if ("steps" in sampleRecipe!) {
             steps = sampleRecipe.steps.replace(/\r/g, '');
         }
 
@@ -225,15 +225,18 @@ const ShowRecipe: React.FC = () => {
                     ))}</div>
                 </div>
             </div>
-            <form className="register-password-repeat-field" onSubmit={handleShare}>
-                <button type="submit" className="login-button">Teilen</button>
-            </form>
             <div className="separator-line"></div>
             <div className="showRecipe-properties-steps">
                 <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
                 <div className="showRecipe-properties-step">{stepssAsArray.map((element, index) => (
                     <p key={index} className="recipes-step" style={{fontSize: "120%"}}>{element}</p>
                 ))}</div>
+            </div>
+            <div className="separator-line"></div>
+            <div className="actions-field">
+                <form className="test" onSubmit={handleShare}>
+                    <button type="submit" className="download-button">Teilen</button>
+                </form>
             </div>
         </div>
         </body>

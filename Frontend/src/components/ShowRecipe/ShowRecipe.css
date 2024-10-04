@@ -1,4 +1,4 @@
-body {
+.body {
     margin: 0;
     font-family: Arial, sans-serif;
     color: #333;
@@ -76,6 +76,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    align-items: center;
     background-color: #f4f4f4;
 }
 
@@ -116,7 +117,6 @@ body {
     text-align: left;
     padding: 3% 3%;
     padding-left: 7%;
-    padding-bottom: 15%;
     margin-left: 10%;
     margin-right: 10%;
     counter-reset: step-counter;
@@ -160,4 +160,32 @@ body {
 
 .recipes-ingredient, .recipes-step {
     margin: 5px 0;
+}
+
+.actions-field{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 3% 3%;
+    padding-left: 7%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.download-button {
+    display: flex;
+    color: white;
+    font-size: 1.5rem;
+    padding: 5% 15%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 2% 2%;
+}
+
+.download-button:hover {
+    background-color: #65899c;
 }
