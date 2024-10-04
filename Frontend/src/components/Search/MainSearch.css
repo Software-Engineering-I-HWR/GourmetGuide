@@ -6,10 +6,23 @@
 }
 .Toggel-such-body-Button {
     display: inline-block;
-    padding: 10px;
     margin-left: auto;
     text-align: center;
     margin-top: 10px;
+    justify-content: center;
+    text-decoration: none;
+    color: #07546e;
+    font-size: 1rem;
+    padding: 1% 1%;
+    border: 5px solid #07546e;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #e5ebee;
+}
+
+.Toggel-such-body-Button:hover {
+    background-color: #65899c;
 }
 .such-body[data-Hiden="Hiden"] {
     display: none;
@@ -24,6 +37,22 @@ text{
 .Submit-Search-Button{
     margin-top: 10px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1% 10%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 2% 2%;
+}
+
+.Submit-Search-Button:hover {
+    background-color: #65899c;
 }
 .select-mehre-add-container{
     display: flex;
@@ -37,7 +66,7 @@ text{
     border-radius: 20rem;
 }
 .einzel-select{
-    border-radius: 20rem;
+    border-radius: 200rem;
 }
 
 .recipes-table {
@@ -154,4 +183,23 @@ hr {
 p {
     font-size: 16px;
     color: #333;
+}
+
+.add-button{
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    padding: 3% 5%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 1% 1%;
+}
+
+.add-button:hover{
+    background-color: #65899c;
 }

@@ -147,7 +147,7 @@ const MainSearch: React.FC = () => {
 
                                             onChange={e => setSelectedRating(e.target.value)}
                                         >
-                                            <option value="none">none</option>
+                                            <option value="">Kein Rating ausgewählt</option>
                                             <option value="1 Stern">1 Stern</option>
                                             <option value="2 Sterne">2 Sterne</option>
                                             <option value="3 Sterne">3 Sterne</option>
@@ -163,7 +163,7 @@ const MainSearch: React.FC = () => {
                                             value={selectedCategory}
                                             onChange={e => setSelectedCategory(e.target.value)}
                                         >
-                                            <option value="">Keine Kategorie Ausgewählt</option>
+                                            <option value="">Keine Kategorie ausgewählt</option>
                                             {categories.map((category, index) => (
                                                 <option key={index} value={category}>
                                                     {category}
@@ -204,7 +204,7 @@ const MainSearch: React.FC = () => {
                                         </option>
                                     ))}
                                 </select>
-                                <button onClick={addVeg}>Hinzufügen</button>
+                                <button className="add-button">Hinzufügen</button>
                             </div>
                         </label>
                         <div className="auswahl-multi">
@@ -215,8 +215,7 @@ const MainSearch: React.FC = () => {
                                 </div>
                             ))}
                         </div>
-                        <button className="Submit-Search-Button" onClick={() => window.location.href = getLink()}>Submit
-                            Search
+                        <button className="Submit-Search-Button" onClick={() => window.location.href = getLink()}>Suchen
                         </button>
 
                         <div style={{display: "none"}}>
@@ -233,7 +232,7 @@ const MainSearch: React.FC = () => {
                 ) : ""}
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button className="Toggel-such-body-Button" onClick={() => setIsVisible(!isVisible)}>
-                        {isVisible ? "Hide Such Menü" : "Show Such Menü"}
+                        {isVisible ? "Suchfilter verstecken" : "Suchfilter einblenden"}
                     </button>
                 </div>
 
