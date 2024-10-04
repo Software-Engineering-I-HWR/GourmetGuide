@@ -48,7 +48,7 @@ async function getRecipes({name, difficulty, category, ingredients}: { name: str
 }
 
 
-const SearchRecezeptView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients}) => {
+const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients}) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
 
     useEffect(() => {
