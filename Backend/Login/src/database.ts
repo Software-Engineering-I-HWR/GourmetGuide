@@ -7,7 +7,7 @@ interface User {
 export const addUser = async (email: string, password: string) => {
   try {
     const postData: User = { email, password };
-    const response: Response = await fetch('http://canoob.de:3007/createUser', {
+    const response: Response = await fetch('http://192.168.1.99:3006/createUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ export const addUser = async (email: string, password: string) => {
 
 export const findUserByEmail = async (email: string): Promise<User | undefined> => {
   try {
-    const response: Response = await fetch(`http://canoob.de:3007/getUserByEmail?email=${encodeURIComponent(email)}`, {
+    const response: Response = await fetch(`http://192.168.1.99:3006/getUserByEmail?email=${encodeURIComponent(email)}`, {
       method: 'GET'
     });
 
