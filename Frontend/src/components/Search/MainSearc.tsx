@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './MainSearc.css';
 import {useParams} from "react-router-dom";
-import SearchRecezeptView from "./SearchRecezeptView.tsx";
+import SearchRecipeView from "./SearchRecezeptView.tsx";
 
 
 const MainSearc: React.FC = () => {
@@ -223,7 +223,7 @@ const MainSearc: React.FC = () => {
                             <p>Ausgewählte Kategorie: {selectedCategory}</p>
                             <p>Ausgewählte Schwierigkeit: {selectedDifficulty}</p>
                             <p>Ausgewählte Zutaten: {selectedIngredients.join(', ')}</p>
-                            <p> Teset: {selectedIngredients}</p>
+                            <p> Test: {selectedIngredients}</p>
                         </div>
                     </div>
 
@@ -237,10 +237,10 @@ const MainSearc: React.FC = () => {
                 <hr/>
 
                 <div className="Zutaten-Visualation">
-                    <SearchRecezeptView name={receptName || ""} difficulty={selectedDifficulty || ""}
+                    <SearchRecipeView name={receptName || ""} difficulty={selectedDifficulty || ""}
                                         category={selectedCategory || ""} ingredients={selectedIngredients.join(",")}>
 
-                    </SearchRecezeptView>
+                    </SearchRecipeView>
                 </div>
             </main>
 
