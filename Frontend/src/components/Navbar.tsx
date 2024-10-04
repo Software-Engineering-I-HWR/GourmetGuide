@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Navbar.css';
 
 
@@ -26,6 +26,17 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
         event.preventDefault()
         window.location.href = getLink(searchTerm);
     };
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const isUserLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')!);
+        if (isUserLoggedIn == null){
+            setIsLoggedIn(false);
+        }
+        if (isUserLoggedIn) {
+            setIsLoggedIn(isUserLoggedIn);
+        }
+    }, []);
 
 
 
