@@ -114,6 +114,7 @@ const MainSearch: React.FC = () => {
             <main className="main-content">
                 {isVisible ? (
                     <div className="such-body" data-Hiden="Showen">
+                        <h1 className="filter-title">Suchfilter</h1>
                         <text>Name:</text>
                         <form className="mainSearc__search" onSubmit={handleonSubmit}>
                             <input
@@ -204,14 +205,17 @@ const MainSearch: React.FC = () => {
                                         </option>
                                     ))}
                                 </select>
-                                <button className="add-button">Hinzufügen</button>
+                                <button className="add-button" onClick={addVeg}>Hinzufügen</button>
                             </div>
                         </label>
                         <div className="auswahl-multi">
                             {selectedIngredients.map((veg) => (
-                                <div className='ausgewhelt' key={veg} style={{marginTop: '10px'}}>
+                                <div className='ausgewhelt' key={veg}
+                                     style={{marginTop: '10px', backgroundColor: "#cbd6dd"}}>
                                     {veg}
-                                    <button onClick={() => removeVeg(veg)}>x</button>
+                                    <button className="remove-button" style={{color: "#07546E"}}
+                                            onClick={() => removeVeg(veg)}>x
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -230,7 +234,7 @@ const MainSearch: React.FC = () => {
                     </div>
 
                 ) : ""}
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <div style={{display: "flex", justifyContent: "flex-end" }}>
                     <button className="Toggel-such-body-Button" onClick={() => setIsVisible(!isVisible)}>
                         {isVisible ? "Suchfilter verstecken" : "Suchfilter einblenden"}
                     </button>
