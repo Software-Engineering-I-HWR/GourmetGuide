@@ -81,7 +81,7 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
                             <a
                                 key={index}
                                 className="recipes-link"
-                                href={`/recipe/${recipe.id}`}
+                                href={`/recipe/${recipe.id}/`}
                                 style={{textDecoration: 'none'}}
                             >
                                 <RecipeCard key={index} {...recipe} />
