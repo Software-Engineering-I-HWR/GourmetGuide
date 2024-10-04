@@ -1,7 +1,7 @@
 
 import RecipeCard from '../Home/RecipeCard.tsx';
 import '../../App.css';
-import './SearchRecezeptView.css'
+import './SearchRecipeView.css'
 import React, {useEffect, useState} from "react";
 
 interface SuchFilter{
