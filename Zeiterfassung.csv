@@ -44,15 +44,21 @@ ID, Zeit, Dauer, Person, Thema
 43,29.09.2024, 60 min, Josi, Rezept-Seite
 44,29.09.2024, 180 min, Carlo, Datenbank
 45,30.09.2024, 90 min, Tobias, Login
-46,01.10.2024, 90 min, Tobias, Login
-47,02.10.2024, 60 min, Tobias, AKV und Ziele Tabelle
-48,02.10.2024, 60 min, Josi, Rezepte-Seite
-49,02.10.2024, 30 min, Josi, Login
-50,02.10.2024, 60 min, Carlo, Datenbank
-51,02.10.2024, 90 min, Sven, Rezept-Suche
-52,03.10.2024,90 min, Sven, Rezepte-Suche-Zwischenstand-Fertig
-53,04.10.2024, 120 min, Tobias, Teilen Funktion
-54,04.10.2024, 30 min, Calo, Security
-55,04.10.2024, 90 min, Carlo, Website-Hosting
-56,04.10.2024, 60 min, Sven, Merge Konflikte mit Josi + fix href button+ Search fix
-57,04.10.2024, 60 min,Sven, Host problem fix reserc
+46,30.09.2024, 120 min, Josi, Rezept-Seite (Aussehen)
+47,01.10.2024, 90 min, Tobias, Login
+48,01.10.2024, 60 min, Josi, Rezept-Seite (Aussehen)
+49,02.10.2024, 60 min, Tobias, AKV und Ziele Tabelle
+50,02.10.2024, 60 min, Josi, Rezepte-Seite
+51,02.10.2024, 30 min, Josi, Login
+52,02.10.2024, 60 min, Carlo, Datenbank
+53,02.10.2024, 90 min, Sven, Rezept-Suche
+54,02.10.2024, 120 min,Josi, Login-Einbindung (Übergabe an restlichen Komponenten; Startseiten-Button; automatische Weiterleitung)
+55,03.10.2024,90 min, Sven, Rezepte-Suche-Zwischenstand-Fertig
+56,04.10.2024, 120 min, Tobias, Teilen Funktion
+57,04.10.2024, 30 min, Calo, Security
+58,04.10.2024, 90 min, Carlo, Website-Hosting
+59,04.10.2024, 60 min, Sven, Merge Konflikte mit Josi + fix href button+ Search fix
+60,04.10.2024, 60 min,Sven, Host problem fix reserc
+61,04.10.2024, 45 min, Josi, Merge Konflikte Suche
+62,04.10.2024, 45 min, Josi, bug fixing (Searc und andere Namensprobleme; href-Probleme; Teilen-Button; Login)
+63,04.10.2024, 30 min, Josi, Popup-Fester für Login
