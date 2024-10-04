@@ -1,0 +1,157 @@
+.Tabel-Row{
+    width: 33%;
+}
+.mainSearc__search-input{
+    width: 50%;
+}
+.Toggel-such-body-Button {
+    display: inline-block;
+    padding: 10px;
+    margin-left: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+.such-body[data-Hiden="Hiden"] {
+    display: none;
+}
+.such-body[data-Hiden="Showen"] {
+    display: block;
+}
+text{
+    color: #000000;
+    font-weight: bold;
+}
+.Submit-Search-Button{
+    margin-top: 10px;
+    width: 100%;
+}
+.select-mehre-add-container{
+    display: flex;
+}
+.main-content{
+    flex:auto;
+    width:60%;
+}
+
+.mehrfach-select{
+    border-radius: 20rem;
+}
+.einzel-select{
+    border-radius: 20rem;
+}
+
+.recipes-table {
+    width: 100%;
+}
+.pick-einzelnt{
+    display: flex;
+    flex-direction: column;
+}
+.mehrfach-select{
+    display: flex;
+    flex-direction: column;
+}
+.auswahl-multi{
+    display: block;
+    align-content: stretch;
+    justify-content: flex-start;
+
+}
+.ausgewhelt{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.main-content {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recipes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.recipes-table th, .recipes-table td {
+    text-align: left;
+}
+
+.pick-einzelnt {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.einzel-select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-top: 5px;
+}
+
+.auswahl-multi {
+    margin-top: 15px;
+}
+
+.ausgewhelt {
+    background-color: #e0e0e0;
+    padding: 8px;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 4px;
+    position: relative;
+    font-size: 14px;
+}
+
+.ausgewhelt button {
+    margin-left: 8px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: none;
+    font-size: 12px;
+    color: #f44336;
+    cursor: pointer;
+    top: 3px;
+    right: 5px;
+    position: initial;
+}
+
+.ausgewhelt button:hover {
+    color: #c62828;
+}
+
+button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+p {
+    font-size: 16px;
+    color: #333;
+}

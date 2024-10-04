@@ -10,9 +10,9 @@ interface NavbarProps {
 
 function getLink(temp: string) {
     if (temp == "") {
-        return "/mainsearc/";
+        return "/mainsearch/";
     }
-    return "/mainsearc/"+temp;
+    return "/mainsearch/"+temp;
 
 }
 

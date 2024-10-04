@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import MainSearc from './components/Search/MainSearc';
+import MainSearch from './components/Search/MainSearch.tsx';
 import Home from './components/Home/Home';
 import Footer from "./components/Footer.tsx";
 import ErrorPage from './components/errorPage.tsx';
@@ -14,7 +14,7 @@ import ShowRecipe from "./components/ShowRecipe/ShowRecipe";
 const App: React.FC = () => {
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'Searc', path: '/mainsearc' },
+        { name: 'Search', path: '/mainsearch' },
         { name: 'Kategorien', path: '/kategorien' },
         { name: 'Login', path: '/log-in' },
     ];
@@ -40,7 +40,7 @@ const App: React.FC = () => {
                 {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} title="GourmetGuide" links={navLinks} />}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mainsearc/:receptName?/:Category?/:Difficulty?/:zutaten?/:Fruit?" element={<MainSearc />} />
+                <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Fruit?" element={<MainSearch />} />
                 <Route path="/categories" element={<Categories />} />/
                 <Route path="/log-in" element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} />} />
                 <Route path="/register" element={<Register />} />
