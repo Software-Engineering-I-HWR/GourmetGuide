@@ -7,9 +7,11 @@ import MainSearc from "./Search/MainSearc.tsx";
 interface NavbarProps {
     title: string;
     links: Array<{ name: string; path: string }>;
+    isLoggedIn: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({title}) => {
+const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn}) => {
+    console.log("hallooooo", isLoggedIn);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,13 +49,13 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     onChange={handleSearchChange}
                     className="navbar__search-input"
                 />
-                <a type="Submit" href="/mainsearc" className="navbar__link">Suchen</a>
+                <a type="Submit" href="/mainsearch" className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
-                <a href="/bake" className="navbar__link">Backen</a>
-                <a href="/cook" className="navbar__link">Kochen</a>
-                <a href="/categories" className="navbar__link">Kategorien</a>
-                <a href="/log-in" className="navbar__link">Login</a>
+                <button onClick={() => window.location.href = '/home'} disabled={!isLoggedIn} className="navbar__link">Bereich</button>
+                <button onClick={() => window.location.href = '/create'} disabled={!isLoggedIn} className="navbar__link">Erstellen</button>
+                <button onClick={() => window.location.href = '/categories'} className="navbar__link">Kategorien</button>
+                <button onClick={() => window.location.href = 'log-in'} className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</button>
             </div>
         </nav>
     );

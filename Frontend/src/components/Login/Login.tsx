@@ -1,11 +1,16 @@
 import './Login.css';
 import React, {useEffect, useState} from 'react';
 
-const Login: React.FC = () => {
+interface LoginProps {
+    isUserLoggedIn: boolean;
+    setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged in status
+    //const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged in status
 
     useEffect(() => {
 
@@ -15,9 +20,9 @@ const Login: React.FC = () => {
 
             if (email && password) {
                 const response = await sendLoginRequest(email, password);
-                setIsLoggedIn(response.ok && response.status === 200);
+                setIsUserLoggedIn(response.ok && response.status === 200);
             } else {
-                setIsLoggedIn(false);
+                setIsUserLoggedIn(false);
             }
         }
 
@@ -60,7 +65,8 @@ const Login: React.FC = () => {
 
                 // Show success message and set logged-in status
                 setLoginMessage('Login erfolgreich!');
-                setIsLoggedIn(true);
+                setIsUserLoggedIn(true);
+                window.location.href = '/';
             }
 
             if (response.status === 401) {
@@ -77,9 +83,14 @@ const Login: React.FC = () => {
         // Clear the cookie
         localStorage.removeItem('userEmail'); // Clear stored email
         localStorage.removeItem('userPassword');
-        setIsLoggedIn(false)
+        setIsUserLoggedIn(false)
         setLoginMessage('Erfolgreich abgemeldet!'); // Show logout message
+        window.location.href = '/';
     };
+
+    useEffect(() => {
+        localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
+    }, [isUserLoggedIn]);
 
     return (
         <div className="login-page">
@@ -87,10 +98,11 @@ const Login: React.FC = () => {
                 <div className="login-left">
                     <h1 className="login-title">Login</h1>
 
-                    {isLoggedIn ? (
+                    {isUserLoggedIn ? (
                         <div>
                             <p>Bereits angemeldet als: {localStorage.getItem("userEmail")}</p>
-                            <button onClick={handleLogout} className="logout-button">Abmelden</button>
+                            <button onClick={handleLogout} className="logout-button">Abmelden
+                            </button>
                         </div>
                     ) : (
                         <form className="login-email-field" onSubmit={handleLogin}>
@@ -114,8 +126,8 @@ const Login: React.FC = () => {
 
 
                     <a type="Submit" href="/register" className="register-button">Registrieren</a>
-                    {/* Render the login message */}
                     {loginMessage && <p className="login-message">{loginMessage}</p>}
+                    <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
 
                 <div className="login-right">

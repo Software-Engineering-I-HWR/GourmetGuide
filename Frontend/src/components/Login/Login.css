@@ -103,6 +103,21 @@
     height: auto;
 }
 
+.home-button {
+    margin-top: 10%;
+    margin-left: 2%;
+    padding: 1% 1%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 35%;
+    color: #07546E;
+}
+
+.home-button:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 800px) {
     .login-body {
         flex-direction: column;
