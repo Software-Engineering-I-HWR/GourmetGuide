@@ -1,11 +1,13 @@
 import express, {Request, Response} from 'express';
 import {PDFDocument, StandardFonts} from 'pdf-lib';
 import {Recipe} from './recipe';
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 const page_width = 600;
 const page_height = 800;
@@ -156,6 +158,7 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
     },);
 
+
     // ingredients list
     let enumeration = ''
 
@@ -178,6 +181,7 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: font_size_for_enumeration * empty_line_width,
     });
 
+
     // description
 
     let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
@@ -187,15 +191,11 @@ const createRecipePDF = async (recipe: any) => {
     for (let i = 18; i > 5; i--) {
         description_max_size  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
         description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, i);
-        console.log(description_with_new_lines);
-        console.log(description_max_size);
+
         if (i < description_max_size) break;
     }
 
     description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, description_max_size);
-
-    console.log(description_with_new_lines);
-    console.log(description_max_size);
 
     page.drawText(description_with_new_lines, {
         x: 50,
@@ -214,6 +214,7 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: 24,
         opacity: 0.75,
     },);
+
 
     // Serialize the PDF to a Uint8Array
     return await pdfDoc.save();
@@ -236,6 +237,7 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
         };
 
         const pdfBytes = await createRecipePDF(sanitizedRecipe);
+
 
         // Set the response headers to download the PDF
         res.setHeader('Content-Type', 'application/pdf');
