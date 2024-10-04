@@ -5,6 +5,7 @@ const Register: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
+    const [registerMessage, setRegisterMessage] = useState('');
 
     const enterEmailAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -16,6 +17,38 @@ const Register: React.FC = () => {
 
     const enterPasswordRepeat = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordRepeat(event.target.value);
+    }
+
+    const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevent default form submission
+        if (password == passwordRepeat) {
+            try {
+                const response = await fetch('http://canoob.de:30156/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({email, password}),
+                });
+
+                if (response.status === 200) {
+
+                    setRegisterMessage('Registrieren erfolgreich!');
+
+                }
+
+                if (response.status === 500) {
+                    setRegisterMessage('User Existiert schon');
+                }
+
+            } catch (error) {
+                console.error(error);
+                setRegisterMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
+            }
+
+        } else {
+            setRegisterMessage('Unterschiedliche Passwörter eingegeben')
+        }
     }
 
     return (
@@ -52,7 +85,14 @@ const Register: React.FC = () => {
                         />
                     </form>
 
-                    <a type="Submit" href="/" className="confirm-register-button">Registrieren</a>
+                    <form className="register-password-repeat-field" onSubmit={handleRegister}>
+                        <button type="submit" className="login-button">Registrieren</button>
+                    </form>
+
+                    {/* Render the login message */}
+                    {registerMessage && <p className="register-message">{registerMessage}</p>}
+
+                    <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
 
                 <div className="register-right">

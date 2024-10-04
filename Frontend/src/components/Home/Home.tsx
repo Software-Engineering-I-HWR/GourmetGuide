@@ -17,24 +17,24 @@ interface ListItem {
     id: number
 }
 
-async function getRecipes(): Promise<Recipe[] | null> {
-    try {
-        const response = await fetch('http://canoob.de:3007/getRecipes');
-        if (response.ok) {
-            return await response.json();
-        } else {
-            console.error('API request error:', response.status);
-            return null;
-        }
-    } catch (error) {
-        console.error('Network error:', error);
-        return null;
-    }
-}
-
 
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+
+    async function getRecipes(): Promise<Recipe[] | null> {
+        try {
+            const response = await fetch('http://canoob.de:3007/getRecipes');
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error('API request error:', response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
+        }
+    }
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -52,6 +52,7 @@ const Home: React.FC = () => {
             }
         };
 
+
         fetchRecipes();
     }, []);
 
@@ -66,7 +67,7 @@ const Home: React.FC = () => {
                             <a
                                 key={index}
                                 className="recipes-link"
-                                href={`/recipe/${recipe.id}`}
+                                href={`/recipe/${recipe.id}/`}
                                 style={{textDecoration: 'none'}}
                             >
                                 <RecipeCard key={index} {...recipe} />

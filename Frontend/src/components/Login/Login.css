@@ -44,7 +44,7 @@
 .login-email-field-input,
 .login-password-field-input {
     width: 100%;
-    height: 100%;
+    height: 30%;
     padding: 1%;
     margin: 8px 0;
     box-sizing: border-box;
@@ -101,6 +101,21 @@
 .login-logo {
     max-width: 100%;
     height: auto;
+}
+
+.home-button {
+    margin-top: 10%;
+    margin-left: 2%;
+    padding: 1% 1%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 35%;
+    color: #07546E;
+}
+
+.home-button:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 800px) {

@@ -1,12 +1,13 @@
+
 interface User {
   email: string;
   password: string;
 }
 
-export const addUser = async (email: string, password: string): Promise<void> => {
+export const addUser = async (email: string, password: string) => {
   try {
     const postData: User = { email, password };
-    const response: Response = await fetch('http://canoob.de:3007/createUser', {
+    const response: Response = await fetch('http://192.168.1.99:3006/createUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -17,17 +18,20 @@ export const addUser = async (email: string, password: string): Promise<void> =>
     if (response.ok) {
       const result: string = await response.text();
       console.log('API Antwort:', result);
+      return 200
     } else {
       console.error('Fehler bei der API-Anfrage:', response.status);
+      return response.status; // 500 bei mehrfachem User
     }
   } catch (error) {
     console.error('Netzwerkfehler:', error);
+    return 401;
   }
 };
 
 export const findUserByEmail = async (email: string): Promise<User | undefined> => {
   try {
-    const response: Response = await fetch(`http://canoob.de:3007/getUserByEmail?email=${encodeURIComponent(email)}`, {
+    const response: Response = await fetch(`http://192.168.1.99:3006/getUserByEmail?email=${encodeURIComponent(email)}`, {
       method: 'GET'
     });
 

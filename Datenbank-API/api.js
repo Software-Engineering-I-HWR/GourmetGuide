@@ -1,5 +1,5 @@
 const express = require('express');
-const { host, user, password, database } = require('./config.json');
+const {host, user, password, database} = require('./config.json');
 const mysql = require('mysql2');
 const cors = require('cors');
 
@@ -72,7 +72,9 @@ app.get('/getAllIngredients', (req, res) => {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Abrufen der Zutaten');
         } else {
-            const unwantedWords = ['Garnish', 'Topping', 'Small', 'Big', 'chopped', 'pinch', 'as required', 'to glaze'];
+            const unwantedWords = [
+                'Bunch', 'Stout', 'Stock', 'The', 'Other', 'Halved', 'Pieces', 'Sprigs', 'Fresh', 'Shredded', 'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze', 'Tbsp', 'Tsp', 'Serve', 'Sliced', 'Can', 'Of', 'Into', 'inch', 'To', 'Dash', 'Finely', 'Unsalted', 'Cup', 'Piece', 'Cut', 'Handful', 'Peeled', 'And', 'Coarsely Grated', 'Diced', 'Ground', 'Stewing', 'Thin', 'Bulb', 'Pod', 'Steamed', 'Crushed', 'Top', 'Pack', 'Clove', 'Taste', 'Teaspoon'
+            ];
 
             let allIngredients = results.map(row => row.Ingredients)
                 .join('|')
@@ -81,6 +83,11 @@ app.get('/getAllIngredients', (req, res) => {
                     let cleanedIngredient = ingredient
                         .replace(/\b\d+(\.\d+)?\s*\w*\b/g, '')
                         .replace(/\/.*/g, '')
+                        .replace(/[,.]\s*Beaten/g, '')
+                        .replace(/[,.]$/, '')
+                        .replace(/^\s*,/, '')
+                        .replace(/[¼½¾().,-]/g, '')
+                        .replace(/\binch\b/gi, '')
                         .trim();
 
                     unwantedWords.forEach(word => {
@@ -98,6 +105,8 @@ app.get('/getAllIngredients', (req, res) => {
                 .filter(ingredient => ingredient !== '');
 
             let uniqueIngredients = [...new Set(allIngredients)];
+
+            uniqueIngredients.sort((a, b) => a.localeCompare(b));
 
             res.status(200).json(uniqueIngredients);
         }
@@ -132,42 +141,41 @@ app.get('/getRecipesByCategory', (req, res) => {
     });
 });
 
-app.get('/getUserByEmail', (req, res) => {
-    const email = req.query.email;
+app.get('/getFilteredRecipes', (req, res) => {
+    const {name, difficulty, category, ingredients} = req.query;
 
-    if (!email) {
-        return res.status(400).send('E-Mail fehlt');
+    let query = 'SELECT * FROM Rezept WHERE 1=1';
+    let queryParams = [];
+
+    if (name) {
+        query += ' AND Title LIKE ?';
+        queryParams.push(`%${name}%`);
     }
 
-    const query = 'SELECT Username, Password FROM Account WHERE Username = ?';
-
-    connection.query(query, [email], (error, results) => {
-        if (error) {
-            console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Abrufen des Benutzers');
-        } else if (results.length === 0) {
-            res.status(404).send('Benutzer nicht gefunden');
-        } else {
-            res.status(200).json(results[0]);
-        }
-    });
-});
-
-app.post('/createUser', (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).send('E-Mail und Passwort fehlen');
+    if (difficulty) {
+        query += ' AND Difficulty = ?';
+        queryParams.push(difficulty);
     }
 
-    const query = 'INSERT INTO Account (Username, Password) VALUES (?, ?)';
+    if (category) {
+        query += ' AND Category = ?';
+        queryParams.push(category);
+    }
 
-    connection.query(query, [email, password], (error, results) => {
+    if (ingredients) {
+        const ingredientsArray = ingredients.split(',');
+        ingredientsArray.forEach((ingredient) => {
+            query += ' AND Ingredients LIKE ?';
+            queryParams.push(`%${ingredient.trim()}%`);
+        });
+    }
+
+    connection.query(query, queryParams, (error, results) => {
         if (error) {
             console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Erstellen des Benutzers');
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
         } else {
-            res.status(201).send('Benutzer erfolgreich erstellt');
+            res.status(200).json(results);
         }
     });
 });
