@@ -7,8 +7,8 @@ import SearchRecipeView from "./SearchRecipeView.tsx";
 const MainSearch: React.FC = () => {
     const receptStringName = useParams<{ receptName: string }>().receptName||"none";
     const [receptName, setReceptName] = useState<string>((receptStringName =="none"?"":receptStringName));
-    const selectedStringFruit = useParams<{ Fruit: string }>().Fruit||"none";
-    const [selectedFruit, setSelectedFruit] = useState<string>((selectedStringFruit =="none"?"":selectedStringFruit));
+    const selectedStringRating = useParams<{ Rating: string }>().Rating||"none";
+    const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating =="none"?"":selectedStringRating));
     const selectedStringCategory = useParams<{ Category: string }>().Category||"none";
     const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory =="none"?"":selectedStringCategory));
     console.log(selectedCategory);
@@ -104,7 +104,7 @@ const MainSearch: React.FC = () => {
 
     function getLink() {
         console.log(selectedIngredients);
-        const tempURL = "/mainsearc/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/";
+        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/";
         console.log(tempURL)
         return tempURL;
     }
@@ -128,7 +128,7 @@ const MainSearch: React.FC = () => {
                             <tbody>
                             <tr>
                                 <th className="Tabel-Row">
-                                    <text>Frucht auswählen:</text>
+                                    <text>Rating:</text>
                                 </th>
                                 <th>
                                     <text>Kategorie:</text>
@@ -143,13 +143,16 @@ const MainSearch: React.FC = () => {
                                     <label className="pick-einzelnt">
                                         <select
                                             className="einzel-select"
-                                            value={selectedFruit}
+                                            value={selectedRating}
 
-                                            onChange={e => setSelectedFruit(e.target.value)}
+                                            onChange={e => setSelectedRating(e.target.value)}
                                         >
-                                            <option value="apple">Apple</option>
-                                            <option value="banana">Banana</option>
-                                            <option value="orange">Orange</option>
+                                            <option value="none">none</option>
+                                            <option value="1 Stern">1 Stern</option>
+                                            <option value="2 Sterne">2 Sterne</option>
+                                            <option value="3 Sterne">3 Sterne</option>
+                                            <option value="4 Sterne">4 Sterne</option>
+                                            <option value="5 Sterne">5 Sterne</option>
                                         </select>
                                     </label>
                                 </th>
@@ -219,7 +222,7 @@ const MainSearch: React.FC = () => {
                         <div style={{display: "none"}}>
                             <hr/>
                             <p>Such Name: {receptName}</p>
-                            <p>Ausgewählte Frucht: {selectedFruit}</p>
+                            <p>Ausgewähltes Rating: {selectedRating}</p>
                             <p>Ausgewählte Kategorie: {selectedCategory}</p>
                             <p>Ausgewählte Schwierigkeit: {selectedDifficulty}</p>
                             <p>Ausgewählte Zutaten: {selectedIngredients.join(', ')}</p>
