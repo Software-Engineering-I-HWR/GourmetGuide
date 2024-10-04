@@ -163,7 +163,7 @@ const MainSearch: React.FC = () => {
                                             value={selectedCategory}
                                             onChange={e => setSelectedCategory(e.target.value)}
                                         >
-                                            <option value="">Keine Categorie Ausgewählt</option>
+                                            <option value="">Keine Kategorie Ausgewählt</option>
                                             {categories.map((category, index) => (
                                                 <option key={index} value={category}>
                                                     {category}
@@ -179,7 +179,7 @@ const MainSearch: React.FC = () => {
                                             value={selectedDifficulty}
                                             onChange={e => setSelectedDifficulty(e.target.value)}
                                         >
-                                            <option value="">Keine Difficult Ausgewählt</option>
+                                            <option value="">Keine Schwierigkeit ausgewählt</option>
                                             <option value="einfach">einfach</option>
                                             <option value="mittel">mittel</option>
                                             <option value="schwer">schwer</option>
