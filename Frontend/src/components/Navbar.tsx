@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                 <a type="Submit" href={getLink(searchTerm)} className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
-                <a href = '/home' style={isLoggedIn?{}:{display:'none'}} className="navbar__link">Eigener Bereich</a>
+                <a href = '/personal-home' style={isLoggedIn?{}:{display:'none'}} className="navbar__link">Eigener Bereich</a>
                 <a href =  '/categories' className="navbar__link">Kategorien</a>
                 <a href =  '/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
             </div>
