@@ -11,6 +11,7 @@ import Register from "./components/Login/Register.tsx";
 import ShowRecipe from "./components/ShowRecipe/ShowRecipe";
 import "./PopupWindow.css";
 import PopupWindow from "./PopupWindow.tsx";
+import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 
 
 const App: React.FC = () => {
@@ -62,7 +63,7 @@ const App: React.FC = () => {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
                     <Route path="/recipe/*" element={<ShowRecipe/>}/>
-                    <Route path="/home" element={<ErrorPage/>}/>
+                    <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
                 {showPopup && (

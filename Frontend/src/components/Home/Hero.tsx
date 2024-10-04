@@ -1,12 +1,17 @@
 import React from 'react';
 import './Hero.css';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+    title: string;
+    subtitle: string;
+}
+
+const Hero: React.FC<HeroProps> = ({title, subtitle}) => {
     return (
         <header className="hero">
             <div className="hero__content">
-                <h1 className="hero__title">Willkommen bei GourmetGuide: Gaumenschmaus!</h1>
-                <p className="hero__subtitle">Entdecke und teile coole Rezepte.</p>
+                <h1 className="hero__title">{title}</h1>
+                <p className="hero__subtitle">{subtitle}</p>
             </div>
         </header>
     );

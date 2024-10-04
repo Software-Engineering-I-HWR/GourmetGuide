@@ -58,7 +58,7 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            <Hero/>
+            <Hero title="Willkommen bei GourmetGuide: Gaumenschmaus!" subtitle="Entdecke und teile coole Rezepte."/>
             <main className="main-content">
                 <section className="recipes">
                     <h2 className="recipes__title"/>

@@ -1,0 +1,71 @@
+.body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.personalHome {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 100%;
+    background-color: white;
+    align-items: center;
+}
+
+.personalHome-main {
+    max-width: 75%;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+.personalHome-main-head {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.personalHome-main-head__button {
+    display: flex;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1% 10%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 2% 2%;
+}
+
+.personalHome-main-head__button:hover {
+    background-color: #65899c;
+}
+
+.personalHome-choose-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+}
+
+.personalHome-ownRecipes, .personalHome-ratedRecipes{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+    color: #122832;
+    font-size: 1.5rem;
+    padding: 1% 10%;
+    background-color: #98afbc;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 2% 2%;
+}
