@@ -1,3 +1,33 @@
+.Tabel-Row{
+    width: 33%;
+}
+.mainSearc__search-input{
+    width: 50%;
+}
+.Toggel-such-body-Button {
+    display: inline-block;
+    padding: 10px;
+    margin-left: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+.such-body[data-Hiden="Hiden"] {
+    display: none;
+}
+.such-body[data-Hiden="Showen"] {
+    display: block;
+}
+text{
+    color: #000000;
+    font-weight: bold;
+}
+.Submit-Search-Button{
+    margin-top: 10px;
+    width: 100%;
+}
+.select-mehre-add-container{
+    display: flex;
+}
 .main-content{
     flex:auto;
     width:60%;
@@ -22,7 +52,7 @@
     flex-direction: column;
 }
 .auswahl-multi{
-    display: flex;
+    display: block;
     align-content: stretch;
     justify-content: flex-start;
 
@@ -51,7 +81,6 @@
 }
 
 .recipes-table th, .recipes-table td {
-    padding: 10px;
     text-align: left;
 }
 
@@ -87,14 +116,16 @@
 }
 
 .ausgewhelt button {
+    margin-left: 8px;
+    border-radius: 5px;
     background-color: transparent;
     border: none;
     font-size: 12px;
     color: #f44336;
     cursor: pointer;
-    position: absolute;
     top: 3px;
     right: 5px;
+    position: initial;
 }
 
 .ausgewhelt button:hover {
@@ -107,7 +138,6 @@ button {
     background-color: #4caf50;
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 

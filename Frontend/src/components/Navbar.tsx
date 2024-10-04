@@ -1,7 +1,5 @@
-import React, {StrictMode, useState} from 'react';
+import React, { useState} from 'react';
 import './Navbar.css';
-import {createRoot} from "react-dom/client";
-import MainSearc from "./Search/MainSearc.tsx";
 
 
 interface NavbarProps {
@@ -10,27 +8,25 @@ interface NavbarProps {
     isLoggedIn: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn}) => {
-    console.log("hallooooo", isLoggedIn);
+function getLink(temp: string) {
+    if (temp == "") {
+        return "/mainsearc/";
+    }
+    return "/mainsearc/"+temp;
+
+}
+
+const Navbar: React.FC<NavbarProps> = ({title}) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
-
-    const handleSearchSubmit = (event: React.FormEvent) => {
-        <a>href="/MainSearch" </a>
-        event.preventDefault();
-        console.log('Search term submitted:', searchTerm);
-        // Füge hier die Suchlogik hinzu (z.B. eine API-Abfrage)
-        createRoot(document.getElementById('searc')!).render(
-            <StrictMode>
-                <MainSearc/>
-            </StrictMode>,
-        );
-
-        createRoot(document.getElementById('root')!).unmount();
+    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
+        event.preventDefault()
+        window.location.href = getLink(searchTerm);
     };
+
 
 
     return (
@@ -41,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn}) => {
                     {title}
                 </a>
             </div>
-            <form className="navbar__search" onSubmit={handleSearchSubmit}>
+            <form className="navbar__search" onSubmit={handleOnSubmit} >
                 <input
                     type="text"
                     placeholder="Suche..."
@@ -49,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn}) => {
                     onChange={handleSearchChange}
                     className="navbar__search-input"
                 />
-                <a type="Submit" href="/mainsearch" className="navbar__link">Suchen</a>
+                <a type="Submit" href={getLink(searchTerm)} className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
                 <button onClick={() => window.location.href = '/home'} disabled={!isLoggedIn} className="navbar__link">Bereich</button>

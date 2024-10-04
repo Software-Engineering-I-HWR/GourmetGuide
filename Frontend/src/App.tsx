@@ -40,7 +40,7 @@ const App: React.FC = () => {
                 {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} title="GourmetGuide" links={navLinks} />}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mainsearch" element={<MainSearc />} />
+                <Route path="/mainsearc/:receptName?/:Category?/:Difficulty?/:zutaten?/:Fruit?" element={<MainSearc />} />
                 <Route path="/categories" element={<Categories />} />/
                 <Route path="/log-in" element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} />} />
                 <Route path="/register" element={<Register />} />
