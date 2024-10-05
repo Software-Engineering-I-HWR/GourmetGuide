@@ -131,7 +131,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                 </div>
 
                 <div className="login-right">
-                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo"/>
+                    <img src="images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
             </div>
         </div>
