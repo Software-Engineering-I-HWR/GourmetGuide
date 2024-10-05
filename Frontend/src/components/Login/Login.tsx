@@ -1,5 +1,6 @@
 import './Login.css';
 import React, {useEffect, useState} from 'react';
+import PopupWindow from "../../PopupWindow.tsx";
 
 interface LoginProps {
     isUserLoggedIn: boolean;
@@ -10,6 +11,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
+    const [showPopupMessage, setShowPopupMessage] = useState(false);
     //const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged in status
 
     useEffect(() => {
@@ -65,17 +67,23 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
 
                 // Show success message and set logged-in status
                 setLoginMessage('Login erfolgreich!');
+                localStorage.setItem('loginMessage', JSON.stringify("Login erfolgreich!"));
                 setIsUserLoggedIn(true);
                 window.location.href = '/';
             }
 
             if (response.status === 401) {
                 setLoginMessage('Falsche Anmeldedaten');
+                setShowPopupMessage(true);
+                //return (<PopupWindow message={loginMessage}/>);
             }
 
         } catch (error) {
             console.error(error);
             setLoginMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
+            setShowPopupMessage(true);
+            //return(<PopupWindow message={loginMessage}/>);
+
         }
     };
 
@@ -85,6 +93,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
         localStorage.removeItem('userPassword');
         setIsUserLoggedIn(false)
         setLoginMessage('Erfolgreich abgemeldet!'); // Show logout message
+        localStorage.setItem('loginMessage', JSON.stringify("Erfolgreich abgemeldet"));
         window.location.href = '/';
     };
 
@@ -92,8 +101,18 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
         localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
     }, [isUserLoggedIn]);
 
+    useEffect(() => {
+            setTimeout(() => {
+                setShowPopupMessage(false);
+            }, 5000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showPopupMessage]);
+
     return (
         <div className="login-page">
+            {showPopupMessage && (
+                <PopupWindow message={loginMessage}/>
+            )}
             <div className="login-body">
                 <div className="login-left">
                     <h1 className="login-title">Login</h1>
