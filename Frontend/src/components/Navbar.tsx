@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Navbar.css';
 
-
 interface NavbarProps {
     title: string;
     links: Array<{ name: string; path: string }>;
@@ -12,7 +11,7 @@ function getLink(temp: string) {
     if (temp == "") {
         return "/mainsearch/";
     }
-    return "/mainsearch/"+temp;
+    return "/mainsearch/" + temp;
 
 }
 
@@ -22,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
-    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
+    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         window.location.href = getLink(searchTerm);
     };
@@ -30,14 +29,13 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
 
     useEffect(() => {
         const isUserLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')!);
-        if (isUserLoggedIn == null){
+        if (isUserLoggedIn == null) {
             setIsLoggedIn(false);
         }
         if (isUserLoggedIn) {
             setIsLoggedIn(isUserLoggedIn);
         }
     }, []);
-
 
 
     return (
@@ -48,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     {title}
                 </a>
             </div>
-            <form className="navbar__search" onSubmit={handleOnSubmit} >
+            <form className="navbar__search" onSubmit={handleOnSubmit}>
                 <input
                     type="text"
                     placeholder="Suche..."
@@ -59,10 +57,10 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                 <a type="Submit" href={getLink(searchTerm)} className="navbar__link">Suchen</a>
             </form>
             <div className="navbar-actions">
-                <a href = '/home' style={isLoggedIn?{}:{display:'none'}} className="navbar__link">Bereich</a>
-                <a href = '/create' style={isLoggedIn?{}:{display:'none'}} className="navbar__link">Erstellen</a>
-                <a href =  '/categories' className="navbar__link">Kategorien</a>
-                <a href =  '/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
+                <a href='/home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Bereich</a>
+                <a href='/create' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Erstellen</a>
+                <a href='/categories' className="navbar__link">Kategorien</a>
+                <a href='/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
             </div>
         </nav>
     );
