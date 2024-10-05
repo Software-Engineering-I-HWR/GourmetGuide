@@ -12,7 +12,7 @@ app.use(cors());
 const page_width = 600;
 const page_height = 800;
 
-const right_border_size = 20;
+const right_border_size = 25;
 const empty_line_width = 1.5;
 const min_font_size = 5;
 
@@ -135,10 +135,13 @@ const createRecipePDF = async (recipe: any) => {
 
     await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/refs/heads/main/Frontend/public/images/Logo.jpg', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
 
+
+    const title = addLineBreaksToText(recipe.name, boldFont, 250, 25)
+
     // title
-    page.drawText(`Rezept: ${recipe.name}`, {
-        x: 250,
-        y: 700,
+    page.drawText(`Rezept: ${title}`, {
+        x: 215,
+        y: 725,
         size: 25,
         font: boldFont,
         lineHeight: 24,
@@ -146,12 +149,12 @@ const createRecipePDF = async (recipe: any) => {
     },);
 
     // image
-    await addImageToPage(page, recipe.image, 45, 475, 200, 200, "URL NOT FOUND");
+    await addImageToPage(page, recipe.image, 45, 425, 200, 200, "URL NOT FOUND");
 
     // ingredients header
     page.drawText(`Zutaten:`, {
         x: 275,
-        y: 650,
+        y: 640,
         size: 25,
         font: boldFont,
         lineHeight: 24,
@@ -162,7 +165,7 @@ const createRecipePDF = async (recipe: any) => {
     // ingredients list
     let enumeration = ''
 
-    let font_size_for_enumeration = getMaximumNumerationTextsize(normalFont, 620, 370, 18, recipe.ingredients, 275);
+    let font_size_for_enumeration = getMaximumNumerationTextsize(normalFont, 610, 370, 18, recipe.ingredients, 275);
 
     for (let i = 0; i < recipe.ingredients.length; i++) {
         let item = recipe.ingredients[i];
@@ -206,9 +209,9 @@ const createRecipePDF = async (recipe: any) => {
     });
 
     //web link
-    page.drawText(`www.gourmetguide.de`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`www.gourmetguide.de`, 20)) / 2,
-        y: 30,
+    page.drawText(`https://canoob.de:4000`, {
+        x: (page_width - normalFont.widthOfTextAtSize(`https://canoob.de:4000`, 20)) / 2,
+        y: 25,
         size: 20,
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
         lineHeight: 24,
