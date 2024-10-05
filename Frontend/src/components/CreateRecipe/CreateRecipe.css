@@ -30,7 +30,8 @@
     margin-bottom: 20px;
 }
 
-.recipe-field label {
+.recipe-field label,
+.category-dropdown label {
     font-size: 18px;
     font-weight: bold;
     color: #07546E;
@@ -125,6 +126,36 @@
     flex-grow: 1;
     margin-right: 10px;
 }
+
+/* Styles for the category dropdown */
+.category-dropdown {
+    margin: 15px 0; /* Adds space above and below the dropdown */
+    display: flex; /* Use flexbox for better alignment */
+    flex-direction: column; /* Stack the label above the select */
+}
+
+/* Styling the dropdown select element */
+.category-dropdown select {
+    padding: 10px; /* Padding inside the select box */
+    border: 1px solid #ccc; /* Border around the select */
+    border-radius: 5px; /* Rounded corners for the select */
+    font-size: 16px; /* Font size for the options */
+    background-color: #e5ebee; /* Background color to match project */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: border 0.3s ease; /* Smooth transition for border color */
+}
+
+/* Hover effect for the dropdown */
+.category-dropdown select:hover {
+    border-color: #07546E; /* Change border color on hover */
+}
+
+/* Focus effect for the dropdown */
+.category-dropdown select:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #07546E; /* Change border color when focused */
+}
+
 
 /* Responsive styles */
 @media screen and (max-width: 800px) {
