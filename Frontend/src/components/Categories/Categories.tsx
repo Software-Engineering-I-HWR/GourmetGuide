@@ -11,31 +11,31 @@ const Categories: React.FC = () => {
             functionActive: setCurrentCategory,
             active: currentCategory === 'Brot' ? 'true' : 'false',
             title: 'Brot',
-            imageUrl: './../../../public/images/Brot.jpg'
+            imageUrl: '/images/Brot.jpg'
         },
         {
             functionActive: setCurrentCategory,
             active: currentCategory === 'Dessert' ? 'true' : 'false',
             title: 'Dessert',
-            imageUrl: './../../../public/images/Dessert.jpg'
+            imageUrl: '/images/Dessert.jpg'
         },
         {
             functionActive: setCurrentCategory,
             active: currentCategory === 'Kuchen' ? 'true' : 'false',
             title: 'Kuchen',
-            imageUrl: './../../../public/images/Kuchen.jpg'
+            imageUrl: '/images/Kuchen.jpg'
         },
         {
             functionActive: setCurrentCategory,
             active: currentCategory === 'Mittagessen' ? 'true' : 'false',
             title: 'Mittagessen',
-            imageUrl: './../../../public/images/Mittagessen.jpg'
+            imageUrl: '/images/Mittagessen.jpg'
         },
         {
             functionActive: setCurrentCategory,
             active: currentCategory === 'Salat' ? 'true' : 'false',
             title: 'Salat',
-            imageUrl: './../../../public/images/Salat.jpg'
+            imageUrl: '/images/Salat.jpg'
         },
     ];
 

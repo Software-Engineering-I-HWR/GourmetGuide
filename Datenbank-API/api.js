@@ -20,14 +20,14 @@ app.post('/saveRecipe', (req, res) => {
     console.log("Received data:", data);
 
     const query = `
-        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen, Creator)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     console.log(query);
 
     connection.query(query, [
-        data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen
+        data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator
     ], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
@@ -176,6 +176,58 @@ app.get('/getFilteredRecipes', (req, res) => {
             res.status(500).send('Fehler beim Abrufen der Rezepte');
         } else {
             res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRatingByID', (req, res) => {
+    const id = req.query.id;
+    const query = 'SELECT AVG(Bewertung) FROM Bewertung WHERE ID = ?';
+
+    connection.query(query, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRatingByIDAndUser', (req, res) => {
+    const id = req.query.id;
+    const user = req.query.user;
+    const query = 'SELECT * FROM Bewertung WHERE ID = ? AND Username = ?';
+
+    connection.query(query, [id, user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Bewertung');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.post('/saveRating', (req, res) => {
+    const data = req.query;
+    console.log("Received data:", data);
+
+    const query = `
+        INSERT INTO Bewertung (ID, Username, Bewertung)
+        VALUES (?, ?, ?)
+    `;
+
+    console.log(query);
+
+    connection.query(query, [
+        data.id, data.user, data.rating
+    ], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Speichern der Bewertung');
+        } else {
+            res.status(200).send('Bewertung erfolgreich gespeichert');
         }
     });
 });
