@@ -10,7 +10,7 @@ const PersonalHome: React.FC = () => {
                   subtitle="Hier sehen Sie Ihre Rezepte und die Rezepte, die sie bewertet haben!"/>
             <div className="personalHome-main">
                 <div className="personalHome-main-head">
-                    <button className="personalHome-main-head__button"> Rezept erstellen</button>
+                    <button className="personalHome-main-head__button" onClick={() => window.location.href = "/create-recipe"}> Rezept erstellen</button>
                 </div>
                 <div className="personalHome-choose-buttons">
                     <button className="personalHome-ownRecipes"
