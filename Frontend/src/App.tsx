@@ -25,7 +25,6 @@ const App: React.FC = () => {
     const noNavbarFooterRoutes = ['/log-in', '/register'];
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
-    console.log(isLoggedIn, "was?");
 
 
     useEffect(() => {
