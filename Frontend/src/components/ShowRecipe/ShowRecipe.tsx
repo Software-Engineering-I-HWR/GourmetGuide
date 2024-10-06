@@ -2,6 +2,7 @@ import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
+
 interface Recipe {
     Title: string;
     Category: string;
@@ -44,10 +45,11 @@ const ShowRecipe: React.FC = () => {
     const id = extractString(location.pathname, "recipe/", "/")
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
+    const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch(`https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
+            const response = await fetch(`http://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
                 method: 'GET'
             });
             if (response.ok) {
@@ -129,9 +131,9 @@ const ShowRecipe: React.FC = () => {
             ingredients: ingredientsArray,
         };
 
-        //https://canoob.de:30157/generate-pdf
+        //http://canoob.de:30157/generate-pdf
         //http://localhost:3000/generate-pdf
-        const response = await fetch('https://canoob.de:30157/generate-pdf', {
+        const response = await fetch('http://canoob.de:30157/generate-pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -234,9 +236,29 @@ const ShowRecipe: React.FC = () => {
             </div>
             <div className="separator-line"></div>
             <div className="actions-field">
-                <form className="test" onSubmit={handleShare}>
-                    <button type="submit" className="download-button">Teilen</button>
-                </form>
+                <button type="submit" className="download-button" onSubmit={() => handleShare}>Teilen</button>
+                <div className="rating-system">
+                    <img className="first-star"
+                         alt={activeStarOnHover >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
+                         src={activeStarOnHover >= 1 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                         onMouseOver={() => setActiveStarOnHover(1)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                    <img className="second-star"
+                         alt={activeStarOnHover >= 2 ? "ausgefüllter Stern" : "leerer Stern"}
+                         src={activeStarOnHover >= 2 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                         onMouseOver={() => setActiveStarOnHover(2)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                    <img className="third-star"
+                         alt={activeStarOnHover >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
+                         src={activeStarOnHover >= 3 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                         onMouseOver={() => setActiveStarOnHover(3)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                    <img className="fourth-star"
+                         alt={activeStarOnHover >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
+                         src={activeStarOnHover >= 4 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                         onMouseOver={() => setActiveStarOnHover(4)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                    <img className="fifth-star"
+                         alt={activeStarOnHover >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
+                         src={activeStarOnHover >= 5 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                         onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                </div>
             </div>
         </div>
         </body>
