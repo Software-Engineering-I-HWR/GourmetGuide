@@ -1,11 +1,13 @@
 import './Register.css';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import PopupWindow from "../../PopupWindow.tsx";
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [registerMessage, setRegisterMessage] = useState('');
+    const [showPopupMessage, setShowPopupMessage] = useState(false);
 
     const enterEmailAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -34,25 +36,39 @@ const Register: React.FC = () => {
                 if (response.status === 200) {
 
                     setRegisterMessage('Registrieren erfolgreich!');
+                    localStorage.setItem('loginMessage', JSON.stringify("Registrieren erfolgreich!"));
+                    setShowPopupMessage(true);
 
                 }
 
                 if (response.status === 500) {
+                    setShowPopupMessage(true);
                     setRegisterMessage('User Existiert schon');
                 }
 
             } catch (error) {
                 console.error(error);
+                setShowPopupMessage(true);
                 setRegisterMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
             }
 
         } else {
+            setShowPopupMessage(true);
             setRegisterMessage('Unterschiedliche Passwörter eingegeben')
         }
     }
+    useEffect(() => {
+        setTimeout(() => {
+            setShowPopupMessage(false);
+        }, 5000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showPopupMessage]);
 
     return (
         <div className="register-page">
+            {showPopupMessage && (
+                <PopupWindow message={registerMessage}/>
+            )}
             <div className="register-body">
                 <div className="register-left">
                     <h1 className="register-title">Registrieren</h1>
