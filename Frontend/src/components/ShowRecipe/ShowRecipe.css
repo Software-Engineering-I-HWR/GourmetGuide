@@ -165,27 +165,40 @@
 .actions-field{
     display: flex;
     align-items: center;
-    flex-direction: column;
     text-align: left;
     padding: 3% 3%;
     padding-left: 7%;
     margin-left: 10%;
     margin-right: 10%;
+
 }
 
 .download-button {
     display: flex;
     color: white;
     font-size: 1.5rem;
-    padding: 5% 15%;
+    padding: 2% 5%;
     background-color: #07546e;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 2% 2%;
+    margin: 5% 10%;
 }
 
 .download-button:hover {
     background-color: #65899c;
+}
+
+.rating-system {
+    display: flex;
+    padding: 1% 1%;
+    align-items: center;
+    width: 30%;
+}
+
+.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+    display: flex;
+    margin: 3% 3%;
+    width: 100%;
 }
