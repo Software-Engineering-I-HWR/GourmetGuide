@@ -63,7 +63,7 @@ const App: React.FC = () => {
                            element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn}/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
-                    <Route path="/recipe/*" element={<ShowRecipe/>}/>
+                    <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!} />}/>
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                 </Routes>

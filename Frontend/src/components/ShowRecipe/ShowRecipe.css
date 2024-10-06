@@ -34,6 +34,7 @@
 .showRecipe-contentfield-left {
     flex: 1;
     text-align: center;
+    align-items: center;
 }
 
 .showRecipe-contentfield-right {
@@ -165,7 +166,7 @@
 .actions-field{
     display: flex;
     align-items: center;
-    text-align: left;
+    justify-content: center;
     padding: 3% 3%;
     padding-left: 7%;
     margin-left: 10%;
@@ -183,22 +184,56 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 5% 10%;
+    margin: 5% 5%;
 }
 
 .download-button:hover {
     background-color: #65899c;
 }
 
-.rating-system {
+.rating-system, .fake-rating-system {
     display: flex;
     padding: 1% 1%;
     align-items: center;
+    margin-left: 10%;
     width: 30%;
+}
+
+.rating-system-header {
+    display: flex;
+    padding: 1% 1%;
+    align-items: center;
+    margin-left: 10%;
+    width: 20%;
+    margin:auto;
+}
+
+.rating-null {
+    margin-left: auto;
+    font-size: 1rem;
+    color: #65899c;
 }
 
 .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
     display: flex;
     margin: 3% 3%;
     width: 100%;
+}
+
+.star-system {
+    display: flex;
+}
+
+.message {
+    display: flex;
+    padding: 1% 1%;
+    background-color: #b1c3cd;
+    text-align: center;
+    max-height: 75%;
+    max-width: 45%;
+    color: white;
+    border-radius: 15px;
+    border: 3px solid #7e9cac;
+    font-size: 1.5vh;
+    margin-left: 5%;
 }
