@@ -1,0 +1,165 @@
+/* General styles for the page */
+.create-recipe-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #7e9cac;
+}
+
+.create-recipe-body {
+    display: flex;
+    flex-direction: column;
+    background-color: #e5ebee;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 90%;
+}
+
+.create-recipe-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.recipe-field {
+    margin-bottom: 20px;
+}
+
+.recipe-field label,
+.category-dropdown label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #07546E;
+}
+
+.recipe-field input, .recipe-field textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #e5ebee;
+}
+
+.recipe-field textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.add-ingredient-button {
+    padding: 0.5% 1%;
+    background-color: #07546E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Adjust the button font size */
+    height: 100%; /* Ensure the button height matches the input */
+    display: flex;
+    align-items: center; /* Centers the "+" inside the button */
+    justify-content: center;
+}
+
+.add-ingredient-button:hover {
+    background-color: #7e9cac;
+    color: #07546E;
+}
+
+.ingredients-list {
+    margin-top: 20px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.ingredients-list li {
+    padding: 10px;
+    background-color: #e5ebee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-ingredient-button {
+    background-color: #07546E;
+    border: 1px solid #e5ebee;
+    color: #e5ebee;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-ingredient-button:hover {
+    background-color: #7e9cac;
+    color: white;
+}
+
+.submit-recipe-button {
+    padding: 12px 24px;
+    background-color: #07546E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-recipe-button:hover {
+    background-color: #7e9cac;
+    color: #07546E;
+}
+
+.ingredient-input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.ingredient-input-wrapper input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* Styles for the category dropdown */
+.category-dropdown {
+    margin: 15px 0; /* Adds space above and below the dropdown */
+    display: flex; /* Use flexbox for better alignment */
+    flex-direction: column; /* Stack the label above the select */
+}
+
+/* Styling the dropdown select element */
+.category-dropdown select {
+    padding: 10px; /* Padding inside the select box */
+    border: 1px solid #ccc; /* Border around the select */
+    border-radius: 5px; /* Rounded corners for the select */
+    font-size: 16px; /* Font size for the options */
+    background-color: #e5ebee; /* Background color to match project */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: border 0.3s ease; /* Smooth transition for border color */
+}
+
+/* Hover effect for the dropdown */
+.category-dropdown select:hover {
+    border-color: #07546E; /* Change border color on hover */
+}
+
+/* Focus effect for the dropdown */
+.category-dropdown select:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #07546E; /* Change border color when focused */
+}
+
+
+/* Responsive styles */
+@media screen and (max-width: 800px) {
+    .create-recipe-body {
+        width: 90%;
+    }
+}
