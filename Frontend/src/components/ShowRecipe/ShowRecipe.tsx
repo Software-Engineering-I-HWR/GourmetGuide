@@ -47,7 +47,7 @@ const ShowRecipe: React.FC = () => {
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch(`http://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
+            const response = await fetch(`https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
                 method: 'GET'
             });
             if (response.ok) {
@@ -129,9 +129,9 @@ const ShowRecipe: React.FC = () => {
             ingredients: ingredientsArray,
         };
 
-        //http://canoob.de:30157/generate-pdf
+        //https://canoob.de:30157/generate-pdf
         //http://localhost:3000/generate-pdf
-        const response = await fetch('http://canoob.de:30157/generate-pdf', {
+        const response = await fetch('https://canoob.de:30157/generate-pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

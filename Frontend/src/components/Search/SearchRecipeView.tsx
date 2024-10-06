@@ -27,7 +27,7 @@ interface ListItem {
 
 async function getRecipes({name, difficulty, category, ingredients}: { name: string, difficulty: string, category: string, ingredients: string }): Promise<Recipe[] | null> {
     console.log(ingredients);
-    const promt = `http://canoob.de:3007/getFilteredRecipes` +
+    const promt = `https://canoob.de:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +

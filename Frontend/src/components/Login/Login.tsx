@@ -42,7 +42,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
 
     const sendLoginRequest = async (email: string, password: string) => {
 
-        return await fetch('http://canoob.de:30156/login', {
+        return await fetch('https://canoob.de:30156/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

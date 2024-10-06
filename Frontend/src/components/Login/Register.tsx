@@ -23,7 +23,7 @@ const Register: React.FC = () => {
         event.preventDefault(); // Prevent default form submission
         if (password == passwordRepeat) {
             try {
-                const response = await fetch('http://canoob.de:30156/register', {
+                const response = await fetch('https://canoob.de:30156/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="register-right">
-                    <img src="/../../public/images/Logo.jpg" alt="Logo" className="login-logo"/>
+                    <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
 
             </div>
