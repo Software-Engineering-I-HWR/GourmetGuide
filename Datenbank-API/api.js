@@ -225,6 +225,7 @@ app.post('/saveRating', (req, res) => {
     const query = `
         INSERT INTO Bewertung (ID, Username, Bewertung)
         VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE Bewertung = VALUES(Bewertung);
     `;
 
     console.log(query);
