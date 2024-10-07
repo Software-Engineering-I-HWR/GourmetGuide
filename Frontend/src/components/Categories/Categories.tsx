@@ -16,7 +16,7 @@ interface Recipe {
 };
 
 interface ListItem {
-    functionActive: React.Dispatch<React.SetStateAction<string>>;
+    functionActive: (newText: string) => void;
     title: string;
     imageUrl: string;
     active: string;
@@ -113,6 +113,15 @@ const Categories: React.FC = () => {
     useEffect(() => {
         console.log("alle Kategorien mit Inhalt", sampleCategories);
     }, [sampleCategories]);
+
+    useEffect(() => {
+        setSampleCategories((prevItem) =>
+            prevItem.map((item =>
+            item.title === currentCategory ? {...item, active: "true"} : {...item, active: "false"}))
+        );
+    }, [currentCategory]);
+
+    console.log("categories",currentCategory);
     return (
         <div className="Mainpage">
             <section className="categories">
