@@ -18,7 +18,7 @@ export const addUser = async (email: string, password: string) => {
     if (response.ok) {
       const result: string = await response.text();
       console.log('API Antwort:', result);
-      return 200
+      return 200;
     } else {
       console.error('Fehler bei der API-Anfrage:', response.status);
       return response.status; // 500 bei mehrfachem User
