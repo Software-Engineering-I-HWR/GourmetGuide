@@ -239,7 +239,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         fetchRecipe();
 
-    }, [getRecipes, id]);
+    }, []);
 
     useEffect(() => {
         async function saveRating(): Promise<number | null> {
