@@ -13,7 +13,7 @@ interface CategoryCardProps {
 const CategoryCard: React.FC<CategoryCardProps> = ({functionActive, active, title, imageUrl}) => {
    // const [isDisabled, setIsDisabled] = useState(true);
 
-
+    console.log(title, active);
     return (
             <button className="category-card" value={active} onClick={() => {
                 functionActive(title)
