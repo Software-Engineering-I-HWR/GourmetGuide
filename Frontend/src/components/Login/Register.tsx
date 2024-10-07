@@ -34,16 +34,14 @@ const Register: React.FC = () => {
                 });
 
                 if (response.status === 200) {
-
                     setRegisterMessage('Registrieren erfolgreich!');
                     localStorage.setItem('loginMessage', JSON.stringify("Registrieren erfolgreich!"));
                     setShowPopupMessage(true);
-
                 }
 
                 if (response.status === 500) {
-                    setShowPopupMessage(true);
                     setRegisterMessage('User Existiert schon');
+                    setShowPopupMessage(true);
                 }
 
             } catch (error) {
