@@ -19,7 +19,7 @@ ID, Zeit, Dauer, Person, Thema
 18,13.09.2024, 120 min, Josi, Startseite
 19,18.09.2024, 60 min, alle, Aufwandsschätzung
 20,18.09.2024, 40 min, alle, Datenbankentwurf
-21,18.09.2024, 90 min, Carlo, Datenbank
+21,18.09.2024, 180 min, Carlo, Datenbank
 22,18.09.2024, 120 min, Tobias, PDF-Erstellung
 23,18.09.2024, 90 min, Sven, Suchfunktion
 24,18.09.2024, 90 min, Mia, Login
@@ -50,15 +50,15 @@ ID, Zeit, Dauer, Person, Thema
 49,02.10.2024, 60 min, Tobias, AKV und Ziele Tabelle
 50,02.10.2024, 60 min, Josi, Rezepte-Seite
 51,02.10.2024, 30 min, Josi, Login
-52,02.10.2024, 60 min, Carlo, Datenbank
+52,02.10.2024, 90 min, Carlo, Datenbank
 53,02.10.2024, 90 min, Sven, Rezept-Suche
-54,02.10.2024, 120 min,Josi, Login-Einbindung (Übergabe an restlichen Komponenten; Startseiten-Button; automatische Weiterleitung)
-55,03.10.2024,90 min, Sven, Rezepte-Suche-Zwischenstand-Fertig
+54,02.10.2024, 120 min, Josi, Login-Einbindung (Übergabe an restlichen Komponenten; Startseiten-Button; automatische Weiterleitung)
+55,03.10.2024, 90 min, Sven, Rezepte-Suche-Zwischenstand-Fertig
 56,04.10.2024, 120 min, Tobias, Teilen Funktion
 57,04.10.2024, 30 min, Calo, Security
 58,04.10.2024, 90 min, Carlo, Website-Hosting
 59,04.10.2024, 60 min, Sven, Merge Konflikte mit Josi + fix href button+ Search fix
-60,04.10.2024, 60 min,Sven, Host problem fix reserc
+60,04.10.2024, 60 min, Sven, Host problem fix reserc
 61,04.10.2024, 45 min, Josi, Merge Konflikte Suche
 62,04.10.2024, 45 min, Josi, bug fixing (Searc und andere Namensprobleme; href-Probleme; Teilen-Button; Login)
 63,04.10.2024, 30 min, Josi, Popup-Fester für Login
@@ -72,5 +72,5 @@ ID, Zeit, Dauer, Person, Thema
 71,06.10.2024, 210 min, Josi, Bewertung
 72,06.10.2024, 30 min, Josi, Bewertung (Datenbankanbindung)
 73,06.10.2024, 30 min, Carlo, Datenbank
-74,06.10.2024, 90 min, Carlo, Fehlerbehebung
-75,06.10.2024, 60 min, Carlo, Hosting
+74,06.10.2024, 210 min, Carlo, Fehlerbehebung
+75,06.10.2024, 90 min, Carlo, Hosting
