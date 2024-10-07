@@ -180,7 +180,7 @@ const CreateRecipe: React.FC = () => {
                             ))}
                         </ul>
                         <button type="submit" className="submit-recipe-button">
-                            Submit Recipe
+                            Rezept einsenden
                         </button>
                         {createRecipeMessage && <p className="create-recipe-message">{createRecipeMessage}</p>}
                     </form>

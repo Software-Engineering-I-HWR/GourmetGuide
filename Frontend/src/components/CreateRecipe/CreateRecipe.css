@@ -1,12 +1,15 @@
-/* General styles for the page */
+/* Ensure the content starts below the navbar */
 .create-recipe-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 80vh; /* Adjust height to account for the navbar and footer */
     background-color: #7e9cac;
+    padding-top: 5%; /* Push content down from the navbar */
+    padding-bottom: 50px; /* Ensure space at the bottom */
 }
 
+/* Adjust the body content styling */
 .create-recipe-body {
     display: flex;
     flex-direction: column;
@@ -17,6 +20,9 @@
     width: 60%;
     max-width: 90%;
 }
+
+/* Other styles remain the same */
+
 
 .create-recipe-title {
     font-size: 40px;
