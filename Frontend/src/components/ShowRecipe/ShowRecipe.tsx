@@ -296,11 +296,11 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         <p className="showRecipe-properties-vegetarian" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian}</p>
+                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian === true ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-vegan" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan}</p>
+                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan === true ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-allergen"
                            style={{
                                color: "#b1c3cd",
