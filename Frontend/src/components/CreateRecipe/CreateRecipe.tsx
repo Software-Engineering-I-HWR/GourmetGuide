@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
 import {useParams} from "react-router-dom";
 
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Molkereifrei", "Eifrei", "Sojafrei"];
+const allergenTags = ["Erdnüsse", "Baumnüsse", "Schalentiere", "Fisch", "Milch", "Eier", "Weizen", "Soja"];
+
 interface Category {
     Category: string;
 }
@@ -17,6 +20,8 @@ const CreateRecipe: React.FC = () => {
     const [createRecipeMessage, setCreateRecipeMessage] = useState('');
     const selectedStringCategory = useParams<{ Category: string }>().Category || "none";
     const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory == "none" ? "" : selectedStringCategory));
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [difficulty, setDifficulty] = useState(3); // Initial difficulty value is 3
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -45,6 +50,10 @@ const CreateRecipe: React.FC = () => {
         fetchCategories();
     }, []);
 
+    const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDifficulty(parseInt(event.target.value, 10)); // Update difficulty value
+    };
+
     // Add an ingredient to the list
     const handleAddIngredient = () => {
         if (ingredient.trim() !== '') {
@@ -59,9 +68,28 @@ const CreateRecipe: React.FC = () => {
         setIngredientsList(updatedIngredients);
     };
 
+    const toggleTag = (tag: string) => {
+        if (selectedTags.includes(tag)) {
+            setSelectedTags(selectedTags.filter(t => t !== tag));
+        } else {
+            setSelectedTags([...selectedTags, tag]);
+        }
+    };
+
     // Handle form submission (you can adapt this to save/submit the recipe data to a server)
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
+        let vegan = 0
+        let vegetarian = 0
+
+        if (selectedTags.includes("Vegan")) {
+            vegan = 1
+        }
+
+        if (selectedTags.includes("Vegetarisch")){
+            vegetarian = 1
+        }
 
         const newRecipe = {
             title: title,
@@ -69,11 +97,11 @@ const CreateRecipe: React.FC = () => {
             image: imageUrl,
             ingredients: ingredientsList.join("|"),
             creator: localStorage.getItem('userEmail'),
-            difficulty: null,
+            difficulty: difficulty,
             category: selectedCategory,
-            vegan: null,
-            vegetarian: null,
-            allergen: null,
+            vegan: vegan,
+            vegetarian: vegetarian,
+            allergen: selectedTags.filter(tag => tag !== "Vegan" && tag !== "Vegetarisch").join(", "),
         };
 
         const response: Response = await fetch('https://canoob.de:3007/saveRecipe', {
@@ -103,6 +131,69 @@ const CreateRecipe: React.FC = () => {
                 )}
                 <div className="create-recipe-body">
                     <h1 className="create-recipe-title">Erstelle dein eigenes Rezept!</h1>
+
+
+                    <div className="tag-section">
+                        <h3>Diätetische Präferenzen auswählen</h3>
+                        <div className="tag-buttons">
+                            {dietaryTags.map(tag => (
+                                <button
+                                    key={tag}
+                                    className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                                    onClick={() => toggleTag(tag)}
+                                >
+                                    {tag}
+                                </button>
+                            ))}
+                        </div>
+
+                        <h3>Allergene auswählen</h3>
+                        <div className="tag-buttons">
+                            {allergenTags.map(tag => (
+                                <button
+                                    key={tag}
+                                    className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                                    onClick={() => toggleTag(tag)}
+                                >
+                                    {tag}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Display selected tags */}
+                        {selectedTags.length > 0 && (
+                            <div className="selected-tags">
+                                <h4>Tags:</h4>
+                                {selectedTags.map(tag => (
+                                    <span key={tag} className="selected-tag">
+                                    {tag}
+                                </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+
+                    <div className="difficulty-slider-container">
+                        {/* Label above the slider */}
+                        <div className="difficulty-labels">
+                            <span className="difficulty-label">Einfach</span>
+                            <span className="difficulty-label">Mittel</span>
+                            <span className="difficulty-label">Schwer</span>
+                        </div>
+
+                        {/* Slider with custom styling */}
+                        <input
+                            type="range"
+                            min="1"
+                            max="5"
+                            value={difficulty}
+                            onChange={handleSliderChange}
+                            className="difficulty-slider"
+                        />
+                    </div>
+
+
                     <form onSubmit={handleSubmit}>
                         <div className="recipe-field">
                             <label>Titel</label>
@@ -131,6 +222,7 @@ const CreateRecipe: React.FC = () => {
                                 onChange={(e) => setImageUrl(e.target.value)}
                                 placeholder="Gib ein Link zu dem Bild deines Rezeptes an..."
                             />
+                            {imageUrl && <img src={imageUrl} alt="Ungültiger Link..." className="image-preview"/>}
                         </div>
                         <div className="category-dropdown">
                             <label>Kategorie</label>
@@ -179,6 +271,7 @@ const CreateRecipe: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
+
                         <button type="submit" className="submit-recipe-button">
                             Rezept einsenden
                         </button>
