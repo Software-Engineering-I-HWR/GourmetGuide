@@ -22,7 +22,12 @@
 }
 
 /* Other styles remain the same */
-
+.image-preview {
+    width: 100%;
+    max-width: 200px; /* Limit size of the preview */
+    margin-top: 10px;
+    border-radius: 5px;
+}
 
 .create-recipe-title {
     font-size: 40px;
@@ -34,6 +39,52 @@
 
 .recipe-field {
     margin-bottom: 20px;
+}
+
+.tag-section {
+    margin-bottom: 20px;
+}
+
+.tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
+.tag-button {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #07546E;
+    background-color: #e5ebee;
+    color: #07546E;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tag-button.selected {
+    background-color: #07546E;
+    color: white;
+}
+
+.tag-button:hover {
+    background-color: #7e9cac;
+    color: white;
+}
+
+/* Display Selected Tags */
+.selected-tags {
+    margin-top: 10px;
+}
+
+.selected-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 15px;
+    background-color: #07546E;
+    color: white;
+    font-size: 12px;
 }
 
 .recipe-field label,
