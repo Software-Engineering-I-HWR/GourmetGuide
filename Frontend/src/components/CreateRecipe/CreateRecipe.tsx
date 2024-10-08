@@ -83,11 +83,11 @@ const CreateRecipe: React.FC = () => {
         let vegan = 0
         let vegetarian = 0
 
-        if ("Vegan" in selectedTags) {
+        if (selectedTags.includes("Vegan")) {
             vegan = 1
         }
 
-        if ("Vegetarisch" in selectedTags){
+        if (selectedTags.includes("Vegetarisch")){
             vegetarian = 1
         }
 
@@ -101,7 +101,7 @@ const CreateRecipe: React.FC = () => {
             category: selectedCategory,
             vegan: vegan,
             vegetarian: vegetarian,
-            allergen: selectedTags.filter(tag => tag !== "Vegan" && tag !== "Vegetarian").join(", "),
+            allergen: selectedTags.filter(tag => tag !== "Vegan" && tag !== "Vegetarisch").join(", "),
         };
 
         const response: Response = await fetch('https://canoob.de:3007/saveRecipe', {
