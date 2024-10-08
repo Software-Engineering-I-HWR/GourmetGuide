@@ -296,16 +296,16 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         <p className="showRecipe-properties-vegetarian" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian === true ? "Ja" : "Nein"}</p>
+                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-vegan" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan === true ? "Ja" : "Nein"}</p>
+                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-allergen"
                            style={{
                                color: "#b1c3cd",
                                fontSize: "2%"
-                           }}>Allergene: {sampleRecipe?.allergen === null ? "n.a." : sampleRecipe?.allergen}</p>
+                           }}>Allergene: {!sampleRecipe?.allergen ? "n.a." : sampleRecipe?.allergen}</p>
                     </div>
                 </div>
             </div>
