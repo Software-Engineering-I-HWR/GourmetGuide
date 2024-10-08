@@ -177,9 +177,9 @@ const CreateRecipe: React.FC = () => {
                     <div className="difficulty-slider-container">
                         {/* Label above the slider */}
                         <div className="difficulty-labels">
-                            <span className="difficulty-label">Easy</span>
-                            <span className="difficulty-label">Middle</span>
-                            <span className="difficulty-label">Difficult</span>
+                            <span className="difficulty-label">Einfach</span>
+                            <span className="difficulty-label">Mittel</span>
+                            <span className="difficulty-label">Schwer</span>
                         </div>
 
                         {/* Slider with custom styling */}
@@ -222,7 +222,7 @@ const CreateRecipe: React.FC = () => {
                                 onChange={(e) => setImageUrl(e.target.value)}
                                 placeholder="Gib ein Link zu dem Bild deines Rezeptes an..."
                             />
-                            {imageUrl && <img src={imageUrl} alt="Recipe Preview" className="image-preview"/>}
+                            {imageUrl && <img src={imageUrl} alt="Ungültiger Link..." className="image-preview"/>}
                         </div>
                         <div className="category-dropdown">
                             <label>Kategorie</label>
