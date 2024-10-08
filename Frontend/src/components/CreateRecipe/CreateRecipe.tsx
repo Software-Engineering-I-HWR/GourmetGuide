@@ -21,6 +21,7 @@ const CreateRecipe: React.FC = () => {
     const selectedStringCategory = useParams<{ Category: string }>().Category || "none";
     const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory == "none" ? "" : selectedStringCategory));
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [difficulty, setDifficulty] = useState(3); // Initial difficulty value is 3
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -48,6 +49,10 @@ const CreateRecipe: React.FC = () => {
         };
         fetchCategories();
     }, []);
+
+    const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDifficulty(parseInt(event.target.value, 10)); // Update difficulty value
+    };
 
     // Add an ingredient to the list
     const handleAddIngredient = () => {
@@ -92,7 +97,7 @@ const CreateRecipe: React.FC = () => {
             image: imageUrl,
             ingredients: ingredientsList.join("|"),
             creator: localStorage.getItem('userEmail'),
-            difficulty: null,
+            difficulty: difficulty,
             category: selectedCategory,
             vegan: vegan,
             vegetarian: vegetarian,
@@ -126,6 +131,7 @@ const CreateRecipe: React.FC = () => {
                 )}
                 <div className="create-recipe-body">
                     <h1 className="create-recipe-title">Erstelle dein eigenes Rezept!</h1>
+
 
                     <div className="tag-section">
                         <h3>Diätetische Präferenzen auswählen</h3>
@@ -166,6 +172,27 @@ const CreateRecipe: React.FC = () => {
                             </div>
                         )}
                     </div>
+
+
+                    <div className="difficulty-slider-container">
+                        {/* Label above the slider */}
+                        <div className="difficulty-labels">
+                            <span className="difficulty-label">Easy</span>
+                            <span className="difficulty-label">Middle</span>
+                            <span className="difficulty-label">Difficult</span>
+                        </div>
+
+                        {/* Slider with custom styling */}
+                        <input
+                            type="range"
+                            min="1"
+                            max="5"
+                            value={difficulty}
+                            onChange={handleSliderChange}
+                            className="difficulty-slider"
+                        />
+                    </div>
+
 
                     <form onSubmit={handleSubmit}>
                         <div className="recipe-field">

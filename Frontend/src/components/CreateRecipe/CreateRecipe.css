@@ -77,6 +77,80 @@
     margin-top: 10px;
 }
 
+.difficulty-slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.difficulty-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;  /* Ensure this matches slider width */
+    margin-bottom: 10px;  /* Add space between labels and slider */
+    padding: 0 20px;
+}
+
+.difficulty-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1; /* Ensures labels are evenly spaced */
+    text-align: center;
+}
+
+.difficulty-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 80%;
+    height: 16px; /* Slightly bigger track for better visibility */
+    background: #ddd;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.15s ease-in-out;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.difficulty-slider:hover {
+    opacity: 1;
+}
+
+.difficulty-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;  /* Larger thumb for a more visible button */
+    height: 28px;
+    border-radius: 50%;
+    background: #07546E;
+    cursor: pointer;
+    margin-top: -6px; /* Adjust this for alignment of thumb with slider */
+    transition: background 0.15s ease-in-out;
+}
+
+.difficulty-slider::-moz-range-thumb {
+    width: 28px;  /* Larger thumb */
+    height: 28px;
+    border-radius: 50%;
+    background: #07546E;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+}
+
+.difficulty-slider::-webkit-slider-thumb:hover,
+.difficulty-slider::-moz-range-thumb:hover {
+    background: #07546E; /* Slightly darker green on hover */
+}
+
+.slider-value {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
 .selected-tag {
     display: inline-block;
     padding: 5px 10px;
