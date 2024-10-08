@@ -1,7 +1,7 @@
 import './Categories.css';
 import CategoryCard from "./CategoryCard.tsx";
-import ErrorPage from "../errorPage.tsx";
 import React, {useEffect, useState} from "react";
+import AllRecipesByCategory from "./AllRecipesByCategory.tsx";
 
 interface Recipe {
     Title: string;
@@ -26,11 +26,19 @@ interface Category {
     Category: string;
 }
 
+interface RecipesByCategory {
+    title: string;
+    category: string;
+    imageUrl: string;
+    id: number;
+}
+
 const Categories: React.FC = () => {
 
     const [currentCategory, setCurrentCategory] = useState('Vegetarian')
     const [sampleCategories, setSampleCategories] = useState<ListItem[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
+    const [allRecipesCurrentCategory, setAllRecipesCurrentCategory] = useState<Recipe[]>([]);
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -48,11 +56,23 @@ const Categories: React.FC = () => {
     }
 
     async function getRecipes(category: string): Promise<Recipe[] | null> {
+        console.log("test", category);
         try {
             const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`, {
                 method: 'GET'
             });
-            if (response.ok) {
+            console.log(sampleCategories.some(item => item.title === category), "   ", category, sampleCategories);
+            if (response.ok && !sampleCategories.some(item => item.title === category)) {
+                if (category === currentCategory) {
+                    const a = await response.json();
+                    const allRecipesFromCategory = a.map((item: { Title: any; Category: any; Image: any; ID: any; }) => ({
+                        title: item.Title,
+                        category: item.Category,
+                        imageUrl: item.Image,
+                        id: item.ID
+                    }));
+                    setAllRecipesCurrentCategory(allRecipesFromCategory)
+                }
                 const recipes = await response.json();
                 const newCategory: ListItem = {
                     functionActive: setCurrentCategory,
@@ -105,6 +125,7 @@ const Categories: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        console.log("alle Kategorien", categories);
         categories!.forEach(category => {
             getRecipes(category);
         })
@@ -117,13 +138,12 @@ const Categories: React.FC = () => {
     useEffect(() => {
         setSampleCategories((prevItem) =>
             prevItem.map((item =>
-            item.title === currentCategory ? {...item, active: "true"} : {...item, active: "false"}))
+                item.title === currentCategory ? {...item, active: "true"} : {...item, active: "false"}))
         );
     }, [currentCategory]);
 
-    console.log("categories",currentCategory);
     return (
-        <div className="Mainpage">
+        <div className="main-content">
             <section className="categories">
                 <h2 className="categories__title">Kategorien</h2>
                 <div className="categories__list">
@@ -133,7 +153,11 @@ const Categories: React.FC = () => {
                 </div>
             </section>
             <section className="recipes-by-category">
-                <ErrorPage/>
+                <div className="recipes-by-category-list">
+                    {allRecipesCurrentCategory!.sort().map((recipe, index) => (
+                        <AllRecipesByCategory key={index} {...recipe}/>
+                    ))}
+                </div>
             </section>
         </div>
     );
