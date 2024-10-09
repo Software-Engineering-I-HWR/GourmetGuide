@@ -136,6 +136,54 @@ app.get('/getRecipeByID', (req, res) => {
     });
 });
 
+app.post('/deleteRecipeByID', (req, res) => {
+    const id = req.query.id;
+    const query = 'DELETE FROM Rezept WHERE ID = ?';
+
+    console.log(query);
+
+    connection.query(query, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Löschen des Rezepts');
+        } else {
+            res.status(200).send('Rezept erfolgreich gelöscht');
+        }
+    });
+});
+
+app.get('/getRecipesByRating', (req, res) => {
+    const rating = req.query.rating;
+    const query = `SELECT r.*, AVG(rt.Bewertung) as average_rating
+        FROM Rezept r
+        JOIN Bewertung rt ON r.ID = rt.ID
+        GROUP BY r.ID
+        HAVING average_rating >= ?`;
+
+    connection.query(query, [rating], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT ID FROM Rezept WHERE Creator = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getRecipesByCategory', (req, res) => {
     const category = req.query.category;
     const query = 'SELECT * FROM Rezept WHERE Category = ?';
