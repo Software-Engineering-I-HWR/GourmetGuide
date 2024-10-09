@@ -149,3 +149,8 @@
     margin: 0 2%;
     margin-bottom: 10%;
 }
+
+.personalHome-main-div{
+    display: flex;
+    justify-content: flex-start;
+}
