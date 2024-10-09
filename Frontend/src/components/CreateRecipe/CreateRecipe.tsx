@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
 import {useParams} from "react-router-dom";
 
-const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Molkereifrei", "Eifrei", "Sojafrei"];
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
 const allergenTags = ["Erdnüsse", "Baumnüsse", "Schalentiere", "Fisch", "Milch", "Eier", "Weizen", "Soja"];
 
 interface Category {

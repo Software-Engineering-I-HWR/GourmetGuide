@@ -40,11 +40,11 @@
 .showRecipe-contentfield-right {
     position: absolute;
     right: 0;
-    top: 50%;
+    top: 75%;
     transform: translateY(-50%);
     display: flex;
     justify-content: flex-end;
-    width: 20%;
+    width: 30%;
     border-radius: 20px;
 }
 
@@ -61,7 +61,6 @@
 
 .showRecipe-properties {
     display: flex;
-    flex-direction: column;
     width: 100%;
     margin: 10% 10%;
     font-size: 1000px;
@@ -236,4 +235,10 @@
     border: 3px solid #7e9cac;
     font-size: 1.5vh;
     margin-left: 5%;
+}
+
+.allergen-symbol{
+    display: flex;
+    width: 20%;
+    margin: 1% 1%;
 }
