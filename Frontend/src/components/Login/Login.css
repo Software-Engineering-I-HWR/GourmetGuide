@@ -118,13 +118,15 @@
     text-decoration: underline;
 }
 
-@media screen and (max-width: 800px) {
+@media only screen and (max-width: 768px) {
     .login-body {
         flex-direction: column;
         align-items: center;
         width: 90%;
     }
-
+    .login-left {
+        width: 100%;
+    }
     .login-right {
         margin-top: 20px;
     }

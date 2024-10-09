@@ -46,20 +46,23 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     {title}
                 </a>
             </div>
-            <form className="navbar__search" onSubmit={handleOnSubmit}>
-                <input
-                    type="text"
-                    placeholder="Suche..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="navbar__search-input"
-                />
-                <a type="Submit" href={getLink(searchTerm)} className="navbar__link">Suchen</a>
-            </form>
-            <div className="navbar-actions">
-                <a href = '/personal-home' style={isLoggedIn?{}:{display:'none'}} className="navbar__link">Eigener Bereich</a>
-                <a href =  '/categories' className="navbar__link">Kategorien</a>
-                <a href =  '/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
+            <div className="navbar__Buttons">
+                <form className="navbar__search" onSubmit={handleOnSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Suche..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className="navbar__search-input"
+                    />
+                    <a type="Submit" href={getLink(searchTerm)} className="navbar__link">Suchen</a>
+                </form>
+                <div className="navbar-actions">
+                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Eigener
+                        Bereich</a>
+                    <a href='/categories' className="navbar__link">Kategorien</a>
+                    <a href='/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
+                </div>
             </div>
         </nav>
     );
