@@ -186,7 +186,7 @@ app.get('/getRecipesByUser', (req, res) => {
 
 app.get('/getRatedRecipesByUser', (req, res) => {
     const user = req.query.user;
-    const query = 'SELECT * FROM Bewertung WHERE Username = ?';
+    const query = 'SELECT ID FROM Bewertung WHERE Username = ?';
 
     connection.query(query, [user], (error, results) => {
         if (error) {
