@@ -1,7 +1,7 @@
 import './Categories.css';
 import CategoryCard from "./CategoryCard.tsx";
 import React, {useEffect, useState} from "react";
-import AllRecipesByCategory from "./AllRecipesByCategory.tsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Recipe {
     Title: string;
@@ -13,7 +13,7 @@ interface Recipe {
     Steps: string;
     Vegan: boolean;
     Vegetarian: boolean;
-};
+}
 
 interface ListItem {
     functionActive: (newText: string) => void;
@@ -35,133 +35,164 @@ interface RecipesByCategory {
 
 const Categories: React.FC = () => {
 
-    const [currentCategory, setCurrentCategory] = useState('Vegetarian')
-    const [sampleCategories, setSampleCategories] = useState<ListItem[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
-    const [allRecipesCurrentCategory, setAllRecipesCurrentCategory] = useState<Recipe[]>([]);
+        const [currentCategory, setCurrentCategory] = useState('Vegetarian')
+        const [sampleCategories, setSampleCategories] = useState<ListItem[]>([]);
+        const [categories, setCategories] = useState<string[]>([]);
+        const [allRecipesCurrentCategory, setAllRecipesCurrentCategory] = useState<RecipesByCategory[]>([]);
 
-    async function getAllCategories(): Promise<Category[] | null> {
-        try {
-            const response = await fetch('https://canoob.de:3007/getAllCategories');
-            if (response.ok) {
-                return await response.json();
-            } else {
-                console.error('API request error:', response.status);
+        async function getAllCategories(): Promise<Category[] | null> {
+            try {
+                const response = await fetch('https://canoob.de:3007/getAllCategories');
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    console.error('API request error:', response.status);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
                 return null;
             }
-        } catch (error) {
-            console.error('Network error:', error);
-            return null;
         }
-    }
 
-    async function getRecipes(category: string): Promise<Recipe[] | null> {
-        console.log("test", category);
-        try {
-            const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`, {
-                method: 'GET'
-            });
-            console.log(sampleCategories.some(item => item.title === category), "   ", category, sampleCategories);
-            if (response.ok && !sampleCategories.some(item => item.title === category)) {
-                if (category === currentCategory) {
-                    const a = await response.json();
-                    const allRecipesFromCategory = a.map((item: { Title: any; Category: any; Image: any; ID: any; }) => ({
+        async function getRecipesByCategory(currentCat: string): Promise<Recipe[] | null> {
+            try {
+                const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(currentCat)}`, {
+                    method: 'GET'
+                });
+                if (response.ok) {
+                    const recipes = await response.json();
+                    const allRecipesFromCategory: RecipesByCategory[] = recipes.map((item: Recipe) => ({
                         title: item.Title,
                         category: item.Category,
                         imageUrl: item.Image,
                         id: item.ID
                     }));
-                    setAllRecipesCurrentCategory(allRecipesFromCategory)
+
+                    setAllRecipesCurrentCategory(allRecipesFromCategory);
+                    return recipes;
+                } else {
+                    console.error('API request error:', response.status);
+                    return null;
                 }
-                const recipes = await response.json();
-                const newCategory: ListItem = {
-                    functionActive: setCurrentCategory,
-                    title: recipes[0].Category,
-                    imageUrl: recipes[0].Image,
-                    active: currentCategory === recipes[0].Category ? 'true' : 'false'
-                };
-                setSampleCategories((prevSampleCategories) => [...prevSampleCategories, newCategory]);
-                return recipes;
-            } else {
-                console.error('API request error:', response.status);
+            } catch (error) {
+                console.error('Network error:', error);
                 return null;
             }
-        } catch (error) {
-            console.error('Network error:', error);
-            return null;
-        }
-    }
-
-    /* useEffect(() => {
-         const fetchRecipe = async () => {
-             const recipe = await getRecipes();
-             if (recipe && Array.isArray(recipe)) {
-                 const newRecipe: ListItem[] = recipe.map(item => ({
-                     functionActive: setCurrentCategory,
-                     title: item.Category,
-                     imageUrl: item.Image,
-                     active: currentCategory === item.Title ? 'true' : 'false'
-                 }));
-                 setSampleCategories(newRecipe);
-             } else {
-                 console.error('No valid recipes received or the data is not an array.');
-             }
-         };
-         fetchRecipe();
-
-     }, [getRecipes]);*/
-
-    const fetchCategories = async () => {
-        const allCategoriesJson = await getAllCategories();
-        if (allCategoriesJson) {
-            const categoriesList: string[] = allCategoriesJson.map(item => item.Category);
-            setCategories(categoriesList);
         }
 
-    };
+        async function getRecipes(category: string): Promise<Recipe[] | null> {
+            try {
+                if (sampleCategories.some(item => item.title === category)) return null;
+                const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`, {
+                    method: 'GET'
+                });
+                if (response.ok) {
+                    const recipes = await response.json();
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+                    if (recipes.length > 0) {
+                        const newCategory: ListItem = {
+                            functionActive: setCurrentCategory,
+                            title: recipes[0].Category,
+                            imageUrl: recipes[0].Image,
+                            active: currentCategory === recipes[0].Category ? 'true' : 'false',
+                        };
 
-    useEffect(() => {
-        console.log("alle Kategorien", categories);
-        categories!.forEach(category => {
-            getRecipes(category);
-        })
-    }, [categories]);
+                        setSampleCategories((prevSampleCategories) => {
+                            if (prevSampleCategories.some(item => item.title === newCategory.title)) {
+                                return prevSampleCategories;
+                            }
+                            return [...prevSampleCategories, newCategory];
+                        });
 
-    useEffect(() => {
-        console.log("alle Kategorien mit Inhalt", sampleCategories);
-    }, [sampleCategories]);
+                        return recipes;
+                    }
 
-    useEffect(() => {
-        setSampleCategories((prevItem) =>
-            prevItem.map((item =>
-                item.title === currentCategory ? {...item, active: "true"} : {...item, active: "false"}))
+                    return null;
+                } else {
+                    console.error('API request error:', response.status);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                return null;
+            }
+        }
+
+        const fetchCategories = async () => {
+            const allCategoriesJson = await getAllCategories();
+            if (allCategoriesJson) {
+                const categoriesList: string[] = allCategoriesJson.map(item => item.Category);
+                setCategories(categoriesList);
+            }
+
+        };
+
+        useEffect(() => {
+            fetchCategories();
+        }, []);
+
+        useEffect(() => {
+            categories!.forEach(category => {
+                getRecipes(category);
+            })
+        }, [categories, getRecipes]);
+
+        useEffect(() => {
+                setSampleCategories((prevItem) =>
+                    prevItem.map((item =>
+                        item.title === currentCategory ? {...item, active: "true"} : {...item, active: "false"}))
+                );
+                getRecipesByCategory(currentCategory);
+            }, [currentCategory]
+        )
+        ;
+
+        return (
+            <div className="main-content">
+                <div className="categories-main-content">
+                    <div className="categories">
+                        <h1 className="categories__title">Kategorien</h1>
+                        <div className="categories__list">
+                            {sampleCategories!.sort().map((recipe, index) => (
+                                <CategoryCard key={index} {...recipe}/>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="recipes-by-category">
+                        <h2 className="categories__title"></h2>
+                        <div className="recipes-by-category-list">
+                            <table className="recipes-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col1">#</th>
+                                    <th scope="col2">Titel</th>
+                                    <th scope="col3">Kategorie</th>
+                                    <th scope="col4">Bild</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {allRecipesCurrentCategory!.sort().map((recipe, index) => (
+                                    <tr onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
+                                        <th scope="row">{index}</th>
+                                        <td>{recipe.title}</td>
+                                        <td>{recipe.category}</td>
+                                        <td>
+                                            <img src={recipe.imageUrl}
+                                                 style={{height: "7vw", objectFit: "cover", width: "100%"}}
+                                                 alt="Bild Rezept"/>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
-    }, [currentCategory]);
-
-    return (
-        <div className="main-content">
-            <section className="categories">
-                <h2 className="categories__title">Kategorien</h2>
-                <div className="categories__list">
-                    {sampleCategories!.sort().map((recipe, index) => (
-                        <CategoryCard key={index} {...recipe}/>
-                    ))}
-                </div>
-            </section>
-            <section className="recipes-by-category">
-                <div className="recipes-by-category-list">
-                    {allRecipesCurrentCategory!.sort().map((recipe, index) => (
-                        <AllRecipesByCategory key={index} {...recipe}/>
-                    ))}
-                </div>
-            </section>
-        </div>
-    );
-};
+    }
+;
 
 
 export default Categories;
