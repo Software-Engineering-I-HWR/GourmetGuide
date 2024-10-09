@@ -184,6 +184,20 @@ app.get('/getRecipesByUser', (req, res) => {
     });
 });
 
+app.get('/getRatedRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT * FROM Bewertung WHERE Username = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getRecipesByCategory', (req, res) => {
     const category = req.query.category;
     const query = 'SELECT * FROM Rezept WHERE Category = ?';
