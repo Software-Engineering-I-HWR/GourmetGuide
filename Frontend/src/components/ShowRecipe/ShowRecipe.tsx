@@ -60,8 +60,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 method: 'GET'
             });
             if (response.ok) {
-                const recipes = await response.json();
-                return recipes;
+                return await response.json();
             } else {
                 console.error('API request error:', response.status);
                 return null;
@@ -336,27 +335,27 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              alt={activeStarOnHover >= 1 || chosenStar! >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
                              src={activeStarOnHover >= 1 || chosenStar! >= 1 ? "/images/fullStar.png" : "/images/emptyStar.png"}
                              onMouseOver={() => setActiveStarOnHover(1)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 1 ? setChosenStar(1) : setChosenStar(0)}/>
+                             onClick={() => setChosenStar(1)}/>
                         <img className="second-star"
                              alt={activeStarOnHover >= 2 || chosenStar! >= 2 ? "ausgefüllter Stern" : "leerer Stern"}
                              src={activeStarOnHover >= 2 || chosenStar! >= 2 ? "/images/fullStar.png" : "/images/emptyStar.png"}
                              onMouseOver={() => setActiveStarOnHover(2)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 2 ? setChosenStar(2) : setChosenStar(0)}/>
+                             onClick={() => setChosenStar(2)}/>
                         <img className="third-star"
                              alt={activeStarOnHover >= 3 || chosenStar! >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
                              src={activeStarOnHover >= 3 || chosenStar! >= 3 ? "/images/fullStar.png" : "/images/emptyStar.png"}
                              onMouseOver={() => setActiveStarOnHover(3)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 3 ? setChosenStar(3) : setChosenStar(0)}/>
+                             onClick={() => setChosenStar(3)}/>
                         <img className="fourth-star"
                              alt={activeStarOnHover >= 4 || chosenStar! >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
                              src={activeStarOnHover >= 4 || chosenStar! >= 4 ? "/images/fullStar.png" : "/images/emptyStar.png"}
                              onMouseOver={() => setActiveStarOnHover(4)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 4 ? setChosenStar(4) : setChosenStar(0)}/>
+                             onClick={() => setChosenStar(4)}/>
                         <img className="fifth-star"
                              alt={activeStarOnHover >= 5 || chosenStar! >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
                              src={activeStarOnHover >= 5 || chosenStar! >= 5 ? "/images/fullStar.png" : "/images/emptyStar.png"}
                              onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 5 ? setChosenStar(5) : setChosenStar(0)}/>
+                             onClick={() => setChosenStar(5)}/>
                     </div>}
                     {!isLoggedIn && <div className="fake-rating-system" onMouseOver={() => setShowMessage(true)}
                                          onMouseLeave={() => setShowMessage(false)}>
