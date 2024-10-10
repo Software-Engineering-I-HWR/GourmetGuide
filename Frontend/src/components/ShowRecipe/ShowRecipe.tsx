@@ -139,8 +139,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const handleShare = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent default form submission
 
-        console.log("TEST")
-
         let ingredientsArray = ["Fehler", "Aufgetreten"]
         let steps = ""
 
