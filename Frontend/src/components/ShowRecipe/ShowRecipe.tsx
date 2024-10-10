@@ -136,11 +136,11 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         setStepsAsArray(stepsArray);
     };
 
-    const handleShare = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
+    const handleShare = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault(); // Prevent default button behavior
 
-        let ingredientsArray = ["Fehler", "Aufgetreten"]
-        let steps = ""
+        let ingredientsArray = ["Fehler", "Aufgetreten"];
+        let steps = "";
 
         if ("ingredients" in sampleRecipe!) {
             ingredientsArray = sampleRecipe.ingredients.split("|");
@@ -157,8 +157,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             ingredients: ingredientsArray,
         };
 
-        //https://canoob.de:30157/generate-pdf
-        //http://localhost:3000/generate-pdf
         const response = await fetch('https://canoob.de:30157/generate-pdf', {
             method: 'POST',
             headers: {
@@ -171,21 +169,18 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             throw new Error('Failed to generate PDF');
         }
 
-        // Convert the response into a blob (binary data)
         const blob = await response.blob();
-
-        // Create a download link for the blob and trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'recipe.pdf';  // Filename for the downloaded PDF
-        document.body.appendChild(a);  // Append the link to the document
-        a.click();  // Programmatically trigger a click event to download
-        a.remove();  // Clean up the DOM by removing the link
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
 
-        // Revoke the blob URL to free up memory
         window.URL.revokeObjectURL(url);
-    }
+    };
+
 
     useEffect(() => {
         getAvRating()
