@@ -379,7 +379,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         Du musst dich anmelden, um das Rezept zu bewerten!
                     </div>}
                 </div>
-                <button type="submit" className="download-button" onSubmit={() => handleShare}>Teilen</button>
+                <button type="button" onClick={handleShare} className="download-button">Teilen</button>
             </div>
         </div>
         </body>
