@@ -4,7 +4,6 @@ import PopupWindow from "../../PopupWindow.tsx";
 import {useParams} from "react-router-dom";
 
 const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
-const allergenTags = ["Erdnüsse", "Baumnüsse", "Schalentiere", "Fisch", "Milch", "Eier", "Weizen", "Soja"];
 
 interface Category {
     Category: string;
@@ -134,22 +133,9 @@ const CreateRecipe: React.FC = () => {
 
 
                     <div className="tag-section">
-                        <h3>Diätetische Präferenzen auswählen</h3>
-                        <div className="tag-buttons">
-                            {dietaryTags.map(tag => (
-                                <button
-                                    key={tag}
-                                    className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
-                                    onClick={() => toggleTag(tag)}
-                                >
-                                    {tag}
-                                </button>
-                            ))}
-                        </div>
-
                         <h3>Allergene auswählen</h3>
                         <div className="tag-buttons">
-                            {allergenTags.map(tag => (
+                            {dietaryTags.map(tag => (
                                 <button
                                     key={tag}
                                     className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
