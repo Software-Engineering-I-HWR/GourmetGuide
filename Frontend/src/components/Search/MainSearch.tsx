@@ -11,7 +11,6 @@ const MainSearch: React.FC = () => {
     const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating =="none"?"":selectedStringRating));
     const selectedStringCategory = useParams<{ Category: string }>().Category||"none";
     const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory =="none"?"":selectedStringCategory));
-    console.log(selectedCategory);
     const selectedStringDifficulty = useParams<{ Difficulty: string }>().Difficulty||"none";
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>((selectedStringDifficulty =="none"?"":selectedStringDifficulty));
 

@@ -26,13 +26,11 @@ interface ListItem {
 }
 
 async function getRecipes({name, difficulty, category, ingredients}: { name: string, difficulty: string, category: string, ingredients: string }): Promise<Recipe[] | null> {
-    console.log(ingredients);
     const promt = `https://canoob.de:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
         `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}`)
-    console.log(promt);
     try {
         const response = await fetch(promt);
         if (response.ok) {
@@ -54,7 +52,6 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
     useEffect(() => {
         const fetchRecipes = async () => {
             const recipes = await getRecipes({name, difficulty, category, ingredients});
-            console.log(recipes);
             if (recipes && Array.isArray(recipes)) {
                 const lastFifteenRecipes = recipes.map(recipe => ({
                     title: recipe.Title,

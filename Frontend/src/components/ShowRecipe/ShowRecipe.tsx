@@ -2,16 +2,18 @@ import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
+
 interface Recipe {
     Title: string;
     Category: string;
     Image: string;
     ID: number;
-    Allergen: string;
+    Allergen: string | null;
     Ingredients: string;
     Steps: string;
-    Vegan: boolean;
-    Vegetarian: boolean;
+    Vegan: number;
+    Vegetarian: number;
 }
 
 interface ListItem {
@@ -19,11 +21,11 @@ interface ListItem {
     category: string;
     imageUrl: string;
     id: number
-    allergen: string;
+    allergen: string[] | null;
     ingredients: string;
     steps: string;
-    vegan: boolean;
-    vegetarian: boolean;
+    vegan: number;
+    vegetarian: number;
 }
 
 interface showRecipeProps {
@@ -50,7 +52,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
     const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
-    const [chosenStar, setChosenStar] = useState<number | null >(null);
+    const [chosenStar, setChosenStar] = useState<number | null>(null);
     const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
 
@@ -80,7 +82,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 const recipes = await response.json();
                 const onlyRating = recipes[0]["AVG(Bewertung)"];
                 setAvRating(onlyRating);
-                console.log(onlyRating)
                 return onlyRating;
             } else {
                 console.error('API request error:', response.status);
@@ -182,28 +183,31 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     };
 
 
-    useEffect(() => {
-        getAvRating()
-
-        async function getRating(): Promise<number | null> {
-            try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
-                    method: 'GET'
-                });
-                if (response.ok) {
-                    const recipes = await response.json();
-                    const onlyRating = recipes[0].Bewertung;
-                    setChosenStar(onlyRating);
-                    return 1;
-                } else {
-                    console.error('API request error:', response.status);
+    async function getRating(): Promise<number | null> {
+        try {
+            const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                if (response.json.length == 0) {
                     return null;
                 }
-            } catch (error) {
-                console.error('Network error:', error);
+                const recipes = await response.json();
+                const onlyRating = recipes[0].Bewertung;
+                setChosenStar(onlyRating);
+                return 1;
+            } else {
+                console.error('API request error:', response.status);
                 return null;
             }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
         }
+    }
+
+    useEffect(() => {
+        getAvRating()
         getRating();
     }, [chosenStar]);
 
@@ -216,7 +220,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     category: recipe[0].Category,
                     imageUrl: recipe[0].Image,
                     id: recipe[0].ID,
-                    allergen: recipe[0].Allergen,
+                    allergen: recipe[0].Allergen != null ? recipe[0].Allergen.split(", ") : null,
                     ingredients: recipe[0].Ingredients,
                     steps: recipe[0].Steps,
                     vegan: recipe[0].Vegan,
@@ -229,8 +233,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
-
-
         fetchRecipe();
 
     }, []);
@@ -252,8 +254,10 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 return null;
             }
         }
+
         saveRating();
     }, [chosenStar]);
+
 
     return (
         <body className="showRecipe">
@@ -287,19 +291,19 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
                 <div className="showRecipe-contentfield-right">
                     <div className="showRecipe-properties">
-                        <p className="showRecipe-properties-vegetarian" style={{
-                            color: "#b1c3cd",
-                            fontSize: "2%"
-                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian ? "Ja" : "Nein"}</p>
-                        <p className="showRecipe-properties-vegan" style={{
-                            color: "#b1c3cd",
-                            fontSize: "2%"
-                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan ? "Ja" : "Nein"}</p>
-                        <p className="showRecipe-properties-allergen"
-                           style={{
-                               color: "#b1c3cd",
-                               fontSize: "2%"
-                           }}>Allergene: {!sampleRecipe?.allergen ? "n.a." : sampleRecipe?.allergen}</p>
+                        {sampleRecipe?.vegetarian == 1 &&
+                            <img className={"allergen-symbol"}
+                                 src='/images/vegetarian.png'
+                                 alt="vegetarisch-Symbol"/>}
+                        {sampleRecipe?.vegan == 1 &&
+                            <img className={"allergen-symbol"}
+                                 src='/images/vegan.png'
+                                 alt="vegan-symbol"/>}
+                        {sampleRecipe?.allergen && dietaryTags.map((item) => (
+                            sampleRecipe?.allergen != null && sampleRecipe.allergen.includes(item) &&
+                            <img className={"allergen-symbol"}
+                                 src={`/images/${item.toLowerCase()}.png`}
+                                 alt={`${item.toLowerCase()}-symbol`}/>))}
                     </div>
                 </div>
             </div>
