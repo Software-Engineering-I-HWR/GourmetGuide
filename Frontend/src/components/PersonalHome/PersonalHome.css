@@ -61,7 +61,7 @@
     color: #122832;
     font-size: 1.5rem;
     padding: 1% 10%;
-    background-color: #98afbc;
+    background-color: #4c778c;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -70,7 +70,7 @@
 }
 
 .personalHome-ownRecipes[value='disable'], .personalHome-ratedRecipes[value='disable'] {
-    filter: grayscale(100%);
+    background-color: #cbd6dd;
 }
 
 .home-recipes-table {
@@ -78,11 +78,12 @@
     border-collapse: collapse;
     margin: 0 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     font-size: 1.25rem;
 }
 
 .recipes-table thead th {
-    background-color: #07546E;
+    background-color: #4c778c;
     color: white;
     padding: 12px;
     text-align: left;
