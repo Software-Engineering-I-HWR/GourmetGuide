@@ -139,6 +139,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const handleShare = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent default form submission
 
+        console.log("TEST")
+
         let ingredientsArray = ["Fehler", "Aufgetreten"]
         let steps = ""
 
@@ -379,7 +381,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         Du musst dich anmelden, um das Rezept zu bewerten!
                     </div>}
                 </div>
-                <button type="submit" className="download-button" onSubmit={() => handleShare}>Teilen</button>
+                <button type="button" onClick={handleShare} className="download-button">Teilen</button>
             </div>
         </div>
         </body>
