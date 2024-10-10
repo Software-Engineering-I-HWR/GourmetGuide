@@ -263,7 +263,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         saveRating();
     }, [chosenStar]);
 
-    console.log(sampleRecipe?.allergen)
 
     return (
         <body className="showRecipe">
