@@ -14,6 +14,7 @@ interface Recipe {
     Steps: string;
     Vegan: number;
     Vegetarian: number;
+    Creator: string;
 }
 
 interface ListItem {
@@ -26,6 +27,7 @@ interface ListItem {
     steps: string;
     vegan: number;
     vegetarian: number;
+    creator: string;
 }
 
 interface showRecipeProps {
@@ -142,6 +144,11 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         let ingredientsArray = ["Fehler", "Aufgetreten"];
         let steps = "";
+        let creator = "GourmetGuide Team"
+
+        if(sampleRecipe?.creator){
+            creator = sampleRecipe.creator;
+        }
 
         if ("ingredients" in sampleRecipe!) {
             ingredientsArray = sampleRecipe.ingredients.split("|");
@@ -156,6 +163,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             image: sampleRecipe?.imageUrl,
             description: steps,
             ingredients: ingredientsArray,
+            creator: creator,
+            id: sampleRecipe?.id,
         };
 
         const response = await fetch('https://canoob.de:30157/generate-pdf', {
@@ -225,7 +234,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     ingredients: recipe[0].Ingredients,
                     steps: recipe[0].Steps,
                     vegan: recipe[0].Vegan,
-                    vegetarian: recipe[0].Vegetarian
+                    vegetarian: recipe[0].Vegetarian,
+                    creator: recipe[0].Creator,
                 };
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
