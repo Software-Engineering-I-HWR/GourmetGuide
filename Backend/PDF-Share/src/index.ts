@@ -27,8 +27,8 @@ app.use(cors());
 const addImageToPage = async (page: any, imageUrl: string, x: number, y: number, maxWidth: number, maxHeight: number, altText: string) => {
     try {
         // Try to fetch and embed the image
-        const isPng = imageUrl.toLowerCase().endsWith('.png');
-        const isJpg = imageUrl.toLowerCase().endsWith('.jpg');
+        const isPng = imageUrl.toLowerCase().includes('.png');
+        const isJpg = imageUrl.toLowerCase().includes('.jpg');
 
         if (!isPng && !isJpg) {
             altText = 'Unsupported image format';
@@ -217,10 +217,10 @@ const createRecipePDF = async (recipe: any) => {
     });
 
     //web link
-    page.drawText(`https://canoob.de:4000`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`https://canoob.de:4000`, 20)) / 2,
+    page.drawText(`Von ${recipe.creator}: canoob.de:4000/recipe/${recipe.id}/`, {
+        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator}https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
         y: 25,
-        size: 20,
+        size: 17,
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
         lineHeight: 24,
         opacity: 0.75,
@@ -240,11 +240,16 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 
     try {
 
+        console.log(req.body.id);
+        console.log(req.body.creator);
+
         const sanitizedRecipe: Recipe = {
             name: sanitizeText(req.body.name),
             image: req.body.image, // Assuming image URL is fine
             description: sanitizeText(req.body.description),
-            ingredients: req.body.ingredients.map((ingredient: string) => sanitizeText(ingredient))
+            ingredients: req.body.ingredients.map((ingredient: string) => sanitizeText(ingredient)),
+            creator: sanitizeText(req.body.creator),
+            id: req.body.id,
         };
 
         const pdfBytes = await createRecipePDF(sanitizedRecipe);
@@ -262,6 +267,7 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 });
 
 // Start the server
+
 https.createServer(credentials, app).listen(port, () => {
     console.log(`HTTPS Server running at https://localhost:${port}`);
 });
