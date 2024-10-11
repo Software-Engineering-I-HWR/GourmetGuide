@@ -58,6 +58,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
 
+    const isValidCreator = (creator: string | undefined) => {
+        const invalidCreators = ["1", "12345"]; // Add more invalid values here as needed
+        return creator && !invalidCreators.includes(creator);
+    };
+    const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
+
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
             const response = await fetch(`https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
@@ -144,11 +150,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         let ingredientsArray = ["Fehler", "Aufgetreten"];
         let steps = "";
-        let creator = "GourmetGuide Team"
-
-        if(sampleRecipe?.creator){
-            creator = sampleRecipe.creator;
-        }
 
         if ("ingredients" in sampleRecipe!) {
             ingredientsArray = sampleRecipe.ingredients.split("|");
@@ -163,7 +164,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             image: sampleRecipe?.imageUrl,
             description: steps,
             ingredients: ingredientsArray,
-            creator: creator,
+            creator: validCreator,
             id: sampleRecipe?.id,
         };
 
@@ -334,6 +335,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 ))}</div>
             </div>
             <div className="separator-line"></div>
+            <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
                 <div className="star-system">
                     {isLoggedIn && <div className="rating-system">
