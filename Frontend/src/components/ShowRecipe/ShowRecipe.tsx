@@ -60,8 +60,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 method: 'GET'
             });
             if (response.ok) {
-                const recipes = await response.json();
-                return recipes;
+                return await response.json();
             } else {
                 console.error('API request error:', response.status);
                 return null;
@@ -81,7 +80,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 const recipes = await response.json();
                 const onlyRating = recipes[0]["AVG(Bewertung)"];
                 setAvRating(onlyRating);
-                console.log(onlyRating)
                 return onlyRating;
             } else {
                 console.error('API request error:', response.status);
@@ -188,28 +186,31 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         window.URL.revokeObjectURL(url);
     }
 
-    useEffect(() => {
-        getAvRating()
-
-        async function getRating(): Promise<number | null> {
-            try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
-                    method: 'GET'
-                });
-                if (response.ok) {
-                    const recipes = await response.json();
-                    const onlyRating = recipes[0].Bewertung;
-                    setChosenStar(onlyRating);
-                    return 1;
-                } else {
-                    console.error('API request error:', response.status);
+    async function getRating(): Promise<number | null> {
+        try {
+            const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                /*if (response.json.length == 0) {
                     return null;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
+                }*/
+                const recipes = await response.json();
+                const onlyRating = recipes[0].Bewertung;
+                setChosenStar(onlyRating);
+                return 1;
+            } else {
+                console.error('API request error:', response.status);
                 return null;
             }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
         }
+    }
+
+    useEffect(() => {
+        getAvRating()
         getRating();
     }, [chosenStar]);
 
@@ -239,7 +240,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         fetchRecipe();
 
-    }, [getRecipes, id]);
+    }, []);
 
     useEffect(() => {
         async function saveRating(): Promise<number | null> {
