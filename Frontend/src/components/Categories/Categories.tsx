@@ -174,7 +174,7 @@ const Categories: React.FC = () => {
                                 <tbody>
                                 {allRecipesCurrentCategory!.sort().map((recipe, index) => (
                                     <tr onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
-                                        <th scope="row">{index}</th>
+                                        <th scope="row">{index+1}</th>
                                         <td>{recipe.title}</td>
                                         <td>{recipe.category}</td>
                                         <td>
