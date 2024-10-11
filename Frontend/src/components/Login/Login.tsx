@@ -1,6 +1,7 @@
 import './Login.css';
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
+import PropTypes from 'prop-types';
 
 interface LoginProps {
     isUserLoggedIn: boolean;
@@ -34,14 +35,6 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
 
     // Check for authentication cookie on component mount
 
-    const enterEmailAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
-
-    const enterPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    };
-
     const sendLoginRequest = async (email: string, password: string) => {
 
         return await fetch('https://canoob.de:30156/login', {
@@ -50,8 +43,8 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({email, password}),
-        });
-
+        })
+            .then(data => data.json())
     }
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -102,9 +95,9 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     }, [isUserLoggedIn]);
 
     useEffect(() => {
-            setTimeout(() => {
-                setShowPopupMessage(false);
-            }, 5000);
+        setTimeout(() => {
+            setShowPopupMessage(false);
+        }, 5000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showPopupMessage]);
 
@@ -129,14 +122,14 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                                 type="text"
                                 placeholder="E-Mail-Adresse..."
                                 value={email}
-                                onChange={enterEmailAdress}
+                                onChange={e => setEmail(e.target.value)}
                                 className="login-email-field-input"
                             />
                             <input
                                 type="password"
                                 placeholder="Passwort..."
                                 value={password}
-                                onChange={enterPassword}
+                                onChange={e => setPassword(e.target.value)}
                                 className="login-password-field-input"
                             />
                             <button type="submit" className="login-button">Anmelden</button>
@@ -156,5 +149,6 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
         </div>
     );
 };
+
 
 export default Login;
