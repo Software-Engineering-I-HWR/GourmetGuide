@@ -94,7 +94,7 @@
 .hero__img {
     display: flex;
     width: 45%;
-    height: auto;
+    height: 45%;
     padding: max(5%) max(5%);
     align-items: center;
     justify-content: center;
