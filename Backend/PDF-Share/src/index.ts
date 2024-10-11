@@ -216,8 +216,6 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: description_max_size * empty_line_width,
     });
 
-    console.log("TEST")
-
     //web link
     page.drawText(`Von ${recipe.creator}: canoob.de:4000/recipe/${recipe.id}/`, {
         x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator}https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
