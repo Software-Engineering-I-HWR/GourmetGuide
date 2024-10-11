@@ -212,17 +212,8 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: description_max_size * empty_line_width,
     });
 
-    page.drawText(`Von ${recipe.creator} erstellt auf`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf`, 17)) / 2,
-        y: 25,
-        size: 17,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
-        lineHeight: 24,
-        opacity: 0.75,
-    });
-
-    page.drawText(`https://canoob.de:4000/recipe/${recipe.id}/`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`https://canoob.de:4000/recipe/${recipe.id}/`, 17)) / 2,
+    page.drawText(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}/`, {
+        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
         y: 25,
         size: 17,
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
