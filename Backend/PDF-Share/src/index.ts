@@ -1,6 +1,6 @@
-import express, {Request, Response} from 'express';
-import {PDFDocument, StandardFonts} from 'pdf-lib';
-import {Recipe} from './recipe';
+import express, { Request, Response } from 'express';
+import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { Recipe } from './recipe';
 import cors from "cors";
 import fs from 'fs';
 import https from 'https';
@@ -16,7 +16,7 @@ const privateKey = fs.readFileSync('/usr/local/app/cert/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/usr/local/app/cert/cert.pem', 'utf8');
 const ca = fs.readFileSync('/usr/local/app/cert/chain.pem', 'utf8');
 
-const credentials = {key: privateKey, cert: certificate, ca: ca};
+const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 const app = express();
 const port = 3000;
@@ -45,7 +45,7 @@ const addImageToPage = async (page: any, imageUrl: string, x: number, y: number,
             image = await page.doc.embedJpg(imageBytes);
         }
         // Scale the image proportionally
-        const {width, height} = image.scale(1);
+        const { width, height } = image.scale(1);
         let finalWidth = width;
         let finalHeight = height;
 
@@ -169,6 +169,7 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
     },);
 
+
     // ingredients list
     let enumeration = ''
 
@@ -191,12 +192,15 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: font_size_for_enumeration * empty_line_width,
     });
 
+
+    // description
+
     let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
 
-    let description_max_size: number = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
+    let description_max_size: number  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
 
     for (let i = 18; i > 5; i--) {
-        description_max_size = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
+        description_max_size  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
         description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, i);
 
         if (i < description_max_size) break;
@@ -212,6 +216,7 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: description_max_size * empty_line_width,
     });
 
+    //web link
     page.drawText(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}/`, {
         x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
         y: 25,
@@ -219,7 +224,8 @@ const createRecipePDF = async (recipe: any) => {
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
         lineHeight: 24,
         opacity: 0.75,
-    });
+    },);
+
 
     // Serialize the PDF to a Uint8Array
     return await pdfDoc.save();
@@ -233,6 +239,7 @@ function sanitizeText(text: string): string {
 app.post('/generate-pdf', async (req: Request, res: Response) => {
 
     try {
+
         console.log(req.body.id);
         console.log(req.body.creator);
 
@@ -260,6 +267,7 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 });
 
 // Start the server
+
 https.createServer(credentials, app).listen(port, () => {
     console.log(`HTTPS Server running at https://localhost:${port}`);
 });
