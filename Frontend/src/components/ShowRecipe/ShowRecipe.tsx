@@ -52,7 +52,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
     const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
-    const [chosenStar, setChosenStar] = useState<number | null>(null);
+    const [chosenStar, setChosenStar] = useState<number>(0);
     const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
 
