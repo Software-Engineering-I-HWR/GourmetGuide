@@ -169,7 +169,6 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
     },);
 
-
     // ingredients list
     let enumeration = ''
 
@@ -192,9 +191,6 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: font_size_for_enumeration * empty_line_width,
     });
 
-
-    // description
-
     let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
 
     let description_max_size: number  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
@@ -216,16 +212,17 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: description_max_size * empty_line_width,
     });
 
-    //web link
-    page.drawText(`Von ${recipe.creator} erstellt auf\nhttps://canoob.de:4000/recipe/${recipe.id}/`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator}https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
+    const text = `Von ${recipe.creator} erstellt auf\nhttps://canoob.de:4000/recipe/${recipe.id}/`;
+    const textWidth = normalFont.widthOfTextAtSize(text, 17);
+
+    page.drawText(text, {
+        x: (page_width - textWidth) / 2,
         y: 25,
         size: 17,
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
         lineHeight: 24,
         opacity: 0.75,
-    },);
-
+    });
 
     // Serialize the PDF to a Uint8Array
     return await pdfDoc.save();
@@ -239,7 +236,6 @@ function sanitizeText(text: string): string {
 app.post('/generate-pdf', async (req: Request, res: Response) => {
 
     try {
-
         console.log(req.body.id);
         console.log(req.body.creator);
 
@@ -267,7 +263,6 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 });
 
 // Start the server
-
 https.createServer(credentials, app).listen(port, () => {
     console.log(`HTTPS Server running at https://localhost:${port}`);
 });
