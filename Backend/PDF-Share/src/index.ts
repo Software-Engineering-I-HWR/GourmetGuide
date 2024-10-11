@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
-import { Recipe } from './recipe';
+import express, {Request, Response} from 'express';
+import {PDFDocument, StandardFonts} from 'pdf-lib';
+import {Recipe} from './recipe';
 import cors from "cors";
 import fs from 'fs';
 import https from 'https';
@@ -16,7 +16,7 @@ const privateKey = fs.readFileSync('/usr/local/app/cert/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/usr/local/app/cert/cert.pem', 'utf8');
 const ca = fs.readFileSync('/usr/local/app/cert/chain.pem', 'utf8');
 
-const credentials = { key: privateKey, cert: certificate, ca: ca };
+const credentials = {key: privateKey, cert: certificate, ca: ca};
 
 const app = express();
 const port = 3000;
@@ -45,7 +45,7 @@ const addImageToPage = async (page: any, imageUrl: string, x: number, y: number,
             image = await page.doc.embedJpg(imageBytes);
         }
         // Scale the image proportionally
-        const { width, height } = image.scale(1);
+        const {width, height} = image.scale(1);
         let finalWidth = width;
         let finalHeight = height;
 
@@ -193,10 +193,10 @@ const createRecipePDF = async (recipe: any) => {
 
     let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
 
-    let description_max_size: number  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
+    let description_max_size: number = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
 
     for (let i = 18; i > 5; i--) {
-        description_max_size  = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
+        description_max_size = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
         description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, i);
 
         if (i < description_max_size) break;
@@ -212,11 +212,17 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: description_max_size * empty_line_width,
     });
 
-    const text = `Von ${recipe.creator} erstellt auf\nhttps://canoob.de:4000/recipe/${recipe.id}/`;
-    const textWidth = normalFont.widthOfTextAtSize(text, 17);
+    page.drawText(`Von ${recipe.creator} erstellt auf`, {
+        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf`, 17)) / 2,
+        y: 25,
+        size: 17,
+        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+        lineHeight: 24,
+        opacity: 0.75,
+    });
 
-    page.drawText(text, {
-        x: (page_width - textWidth) / 2,
+    page.drawText(`https://canoob.de:4000/recipe/${recipe.id}/`, {
+        x: (page_width - normalFont.widthOfTextAtSize(`https://canoob.de:4000/recipe/${recipe.id}/`, 17)) / 2,
         y: 25,
         size: 17,
         font: await pdfDoc.embedFont(StandardFonts.Helvetica),
