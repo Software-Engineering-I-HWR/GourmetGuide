@@ -217,7 +217,7 @@ const createRecipePDF = async (recipe: any) => {
     });
 
     //web link
-    page.drawText(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}/`, {
+    page.drawText(`Von ${recipe.creator} erstellt auf\nhttps://canoob.de:4000/recipe/${recipe.id}/`, {
         x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator}https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
         y: 25,
         size: 17,
