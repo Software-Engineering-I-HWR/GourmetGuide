@@ -222,20 +222,8 @@
     color: #65899c;
 }
 
-.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
-    display: flex;
-    margin: 3% 3%;
-    width: 100%;
-}
-
 .star-system {
     display: flex;
-}
-
-.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
-    display: flex;
-    margin: 3% 3%;
-    width: 100%;
 }
 
 .message {
@@ -258,25 +246,52 @@
     margin: 1% 1%;
 }
 
-.rating-system, .fake-rating-system {
-    display: flex;
-    padding: 1% 1%;
-    align-items: center;
-    margin-left: 10%;
-    width: 30%;
-}
-
-.rating-system-header {
-    display: flex;
-    padding: 1% 1%;
-    align-items: center;
-    margin-left: 10%;
-    width: 20%;
-    margin:auto;
-}
-
 .rating-null {
     margin-left: auto;
     font-size: 1rem;
     color: #65899c;
 }
+
+/* Optimierung der Sterne im Header (Bewertung) */
+.rating-system-header {
+    display: flex;
+    padding: 1%;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* anstelle eines festen Wertes wie 20% */
+    margin: 0 auto;
+    gap: 5px; /* Platz zwischen den Sternen */
+}
+
+/* Optimierung der Sterne im Rating-System */
+.rating-system, .fake-rating-system {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    width: auto; /* entfernt feste Breite */
+    gap: 5px; /* Platz zwischen den Sternen */
+}
+
+/* Verbesserte Größensteuerung der Sterne */
+.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+    display: flex;
+    width: 25px;  /* Feste Breite für die Sterne */
+    height: auto; /* Höhe automatisch basierend auf der Breite */
+    margin: 0 5px; /* Abstand zwischen den Sternen */
+    object-fit: contain; /* Verhindert Verzerrung */
+}
+
+/* Optional: Responsives Verhalten bei kleineren Bildschirmen */
+@media (max-width: 768px) {
+    .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+        width: 20px; /* Kleinere Sterne auf mobilen Geräten */
+        margin: 0 3px;
+    }
+}
+
+/* Hover-Effekt für gefüllte Sterne */
+.rfilled:hover {
+    fill: #07536D;
+}
+
