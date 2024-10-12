@@ -229,7 +229,13 @@
 }
 
 .star-system {
-    display: contents;
+    display: flex;
+}
+
+.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+    display: flex;
+    margin: 3% 3%;
+    width: 100%;
 }
 
 .message {
@@ -250,4 +256,27 @@
     display: flex;
     width: 20%;
     margin: 1% 1%;
+}
+
+.rating-system, .fake-rating-system {
+    display: flex;
+    padding: 1% 1%;
+    align-items: center;
+    margin-left: 10%;
+    width: 30%;
+}
+
+.rating-system-header {
+    display: flex;
+    padding: 1% 1%;
+    align-items: center;
+    margin-left: 10%;
+    width: 20%;
+    margin:auto;
+}
+
+.rating-null {
+    margin-left: auto;
+    font-size: 1rem;
+    color: #65899c;
 }

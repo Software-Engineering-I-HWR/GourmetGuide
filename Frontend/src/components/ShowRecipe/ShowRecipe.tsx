@@ -53,17 +53,16 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const id = extractString(location.pathname, "recipe/", "/")
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
-    const [chosenStarOld, setChosenStarOld] = useState<number>(-1);
-    const [chosenStar, setChosenStar] = useState<number>(-1);
     const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
+    const [chosenStar, setChosenStar] = useState<number>(0);
     const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
-
     const isValidCreator = (creator: string | undefined) => {
         const invalidCreators = ["1", "12345"]; // Add more invalid values here as needed
         return creator && !invalidCreators.includes(creator);
     };
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
+
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -81,31 +80,26 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             return null;
         }
     }
-    useEffect(() => {
-        async function getAvRating(): Promise<number | null> {
-            try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
-                    method: 'GET'
-                });
-                if (response.ok) {
-                    const recipes = await response.json();
-                    const onlyRating = recipes[0]["AVG(Bewertung)"];
-                    setAvRating(onlyRating);
-                    console.log(onlyRating)
-                    return onlyRating;
-                } else {
-                    console.error('API request error:', response.status);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
+
+    async function getAvRating(): Promise<number | null> {
+        try {
+            const response = await fetch(`https://canoob.de:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                const recipes = await response.json();
+                const onlyRating = recipes[0]["AVG(Bewertung)"];
+                setAvRating(onlyRating);
+                return onlyRating;
+            } else {
+                console.error('API request error:', response.status);
                 return null;
             }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
         }
-        getAvRating()
-    }, [avRating]);
-
-
+    }
 
     const formatIngredients = (ingredientsAsString: string) => {
         const ingredientsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
@@ -205,9 +199,13 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 method: 'GET'
             });
             if (response.ok) {
+                /*if (response.json.length == 0) {
+                    con
+                    return null;
+                }*/
                 const recipes = await response.json();
                 const onlyRating = recipes[0].Bewertung;
-                setChosenStarOld(onlyRating-1);
+                setChosenStar(onlyRating);
                 return 1;
             } else {
                 console.error('API request error:', response.status);
@@ -217,14 +215,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             console.error('Network error:', error);
             return null;
         }
-
     }
-    getRating();
+
     useEffect(() => {
-        if (chosenStarOld !== -1) {
-            setChosenStar(chosenStarOld);
-        }
-    }, [chosenStarOld]);
+        getAvRating()
+        getRating();
+    }, [chosenStar]);
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -253,23 +249,22 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
     }, []);
 
-
-    const saveRating = async (rating: number) => {
-        setChosenStarOld(rating-1);
-        console.log(rating)
+    async function saveRating(ratingNumber: number): Promise<number | null> {
         try {
-            const response = await fetch(`https://canoob.de:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(rating)}`, {
-                method: 'POST',
+            const response = await fetch(`https://canoob.de:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
+                method: 'POST'
             });
             if (response.ok) {
-                console.log('Rating saved successfully!');
+                return 1;
             } else {
                 console.error('API request error:', response.status);
+                return null;
             }
         } catch (error) {
             console.error('Network error:', error);
+            return null;
         }
-    };
+    }
 
     return (
         <body className="showRecipe">
@@ -278,40 +273,24 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 <div className="showRecipe-contentfield-left">
                     <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
                     <p className="showRecipe-category">{sampleRecipe?.category}</p>
-                        {avRating != 0 ? (
-                            <div className="rating-system-header">
-                                {
-                                    Array.from({ length: 5 }, (_, index) => {
-
-                                    const isFilled = avRating >= index + 1;
-
-                                    return (
-                                        <svg
-                                            key={index}
-                                            width="30"
-                                            height="30"
-                                            viewBox="-4 -4 76 72"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <g transform="matrix(1,0,0,1,-387.353,-244.771)">
-                                                <g transform="matrix(0.672991,0,0,-0.672991,57.9243,517.669)">
-                                                    <path
-                                                        className={`star-icon ${isFilled ? 'empty' : 'filled'}`}
-                                                        d="M490,370.17L528.32,370.17L540,405L551.68,370.17L590,370.17L559.47,346.84L571.58,310L540,332.8L508.42,310L520.53,346.84L490,370.17Z"
-                                                    />
-                                                    <path
-                                                        className="Star__Outline"
-                                                        d="M490,374.454L525.238,374.454L535.938,406.362C536.524,408.108 538.159,409.284 540,409.284C541.841,409.284 543.476,408.108 544.062,406.362L554.762,374.454L590,374.454C591.837,374.454 593.469,373.283 594.058,371.543C594.647,369.803 594.061,367.881 592.601,366.766L564.491,345.285L575.65,311.338C576.23,309.574 575.608,307.638 574.109,306.542C572.611,305.446 570.577,305.44 569.072,306.527L540,327.516L510.928,306.527C509.423,305.44 507.389,305.446 505.891,306.542C504.392,307.638 503.77,309.574 504.35,311.338L515.509,345.285L487.399,366.766C485.939,367.881 485.353,369.803 485.942,371.543C486.531,373.283 488.163,374.454 490,374.454ZM490,370.17L520.53,346.84L508.42,310L540,332.8L571.58,310L559.47,346.84L590,370.17L551.68,370.17L540,405L528.32,370.17L490,370.17Z"
-                                                    />
-                                                </g>
-                                            </g>
-                                        </svg>
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <div className="rating-null">Für dieses Rezept gibt es noch keine Bewertung!</div>
-                        )}
+                    {avRating != 0 && <div className="rating-system-header">
+                        <img className="first-star"
+                             alt={avRating >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={avRating >= 1 ? "/images/filledLightStar.png" : avRating === 0 ? "/images/emptyStar.png" : avRating > 0 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
+                        <img className="second-star"
+                             alt={(avRating >= 2) ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={avRating >= 2 ? "/images/filledLightStar.png" : avRating == 1 ? "/images/emptyStar.png" : avRating > 1 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
+                        <img className="third-star"
+                             alt={avRating >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={avRating >= 3 ? "/images/filledLightStar.png" : avRating == 2 ? "/images/emptyStar.png" : avRating > 2 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
+                        <img className="fourth-star"
+                             alt={avRating >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={avRating >= 4 ? "/images/filledLightStar.png" : avRating == 3 ? "/images/emptyStar.png" : avRating > 3 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
+                        <img className="fifth-star"
+                             alt={avRating >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={avRating >= 5 ? "/images/filledLightStar.png" : avRating == 4 ? "/images/emptyStar.png" : avRating > 4 ? "/images/halfStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}/>
+                    </div>}
                 </div>
                 <div className="showRecipe-contentfield-right">
                     <div className="showRecipe-properties">
@@ -354,44 +333,69 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
                 <div className="star-system">
-
-
-                        <div className="rating-system" onMouseLeave={() => setChosenStar(chosenStarOld)}>
-
-                            {Array.from({length: 5}, (_, index) => {
-
-                                const isNotFilled = index > (chosenStar! == null ? -1 : chosenStar); // Prüft, ob der aktuelle Stern gefüllt sein sollte
-                                return (
-                                    <svg
-                                        key={index}
-                                        width="30"
-                                        height="30"
-                                        viewBox="-4 -4 76 72"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        onClick={isLoggedIn ? () => saveRating(chosenStar+1) : () => ""}
-                                        onMouseEnter={() => setChosenStar(index)}
-                                    >
-                                        <g transform="matrix(1,0,0,1,-387.353,-244.771)">
-                                            <g transform="matrix(0.672991,0,0,-0.672991,57.9243,517.669)">
-                                                <path
-                                                    className={`star-icon ${!isNotFilled ? 'rempty' : 'rfilled'}`} // Dynamische Klasse für den Füllzustand
-                                                    d="M490,370.17L528.32,370.17L540,405L551.68,370.17L590,370.17L559.47,346.84L571.58,310L540,332.8L508.42,310L520.53,346.84L490,370.17Z"
-                                                />
-                                                <path
-                                                    className="Star__Outline"
-                                                    d="M490,374.454L525.238,374.454L535.938,406.362C536.524,408.108 538.159,409.284 540,409.284C541.841,409.284 543.476,408.108 544.062,406.362L554.762,374.454L590,374.454C591.837,374.454 593.469,373.283 594.058,371.543C594.647,369.803 594.061,367.881 592.601,366.766L564.491,345.285L575.65,311.338C576.23,309.574 575.608,307.638 574.109,306.542C572.611,305.446 570.577,305.44 569.072,306.527L540,327.516L510.928,306.527C509.423,305.44 507.389,305.446 505.891,306.542C504.392,307.638 503.77,309.574 504.35,311.338L515.509,345.285L487.399,366.766C485.939,367.881 485.353,369.803 485.942,371.543C486.531,373.283 488.163,374.454 490,374.454ZM490,370.17L520.53,346.84L508.42,310L540,332.8L571.58,310L559.47,346.84L590,370.17L551.68,370.17L540,405L528.32,370.17L490,370.17Z"
-                                                />
-                                            </g>
-                                        </g>
-                                    </svg>
-                                );
-                            })}
-                        </div>
-                    {!isLoggedIn &&
-                        <div className="message">
+                    {isLoggedIn && <div className="rating-system">
+                        <img className="first-star"
+                             alt={activeStarOnHover >= 1 || chosenStar! >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={activeStarOnHover >= 1 || chosenStar! >= 1 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(1)} onMouseLeave={() => setActiveStarOnHover(0)}
+                             onClick={() => {
+                                 setChosenStar(1);
+                                 saveRating(1);
+                             }}/>
+                        <img className="second-star"
+                             alt={activeStarOnHover >= 2 || chosenStar! >= 2 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={activeStarOnHover >= 2 || chosenStar! >= 2 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(2)} onMouseLeave={() => setActiveStarOnHover(0)}
+                             onClick={() => {
+                                 setChosenStar(2)
+                                 saveRating(2);
+                             }}/>
+                        <img className="third-star"
+                             alt={activeStarOnHover >= 3 || chosenStar! >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={activeStarOnHover >= 3 || chosenStar! >= 3 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(3)} onMouseLeave={() => setActiveStarOnHover(0)}
+                             onClick={() => {
+                                 setChosenStar(3)
+                                 saveRating(3);
+                             }}/>
+                        <img className="fourth-star"
+                             alt={activeStarOnHover >= 4 || chosenStar! >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={activeStarOnHover >= 4 || chosenStar! >= 4 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(4)} onMouseLeave={() => setActiveStarOnHover(0)}
+                             onClick={() => {
+                                 setChosenStar(4)
+                                 saveRating(4);
+                             }}/>
+                        <img className="fifth-star"
+                             alt={activeStarOnHover >= 5 || chosenStar! >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
+                             src={activeStarOnHover >= 5 || chosenStar! >= 5 ? "/images/fullStar.png" : "/images/emptyStar.png"}
+                             onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}
+                             onClick={() => {
+                                 setChosenStar(5)
+                                 saveRating(5);
+                             }}/>
+                    </div>}
+                    {!isLoggedIn && <div className="fake-rating-system" onMouseOver={() => setShowMessage(true)}
+                                         onMouseLeave={() => setShowMessage(false)}>
+                        <img className="first-star"
+                             alt="disableStar"
+                             src="/images/emptyStar.png"/>
+                        <img className="first-star"
+                             alt="disableStar"
+                             src="/images/emptyStar.png"/>
+                        <img className="first-star"
+                             alt="disableStar"
+                             src="/images/emptyStar.png"/>
+                        <img className="first-star"
+                             alt="disableStar"
+                             src="/images/emptyStar.png"/>
+                        <img className="first-star"
+                             alt="disableStar"
+                             src="/images/emptyStar.png"/>
+                    </div>}
+                    {showMessage && <div className="message">
                         Du musst dich anmelden, um das Rezept zu bewerten!
-                        </div>
-                    }
+                    </div>}
                 </div>
                 <button type="button" onClick={handleShare} className="download-button">Teilen</button>
             </div>
