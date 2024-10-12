@@ -1,3 +1,8 @@
+.navbar__Buttons {
+    display: flex;
+    width: 70%;
+}
+/* Destop Options*/
 .recipes__list{
     display: flex;
     justify-content: space-around;
@@ -9,7 +14,6 @@
     padding: 10% 2%;
     color: #fff;
     height: 10%;
-    /*align-items: center;*/
 }
 .navbar__logo {
     display: flex;
@@ -106,4 +110,182 @@
 
 .navbar__link:disabled {
     filter:grayscale(100%);
+}
+
+@media only screen and (max-width: 1000px) {
+    .navbar__title{
+        width: 50%;
+    }
+    .navbar__Buttons{
+        display: flex;
+        width: 40%;
+        flex-direction: column;
+
+    }
+    .navbar-actions {
+        display: flex;
+        width: 100%;
+        flex-direction: row-reverse;
+    }
+    .navbar__search {
+        display: flex;
+        width: 100%;
+    }.navbar__projectname {
+         display: flex;
+         font-size: 4vw;
+         font-weight: bold;
+         margin: 0 2%;
+         align-items: center;
+         width:52%;
+         color: #ffffff;
+         text-decoration: none;
+     }
+    .navbar__search-input {
+        display: flex;
+        padding: 0.1% 1.1%;
+        font-size: 2vw;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        margin: 2% 2%;
+        width: 100%;
+        background-color: #cbd6dd;
+    }
+    .navbar__search-button {
+        display: flex;
+        padding: 1% 1%;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 2vw;
+        transition: background-color 0.3s;
+    }
+    .navbar__link {
+        display: flex;
+        text-decoration: none;
+        color: white;
+        font-size: 2vw;
+        padding: 1% 1%;
+        background-color: #07546e;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 2% 2%;
+    }
+}
+
+/*Destop Small Option */
+@media only screen and (max-width: 768px) {
+    .navbar__Buttons {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+    .recipes__list{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .navbar {
+        display: flex;
+        background-color: #4A4A4A;
+        padding: 10% 2%;
+        color: #fff;
+        height: 10%;
+        flex-direction: column;
+        /*align-items: center;*/
+    }
+    .navbar__logo {
+        display: flex;
+        width: 25%; /* Breite des Bildes */
+        height: auto; /* Höhe wird automatisch angepasst */
+        margin: 0 2%; /* Abstand zwischen Bild und Text */
+    }
+
+    .navbar__title {
+        display:flex;
+        float: left;
+        font-weight: bold;
+        margin: 0 1%;
+        align-items: center;
+        width: 80%;
+    }
+
+    .navbar__projectname {
+        display: flex;
+        font-size: 7vw;
+        font-weight: bold;
+        margin: 0 2%;
+        align-items: center;
+        width:52%;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+
+
+    .navbar__search-input {
+        display: flex;
+        padding: 0.1% 1.1%;
+        font-size: 1.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        margin: 2% 2%;
+        width: 100%;
+        background-color: #cbd6dd;
+    }
+
+    .navbar__search-input:focus {
+        border-color: #007acc; /* Fokus-Farbe (blau) */
+    }
+
+    .navbar__search-button {
+        display: flex;
+        padding: 1% 1%;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: background-color 0.3s;
+    }
+
+    .navbar__search-button:hover {
+        background-color: #005f99;
+    }
+
+    /* Container für Login und Kategorien Buttons */
+    .navbar-actions {
+        display: flex;
+        width:100%;
+        justify-content: center;
+    }
+
+    .navbar__link {
+        flex: auto;
+        display: flex;
+        text-decoration: none;
+        color: white;
+        font-size: 1.5rem;
+        padding: 1% 1%;
+        background-color: #07546e;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 2% 2%;
+    }
+
+    .navbar__link:hover {
+        background-color: #65899c;
+    }
+
+    .navbar__link:disabled {
+        filter:grayscale(100%);
+    }
 }

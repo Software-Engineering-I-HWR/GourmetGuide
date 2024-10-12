@@ -1,6 +1,6 @@
 import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
-import './../../App.css';
+import "./Home.css"
 import React, {useEffect, useState} from "react";
 
 interface Recipe {

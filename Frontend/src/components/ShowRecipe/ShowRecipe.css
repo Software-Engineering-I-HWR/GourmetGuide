@@ -1,3 +1,19 @@
+.rfilled:hover {
+    fill: #07536D;
+}
+.rfilled{
+    fill: #ffffff;
+}
+.filled{
+    fill: #07536D;
+}
+.rating-system-header {
+    display: contents;
+    padding: 1% 1%;
+    align-items: center;
+    width: 20%;
+    margin:auto;
+}
 .body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -198,14 +214,7 @@
     width: 30%;
 }
 
-.rating-system-header {
-    display: flex;
-    padding: 1% 1%;
-    align-items: center;
-    margin-left: 10%;
-    width: 20%;
-    margin:auto;
-}
+
 
 .rating-null {
     margin-left: auto;
@@ -220,7 +229,7 @@
 }
 
 .star-system {
-    display: flex;
+    display: contents;
 }
 
 .message {
