@@ -49,9 +49,10 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const id = extractString(location.pathname, "recipe/", "/")
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
-    const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
-    const [chosenStar, setChosenStar] = useState<number | null >(null);
-    const [showMessage, setShowMessage] = useState<boolean>(false);
+
+
+    const [chosenStar, setChosenStar] = useState<number>(-1);
+    const [chosenStarOld, setChosenStarOld] = useState<number>(-1);
     const [avRating, setAvRating] = useState<number>(0);
 
     async function getRecipes(): Promise<Recipe[] | null> {
@@ -60,8 +61,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 method: 'GET'
             });
             if (response.ok) {
-                const recipes = await response.json();
-                return recipes;
+                return await response.json();
             } else {
                 console.error('API request error:', response.status);
                 return null;
@@ -71,27 +71,31 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             return null;
         }
     }
+    useEffect(() => {
+        async function getAvRating(): Promise<number | null> {
+            try {
+                const response = await fetch(`https://canoob.de:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
+                    method: 'GET'
+                });
+                if (response.ok) {
+                    const recipes = await response.json();
+                    const onlyRating = recipes[0]["AVG(Bewertung)"];
+                    setAvRating(onlyRating);
+                    console.log(onlyRating)
+                    return onlyRating;
+                } else {
+                    console.error('API request error:', response.status);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                return null;
+            }
+        }
+        getAvRating()
+    }, [avRating]);
 
-    async function getAvRating(): Promise<number | null> {
-        try {
-            const response = await fetch(`https://canoob.de:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
-                method: 'GET'
-            });
-            if (response.ok) {
-                const recipes = await response.json();
-                const onlyRating = recipes[0]["AVG(Bewertung)"];
-                setAvRating(onlyRating);
-                console.log(onlyRating)
-                return onlyRating;
-            } else {
-                console.error('API request error:', response.status);
-                return null;
-            }
-        } catch (error) {
-            console.error('Network error:', error);
-            return null;
-        }
-    }
+
 
     const formatIngredients = (ingredientsAsString: string) => {
         const ingredientsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
@@ -140,8 +144,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const handleShare = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent default form submission
 
-        let ingredientsArray = ["Fehler", "Aufgetreten"]
-        let steps = ""
+        let ingredientsArray = ["Fehler", "Aufgetreten"];
+        let steps = "";
 
         if ("ingredients" in sampleRecipe!) {
             ingredientsArray = sampleRecipe.ingredients.split("|");
@@ -158,8 +162,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             ingredients: ingredientsArray,
         };
 
-        //https://canoob.de:30157/generate-pdf
-        //http://localhost:3000/generate-pdf
         const response = await fetch('https://canoob.de:30157/generate-pdf', {
             method: 'POST',
             headers: {
@@ -172,46 +174,47 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             throw new Error('Failed to generate PDF');
         }
 
-        // Convert the response into a blob (binary data)
         const blob = await response.blob();
-
-        // Create a download link for the blob and trigger the download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'recipe.pdf';  // Filename for the downloaded PDF
-        document.body.appendChild(a);  // Append the link to the document
-        a.click();  // Programmatically trigger a click event to download
-        a.remove();  // Clean up the DOM by removing the link
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
 
-        // Revoke the blob URL to free up memory
         window.URL.revokeObjectURL(url);
-    }
+    };
 
-    useEffect(() => {
-        getAvRating()
 
-        async function getRating(): Promise<number | null> {
-            try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
-                    method: 'GET'
-                });
-                if (response.ok) {
-                    const recipes = await response.json();
-                    const onlyRating = recipes[0].Bewertung;
-                    setChosenStar(onlyRating);
-                    return 1;
-                } else {
-                    console.error('API request error:', response.status);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
+    async function getRating(): Promise<number | null> {
+        try {
+            const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                const recipes = await response.json();
+                const onlyRating = recipes[0].Bewertung;
+                setChosenStarOld(onlyRating-1);
+                return 1;
+            } else {
+                console.error('API request error:', response.status);
                 return null;
             }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
         }
-        getRating();
-    }, [chosenStar]);
+
+    }
+    getRating();
+    useEffect(() => {
+        if (chosenStarOld !== -1) {
+            setChosenStar(chosenStarOld);
+        }
+    }, [chosenStarOld]);
+
+
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -241,25 +244,23 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
     }, []);
 
-    useEffect(() => {
-        async function saveRating(): Promise<number | null> {
-            try {
-                const response = await fetch(`https://canoob.de:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(chosenStar!)}`, {
-                    method: 'POST'
-                });
-                if (response.ok) {
-                    return 1;
-                } else {
-                    console.error('API request error:', response.status);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
-                return null;
+
+    const saveRating = async (rating: number) => {
+        setChosenStarOld(rating-1);
+        console.log(rating)
+        try {
+            const response = await fetch(`https://canoob.de:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(rating)}`, {
+                method: 'POST',
+            });
+            if (response.ok) {
+                console.log('Rating saved successfully!');
+            } else {
+                console.error('API request error:', response.status);
             }
+        } catch (error) {
+            console.error('Network error:', error);
         }
-        saveRating();
-    }, [chosenStar]);
+    };
 
     return (
         <body className="showRecipe">
@@ -268,44 +269,56 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 <div className="showRecipe-contentfield-left">
                     <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
                     <p className="showRecipe-category">{sampleRecipe?.category}</p>
-                    {avRating != 0 && <div className="rating-system-header">
-                        <img className="first-star"
-                             alt={avRating >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={avRating >= 1 ? "/images/filledLightStar.png" : avRating === 0 ? "/images/emptyStar.png" : avRating > 0 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
-                        <img className="second-star"
-                             alt={(avRating >= 2) ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={avRating >= 2 ? "/images/filledLightStar.png" : avRating == 1 ? "/images/emptyStar.png" : avRating > 1 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
-                        <img className="third-star"
-                             alt={avRating >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={avRating >= 3 ? "/images/filledLightStar.png" : avRating == 2 ? "/images/emptyStar.png" : avRating > 2 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
-                        <img className="fourth-star"
-                             alt={avRating >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={avRating >= 4 ? "/images/filledLightStar.png" : avRating == 3 ? "/images/emptyStar.png" : avRating > 3 ? "/images/halfStar.png" : "/images/emptyStar.png"}/>
-                        <img className="fifth-star"
-                             alt={avRating >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={avRating >= 5 ? "/images/filledLightStar.png" : avRating == 4 ? "/images/emptyStar.png" : avRating > 4 ? "/images/halfStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}/>
-                    </div>}
+                        {avRating != 0 ? (
+                            <div className="rating-system-header">
+                                {
+                                    Array.from({ length: 5 }, (_, index) => {
 
-                    {avRating == 0 && <div className="rating-null">
-                        Für dieses Rezept gibt es noch keine Bewertung!
-                    </div>}
+                                    const isFilled = avRating >= index + 1;
+
+                                    return (
+                                        <svg
+                                            key={index}
+                                            width="30"
+                                            height="30"
+                                            viewBox="-4 -4 76 72"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <g transform="matrix(1,0,0,1,-387.353,-244.771)">
+                                                <g transform="matrix(0.672991,0,0,-0.672991,57.9243,517.669)">
+                                                    <path
+                                                        className={`star-icon ${isFilled ? 'empty' : 'filled'}`}
+                                                        d="M490,370.17L528.32,370.17L540,405L551.68,370.17L590,370.17L559.47,346.84L571.58,310L540,332.8L508.42,310L520.53,346.84L490,370.17Z"
+                                                    />
+                                                    <path
+                                                        className="Star__Outline"
+                                                        d="M490,374.454L525.238,374.454L535.938,406.362C536.524,408.108 538.159,409.284 540,409.284C541.841,409.284 543.476,408.108 544.062,406.362L554.762,374.454L590,374.454C591.837,374.454 593.469,373.283 594.058,371.543C594.647,369.803 594.061,367.881 592.601,366.766L564.491,345.285L575.65,311.338C576.23,309.574 575.608,307.638 574.109,306.542C572.611,305.446 570.577,305.44 569.072,306.527L540,327.516L510.928,306.527C509.423,305.44 507.389,305.446 505.891,306.542C504.392,307.638 503.77,309.574 504.35,311.338L515.509,345.285L487.399,366.766C485.939,367.881 485.353,369.803 485.942,371.543C486.531,373.283 488.163,374.454 490,374.454ZM490,370.17L520.53,346.84L508.42,310L540,332.8L571.58,310L559.47,346.84L590,370.17L551.68,370.17L540,405L528.32,370.17L490,370.17Z"
+                                                    />
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="rating-null">Für dieses Rezept gibt es noch keine Bewertung!</div>
+                        )}
                 </div>
                 <div className="showRecipe-contentfield-right">
                     <div className="showRecipe-properties">
                         <p className="showRecipe-properties-vegetarian" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian}</p>
+                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-vegan" style={{
                             color: "#b1c3cd",
                             fontSize: "2%"
-                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan}</p>
+                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan ? "Ja" : "Nein"}</p>
                         <p className="showRecipe-properties-allergen"
                            style={{
                                color: "#b1c3cd",
                                fontSize: "2%"
-                           }}>Allergene: {sampleRecipe?.allergen === null ? "n.a." : sampleRecipe?.allergen}</p>
+                           }}>Allergene: {!sampleRecipe?.allergen ? "n.a." : sampleRecipe?.allergen}</p>
                     </div>
                 </div>
             </div>
@@ -331,54 +344,44 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <div className="separator-line"></div>
             <div className="actions-field">
                 <div className="star-system">
-                    {isLoggedIn && <div className="rating-system">
-                        <img className="first-star"
-                             alt={activeStarOnHover >= 1 || chosenStar! >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={activeStarOnHover >= 1 || chosenStar! >= 1 ? "/images/fullStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(1)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 1 ? setChosenStar(1) : setChosenStar(0)}/>
-                        <img className="second-star"
-                             alt={activeStarOnHover >= 2 || chosenStar! >= 2 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={activeStarOnHover >= 2 || chosenStar! >= 2 ? "/images/fullStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(2)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 2 ? setChosenStar(2) : setChosenStar(0)}/>
-                        <img className="third-star"
-                             alt={activeStarOnHover >= 3 || chosenStar! >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={activeStarOnHover >= 3 || chosenStar! >= 3 ? "/images/fullStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(3)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 3 ? setChosenStar(3) : setChosenStar(0)}/>
-                        <img className="fourth-star"
-                             alt={activeStarOnHover >= 4 || chosenStar! >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={activeStarOnHover >= 4 || chosenStar! >= 4 ? "/images/fullStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(4)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 4 ? setChosenStar(4) : setChosenStar(0)}/>
-                        <img className="fifth-star"
-                             alt={activeStarOnHover >= 5 || chosenStar! >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
-                             src={activeStarOnHover >= 5 || chosenStar! >= 5 ? "/images/fullStar.png" : "/images/emptyStar.png"}
-                             onMouseOver={() => setActiveStarOnHover(5)} onMouseLeave={() => setActiveStarOnHover(0)}
-                             onClick={() => chosenStar != 5 ? setChosenStar(5) : setChosenStar(0)}/>
-                    </div>}
-                    {!isLoggedIn && <div className="fake-rating-system" onMouseOver={() => setShowMessage(true)}
-                                         onMouseLeave={() => setShowMessage(false)}>
-                        <img className="first-star"
-                             alt="disableStar"
-                             src="/images/emptyStar.png"/>
-                        <img className="first-star"
-                             alt="disableStar"
-                             src="/images/emptyStar.png"/>
-                        <img className="first-star"
-                             alt="disableStar"
-                             src="/images/emptyStar.png"/>
-                        <img className="first-star"
-                             alt="disableStar"
-                             src="/images/emptyStar.png"/>
-                        <img className="first-star"
-                             alt="disableStar"
-                             src="/images/emptyStar.png"/>
-                    </div>}
-                    {showMessage && <div className="message">
+
+
+                        <div className="rating-system" onMouseLeave={() => setChosenStar(chosenStarOld)}>
+
+                            {Array.from({length: 5}, (_, index) => {
+
+                                const isNotFilled = index > (chosenStar! == null ? -1 : chosenStar); // Prüft, ob der aktuelle Stern gefüllt sein sollte
+                                return (
+                                    <svg
+                                        key={index}
+                                        width="30"
+                                        height="30"
+                                        viewBox="-4 -4 76 72"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        onClick={isLoggedIn ? () => saveRating(chosenStar+1) : () => ""}
+                                        onMouseEnter={() => setChosenStar(index)}
+                                    >
+                                        <g transform="matrix(1,0,0,1,-387.353,-244.771)">
+                                            <g transform="matrix(0.672991,0,0,-0.672991,57.9243,517.669)">
+                                                <path
+                                                    className={`star-icon ${!isNotFilled ? 'rempty' : 'rfilled'}`} // Dynamische Klasse für den Füllzustand
+                                                    d="M490,370.17L528.32,370.17L540,405L551.68,370.17L590,370.17L559.47,346.84L571.58,310L540,332.8L508.42,310L520.53,346.84L490,370.17Z"
+                                                />
+                                                <path
+                                                    className="Star__Outline"
+                                                    d="M490,374.454L525.238,374.454L535.938,406.362C536.524,408.108 538.159,409.284 540,409.284C541.841,409.284 543.476,408.108 544.062,406.362L554.762,374.454L590,374.454C591.837,374.454 593.469,373.283 594.058,371.543C594.647,369.803 594.061,367.881 592.601,366.766L564.491,345.285L575.65,311.338C576.23,309.574 575.608,307.638 574.109,306.542C572.611,305.446 570.577,305.44 569.072,306.527L540,327.516L510.928,306.527C509.423,305.44 507.389,305.446 505.891,306.542C504.392,307.638 503.77,309.574 504.35,311.338L515.509,345.285L487.399,366.766C485.939,367.881 485.353,369.803 485.942,371.543C486.531,373.283 488.163,374.454 490,374.454ZM490,370.17L520.53,346.84L508.42,310L540,332.8L571.58,310L559.47,346.84L590,370.17L551.68,370.17L540,405L528.32,370.17L490,370.17Z"
+                                                />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                );
+                            })}
+                        </div>
+                    {!isLoggedIn &&
+                        <div className="message">
                         Du musst dich anmelden, um das Rezept zu bewerten!
-                    </div>}
+                        </div>
+                    }
                 </div>
                 <button type="submit" className="download-button" onSubmit={() => handleShare}>Teilen</button>
             </div>
