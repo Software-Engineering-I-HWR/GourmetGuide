@@ -2,16 +2,19 @@ import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
+
 interface Recipe {
     Title: string;
     Category: string;
     Image: string;
     ID: number;
-    Allergen: string;
+    Allergen: string | null;
     Ingredients: string;
     Steps: string;
-    Vegan: boolean;
-    Vegetarian: boolean;
+    Vegan: number;
+    Vegetarian: number;
+    Creator: string;
 }
 
 interface ListItem {
@@ -19,11 +22,12 @@ interface ListItem {
     category: string;
     imageUrl: string;
     id: number
-    allergen: string;
+    allergen: string[] | null;
     ingredients: string;
     steps: string;
-    vegan: boolean;
-    vegetarian: boolean;
+    vegan: number;
+    vegetarian: number;
+    creator: string;
 }
 
 interface showRecipeProps {
@@ -49,11 +53,17 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const id = extractString(location.pathname, "recipe/", "/")
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
     const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
-
-
-    const [chosenStar, setChosenStar] = useState<number>(-1);
     const [chosenStarOld, setChosenStarOld] = useState<number>(-1);
+    const [chosenStar, setChosenStar] = useState<number>(-1);
+    const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
+    const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
+
+    const isValidCreator = (creator: string | undefined) => {
+        const invalidCreators = ["1", "12345"]; // Add more invalid values here as needed
+        return creator && !invalidCreators.includes(creator);
+    };
+    const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -141,8 +151,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         setStepsAsArray(stepsArray);
     };
 
-    const handleShare = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
+    const handleShare = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault(); // Prevent default button behavior
 
         let ingredientsArray = ["Fehler", "Aufgetreten"];
         let steps = "";
@@ -160,6 +170,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             image: sampleRecipe?.imageUrl,
             description: steps,
             ingredients: ingredientsArray,
+            creator: validCreator,
+            id: sampleRecipe?.id,
         };
 
         const response = await fetch('https://canoob.de:30157/generate-pdf', {
@@ -214,8 +226,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         }
     }, [chosenStarOld]);
 
-
-
     useEffect(() => {
         const fetchRecipe = async () => {
             const recipe = await getRecipes();
@@ -225,11 +235,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     category: recipe[0].Category,
                     imageUrl: recipe[0].Image,
                     id: recipe[0].ID,
-                    allergen: recipe[0].Allergen,
+                    allergen: recipe[0].Allergen != null ? recipe[0].Allergen.split(", ") : null,
                     ingredients: recipe[0].Ingredients,
                     steps: recipe[0].Steps,
                     vegan: recipe[0].Vegan,
-                    vegetarian: recipe[0].Vegetarian
+                    vegetarian: recipe[0].Vegetarian,
+                    creator: recipe[0].Creator,
                 };
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
@@ -238,8 +249,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
-
-
         fetchRecipe();
 
     }, []);
@@ -306,19 +315,19 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
                 <div className="showRecipe-contentfield-right">
                     <div className="showRecipe-properties">
-                        <p className="showRecipe-properties-vegetarian" style={{
-                            color: "#b1c3cd",
-                            fontSize: "2%"
-                        }}>Vegetarisch: {sampleRecipe?.vegetarian === null ? "n.a." : sampleRecipe?.vegetarian ? "Ja" : "Nein"}</p>
-                        <p className="showRecipe-properties-vegan" style={{
-                            color: "#b1c3cd",
-                            fontSize: "2%"
-                        }}>Vegan: {sampleRecipe?.vegan === null ? "n.a." : sampleRecipe?.vegan ? "Ja" : "Nein"}</p>
-                        <p className="showRecipe-properties-allergen"
-                           style={{
-                               color: "#b1c3cd",
-                               fontSize: "2%"
-                           }}>Allergene: {!sampleRecipe?.allergen ? "n.a." : sampleRecipe?.allergen}</p>
+                        {sampleRecipe?.vegetarian == 1 &&
+                            <img className={"allergen-symbol"}
+                                 src='/images/vegetarian.png'
+                                 alt="vegetarisch-Symbol"/>}
+                        {sampleRecipe?.vegan == 1 &&
+                            <img className={"allergen-symbol"}
+                                 src='/images/vegan.png'
+                                 alt="vegan-symbol"/>}
+                        {sampleRecipe?.allergen && dietaryTags.map((item) => (
+                            sampleRecipe?.allergen != null && sampleRecipe.allergen.includes(item) &&
+                            <img className={"allergen-symbol"}
+                                 src={`/images/${item.toLowerCase()}.png`}
+                                 alt={`${item.toLowerCase()}-symbol`}/>))}
                     </div>
                 </div>
             </div>
@@ -342,6 +351,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 ))}</div>
             </div>
             <div className="separator-line"></div>
+            <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
                 <div className="star-system">
 
@@ -383,7 +393,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         </div>
                     }
                 </div>
-                <button type="submit" className="download-button" onSubmit={() => handleShare}>Teilen</button>
+                <button type="button" onClick={handleShare} className="download-button">Teilen</button>
             </div>
         </div>
         </body>

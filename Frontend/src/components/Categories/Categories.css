@@ -1,19 +1,92 @@
 .categories__title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    width: 15%;
-    text-align: center;
+    font-size: 2.25rem;
+    margin: 20px 10px;
+    width: 100%;
 }
 
 .categories__list {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: column; /* Ändere auf row, wenn die Karten nebeneinander stehen sollen */
+    margin: 5% 5%;
+    margin-right: 15%;
 }
 
 .categories {
     display: flex;
     flex-direction: column;
-    padding: 1% 3%;
+    padding-left: 3%;
+    width: 30%; /* Beibehaltung der Breite für die Kategorie */
+}
+
+.categories-main-content {
+    display: flex;
+    justify-content: space-between; /* Verteile den Platz zwischen den beiden Sektionen */
+    width: 100%; /* Stelle sicher, dass der Container die gesamte Breite hat */
+}
+
+.recipes-table {
+    width: 100%; /* Fülle den gesamten verfügbaren Platz */
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 1.25rem;
+}
+
+.recipes-table thead th {
+    background-color: #07546E;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.recipes-table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.recipes-table tbody tr:hover {
+    background-color: #e5ebee;
+    cursor: pointer;
+}
+
+.recipes-table td, .recipes-table th {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.recipes-table img {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.recipes-table th[scope="row"] {
+    background-color: #f8f9fa;
+}
+
+.recipes-by-category {
+    margin-top: 2.5%;
+    display: flex;
+    flex: 1; /* Fülle den verbleibenden Platz */
+    flex-direction: column; /* Die Tabelle soll vertikal angeordnet sein */
+}
+
+.recipes-table th:nth-child(1), /* Index */
+.recipes-table td:nth-child(1) {
+    width: 3%; /* Breite für die Index-Spalte */
+}
+
+.recipes-table th:nth-child(2), /* Titel */
+.recipes-table td:nth-child(2) {
+    width: 50%; /* Breite für die Titel-Spalte */
+}
+
+.recipes-table th:nth-child(3), /* Kategorie */
+.recipes-table td:nth-child(3) {
+    width: 30%; /* Breite für die Kategorie-Spalte */
+}
+
+.recipes-table th:nth-child(4), /* Bild */
+.recipes-table td:nth-child(4) {
+    width: 20%; /* Breite für die Bild-Spalte */
 }

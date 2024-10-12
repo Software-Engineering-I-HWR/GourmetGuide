@@ -136,6 +136,68 @@ app.get('/getRecipeByID', (req, res) => {
     });
 });
 
+app.post('/deleteRecipeByID', (req, res) => {
+    const id = req.query.id;
+    const query = 'DELETE FROM Rezept WHERE ID = ?';
+
+    console.log(query);
+
+    connection.query(query, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Löschen des Rezepts');
+        } else {
+            res.status(200).send('Rezept erfolgreich gelöscht');
+        }
+    });
+});
+
+app.get('/getRecipesByRating', (req, res) => {
+    const rating = req.query.rating;
+    const query = `SELECT r.*, AVG(rt.Bewertung) as average_rating
+        FROM Rezept r
+        JOIN Bewertung rt ON r.ID = rt.ID
+        GROUP BY r.ID
+        HAVING average_rating >= ?`;
+
+    connection.query(query, [rating], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT ID FROM Rezept WHERE Creator = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getRatedRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT ID FROM Bewertung WHERE Username = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getRecipesByCategory', (req, res) => {
     const category = req.query.category;
     const query = 'SELECT * FROM Rezept WHERE Category = ?';
@@ -151,7 +213,7 @@ app.get('/getRecipesByCategory', (req, res) => {
 });
 
 app.get('/getFilteredRecipes', (req, res) => {
-    const {name, difficulty, category, ingredients} = req.query;
+    const {name, difficulty, category, ingredients, vegetarian, vegan, allergen} = req.query;
 
     let query = 'SELECT * FROM Rezept WHERE 1=1';
     let queryParams = [];
@@ -177,6 +239,21 @@ app.get('/getFilteredRecipes', (req, res) => {
             query += ' AND Ingredients LIKE ?';
             queryParams.push(`%${ingredient.trim()}%`);
         });
+    }
+
+    if (vegetarian) {
+        query += ' AND Vegetarian = ?';
+        queryParams.push(vegetarian);
+    }
+
+    if (vegan) {
+        query += ' AND Vegan = ?';
+        queryParams.push(vegan);
+    }
+
+    if (allergen) {
+        query += ' AND Allergen = ?';
+        queryParams.push(allergen);
     }
 
     connection.query(query, queryParams, (error, results) => {
