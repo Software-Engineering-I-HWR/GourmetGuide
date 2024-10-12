@@ -26,6 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
         window.location.href = getLink(searchTerm);
     };
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     useEffect(() => {
         const isUserLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')!);
@@ -45,7 +46,17 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                 <a href="/" className="navbar__projectname">
                     {title}
                 </a>
+                <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile"
+                     onClick={() => setShowMobileMenu(!showMobileMenu)}/>
             </div>
+
+            {showMobileMenu && <div className="navbar-actions-mobile">
+                <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link-mobile">Eigener
+                    Bereich</a>
+                <a href='/categories' className="navbar__link-mobile">Kategorien</a>
+                <a href='/log-in' className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</a>
+            </div>}
+
             <div className="navbar__Buttons">
                 <form className="navbar__search" onSubmit={handleOnSubmit}>
                     <input
