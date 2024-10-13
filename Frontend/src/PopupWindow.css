@@ -13,3 +13,21 @@
     font-size: 3vh;
     line-height: 5%;
 }
+
+@media only screen and (max-width: 768px) {
+    .popupWindow {
+        position: fixed;
+        padding: 3% 5%;
+        background-color: #b4806d;
+        left: 1px;
+        top: 1px;
+        text-align: center;
+        max-height: 15%;
+        max-width: 100%;
+        color: white;
+        border-radius: 15px;
+        border: 10px solid #6e2107;
+        font-size: 3vh;
+        line-height: 5%;
+    }
+}

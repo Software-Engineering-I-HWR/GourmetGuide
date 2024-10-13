@@ -103,10 +103,25 @@
     .register-body {
         flex-direction: column;
         align-items: center;
-        width: 90%;
+        width: 100%;
+        padding: 0 0;
     }
-
+    .register-left {
+        width: 100%;
+        height: 50vh;
+    }
     .register-right {
         margin-top: 20px;
+    }
+
+    .register-title {
+        font-size: 2rem;
+        font-weight: bold;
+        top: 5px;
+        color: #333;
+    }
+
+    .register-logo {
+        display: none;
     }
 }
