@@ -3,6 +3,12 @@
 }
 .mainSearc__search-input{
     width: 50%;
+    display: flex;
+    padding: 0.1% 1.1%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    background-color: white;
 }
 .Toggel-such-body-Button {
     display: inline-block;
@@ -200,4 +206,10 @@ p {
 .filter-title {
     font-size: 2rem;
     margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .mainSearc__search-input {
+        width: 100%;
+    }
 }

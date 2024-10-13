@@ -41,9 +41,10 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
 
     return (
         <nav className="navbar">
-            <div className="navbar__title" onClick={() => window.location.href = '/'}>
-                <img src="/images/Logo%20klein%20keinHintergrund.png" alt="Logo" className="navbar__logo"/>
-                <p className="navbar__projectname">
+            <div className="navbar__title">
+                <img src="/images/Logo%20klein%20keinHintergrund.png" alt="Logo" className="navbar__logo"
+                     onClick={() => window.location.href = '/'}/>
+                <p className="navbar__projectname" onClick={() => window.location.href = '/'}>
                     {title}
                 </p>
                 <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile"
