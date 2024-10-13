@@ -148,7 +148,7 @@
         padding: 1%;
     }
 
-    .navbar-actions-mobile {
+    .categories-actions-mobile {
         display: flex;
         position: fixed;
         justify-content: center;
@@ -160,7 +160,7 @@
         z-index: 10010;
     }
 
-    .mobile-menu-buttons {
+    .categories-mobile-menu-buttons {
         display: flex;
         text-decoration: none;
         color: #07546e;

@@ -29,6 +29,8 @@ interface ListItem2 {
 }
 
 const PersonalHome: React.FC = () => {
+
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [whichIsDisable, setWhichIsDisable] = useState(0);
     const [ownRecipes, setOwnRecipes] = useState<ListItem[]>([]);
     const [recipeIds, setRecipeIds] = useState<number[]>([]);
@@ -166,7 +168,22 @@ const PersonalHome: React.FC = () => {
                 subtitle="Hier sehen Sie Ihre Rezepte und die Rezepte, die sie bewertet haben!"
             />
             <div className="personalHome-main">
+                {showMobileMenu && <div className="ownPage-actions-mobile">
+
+                    <button className="ownPage-mobile-menu-buttons" onClick={() => {
+                        setShowMobileMenu(false);
+                        setWhichIsDisable(0);
+                    }}>Eigene Rezepte
+                    </button>
+                    <button className="ownPage-mobile-menu-buttons" onClick={() => {
+                        setShowMobileMenu(false);
+                        setWhichIsDisable(1);
+                    }}>Bewertete Rezepte
+                    </button>
+                </div>}
                 <div className="personalHome-main-head">
+                    <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
+                         onClick={() => setShowMobileMenu(!showMobileMenu)}/>
                     <button
                         className="personalHome-main-head__button"
                         onClick={() => (window.location.href = "/create-recipe")}

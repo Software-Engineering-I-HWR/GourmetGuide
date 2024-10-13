@@ -153,9 +153,9 @@ const Categories: React.FC = () => {
         return (
             <div className="main-content">
                 <div className="categories-main-content">
-                    {showMobileMenu && <div className="navbar-actions-mobile">
+                    {showMobileMenu && <div className="categories-actions-mobile">
                         {sampleCategories!.sort().map((item) => (
-                            <button className="mobile-menu-buttons" disabled={!item.active} onClick={() => {
+                            <button className="categories-mobile-menu-buttons" disabled={!item.active} onClick={() => {
                                 setShowMobileMenu(false);
                                 setCurrentCategory(item.title)
                             }}>{item.title}</button>

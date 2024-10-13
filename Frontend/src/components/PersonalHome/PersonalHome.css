@@ -155,3 +155,75 @@
     display: flex;
     justify-content: flex-start;
 }
+
+@media only screen and (max-width: 768px) {
+    .hero__title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .hero__subtitle {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        color: #b1c3cd;
+    }
+
+    .hero {
+        padding: 5% 5%;
+    }
+
+    .personalHome-main-head__button {
+        font-size: 1rem;
+        display: flex;
+    }
+
+    .home-recipes-table {
+        justify-content: center;
+        flex-direction: row;
+        flex: 1;
+    }
+
+    .personalHome-main {
+        max-width: 100%;
+        margin: 0 0;
+    }
+
+    .personalHome-main-head {
+        flex-direction: row;
+    }
+
+    .personalHome-choose-buttons {
+        display: none;
+    }
+
+    .personalHome-main-div {
+        justify-content: center;
+    }
+
+    .ownPage-actions-mobile {
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #e5ebee;
+        width: 100%;
+        top: 51vh;
+        border-right: 15px;
+        z-index: 10010;
+    }
+
+    .ownPage-mobile-menu-buttons {
+        display: flex;
+        text-decoration: none;
+        color: #07546e;
+        font-size: 1rem;
+        padding: 0.5% 0.5%;
+        background-color: #e5ebee;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 1% 1%;
+        justify-content: center;
+    }
+}
