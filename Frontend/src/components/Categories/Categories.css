@@ -1,7 +1,7 @@
 .categories__title {
     font-size: 2.25rem;
     margin: 20px 10px;
-    width: 100%;
+    width: 70%;
 }
 
 .categories__list {
@@ -24,6 +24,7 @@
     display: flex;
     justify-content: space-between; /* Verteile den Platz zwischen den beiden Sektionen */
     width: 100%; /* Stelle sicher, dass der Container die gesamte Breite hat */
+    flex-direction: row;
 }
 
 .recipes-table {
@@ -67,7 +68,6 @@
 .recipes-by-category {
     margin-top: 2.5%;
     display: flex;
-    flex: 1; /* Fülle den verbleibenden Platz */
     flex-direction: column; /* Die Tabelle soll vertikal angeordnet sein */
 }
 
@@ -89,4 +89,89 @@
 .recipes-table th:nth-child(4), /* Bild */
 .recipes-table td:nth-child(4) {
     width: 20%; /* Breite für die Bild-Spalte */
+}
+
+.menu-button-mobile-categories {
+    display: none;
+}
+
+@media only screen and (min-width: 769px) {
+    .menu-button-mobile-categories {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .categories__list {
+        display: none;
+    }
+
+    .categories-main-content {
+        flex-direction: column; /* Untereinander auf mobilen Geräten */
+        align-items: center; /* Zentriere die Elemente auf mobilen Geräten, wenn nötig */
+    }
+
+    .categories__title {
+        display: flex;
+        max-height: 10%;
+        font-size: 1.5rem;
+        margin: 1% 1%;
+    }
+
+    .menu-button-mobile-categories {
+        display: flex;
+        width: 10%;
+        height: 10%;
+        margin: 1% 1%;
+        margin-right: 5%;
+    }
+
+    .categories, .recipes-by-category {
+        display: flex;
+        width: 100%;
+    }
+
+    .categories {
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .recipes-by-category {
+        margin-top: -5%;
+    }
+
+    .recipes-table {
+        font-size: 1rem;
+    }
+
+    .recipes-table td {
+        padding: 1%;
+    }
+
+    .navbar-actions-mobile {
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #e5ebee;
+        width: 100%;
+        top: 30vh;
+        border-right: 15px;
+        z-index: 10010;
+    }
+
+    .mobile-menu-buttons {
+        display: flex;
+        text-decoration: none;
+        color: #07546e;
+        font-size: 1rem;
+        padding: 0.5% 0.5%;
+        background-color: #e5ebee;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 1% 1%;
+        justify-content: center;
+    }
 }

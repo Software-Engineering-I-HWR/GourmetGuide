@@ -330,3 +330,8 @@
     margin: 2% 2%;
     justify-content: center;
 }
+
+.menu-button-mobile-categories {
+    display: block;
+    width: 100%;
+}

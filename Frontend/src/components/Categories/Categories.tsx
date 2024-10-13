@@ -39,6 +39,8 @@ const Categories: React.FC = () => {
         const [sampleCategories, setSampleCategories] = useState<ListItem[]>([]);
         const [categories, setCategories] = useState<string[]>([]);
         const [allRecipesCurrentCategory, setAllRecipesCurrentCategory] = useState<RecipesByCategory[]>([]);
+        const [showMobileMenu, setShowMobileMenu] = useState(false);
+
 
         async function getAllCategories(): Promise<Category[] | null> {
             try {
@@ -151,7 +153,17 @@ const Categories: React.FC = () => {
         return (
             <div className="main-content">
                 <div className="categories-main-content">
+                    {showMobileMenu && <div className="navbar-actions-mobile">
+                        {sampleCategories!.sort().map((item) => (
+                            <button className="mobile-menu-buttons" disabled={!item.active} onClick={() => {
+                                setShowMobileMenu(false);
+                                setCurrentCategory(item.title)
+                            }}>{item.title}</button>
+                        ))}
+                    </div>}
                     <div className="categories">
+                        <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
+                             onClick={() => setShowMobileMenu(!showMobileMenu)}/>
                         <h1 className="categories__title">Kategorien</h1>
                         <div className="categories__list">
                             {sampleCategories!.sort().map((recipe, index) => (
