@@ -213,7 +213,7 @@ app.get('/getRecipesByCategory', (req, res) => {
 });
 
 app.get('/getFilteredRecipes', (req, res) => {
-    const {name, difficulty, category, ingredients, vegetarian, vegan, allergen, rating} = req.query;
+    const {name, difficulty, category, ingredients, vegetarian, vegan, allergens, rating} = req.query;
 
     let query = 'SELECT * FROM Rezept WHERE 1=1';
     let queryParams = [];
@@ -251,8 +251,8 @@ app.get('/getFilteredRecipes', (req, res) => {
         queryParams.push(vegan);
     }
 
-    if (allergen) {
-        const allergenArray = allergen.split(',');
+    if (allergens) {
+        const allergenArray = allergens.split(',');
         allergenArray.forEach((allergen) => {
             query += ' AND Allergen LIKE ?';
             queryParams.push(allergen);
