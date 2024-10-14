@@ -11,6 +11,8 @@ interface SuchFilter{
     ingredients:string
     Rating: string;
     Allergien: string;
+    Vegan: string;
+    Vegetarian: string;
 
 }
 
@@ -28,18 +30,20 @@ interface ListItem {
     id: number
 }
 
-async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; }): Promise<Recipe[] | null> {
+async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; Vegan: string; Vegetarian: string; }): Promise<Recipe[] | null> {
     const promt = `https://canoob.de:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
-        `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}`)
+        `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}&`) +
+        `vegetarian=`+ (Vegetarian==``? `&`: `${encodeURIComponent(Vegetarian)}&`) +
+        `vegan=`+ (Vegan==``? `&`: `${encodeURIComponent(Vegan)}&`)
         //*Api anfrage muss überarbeitet werden
         /*        +
         `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}`) +
         `allergien=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}`)
         */
-
+    console.log(promt);
     try {
         const response = await fetch(promt);
         if (response.ok) {
@@ -55,12 +59,13 @@ async function getRecipes({name, difficulty, category, ingredients, Rating, Alle
 }
 
 
-const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients, Rating, Allergien}) => {
+const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+    console.log(Vegan);
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            const recipes = await getRecipes({name, difficulty, category, ingredients, Rating, Allergien });
+            const recipes = await getRecipes({name, difficulty, category, ingredients, Rating, Allergien , Vegan, Vegetarian});
             if (recipes && Array.isArray(recipes)) {
                 const lastFifteenRecipes = recipes.map(recipe => ({
                     title: recipe.Title,

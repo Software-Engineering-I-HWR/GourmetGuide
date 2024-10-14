@@ -286,8 +286,14 @@ const MainSearch: React.FC = () => {
                 <hr/>
 
                 <div className="Zutaten-Visualation">
-                    <SearchRecipeView name={receptName || ""} difficulty={selectedDifficulty || ""}
-                                      category={selectedCategory || ""} ingredients={selectedIngredients.join(",")} Rating ={selectedRating || ""} Allergien = {allergien.filter(item => item.ausgewählt).map(item=> item.allergie).join(",") || ""} >
+                    <SearchRecipeView name={receptName || ""}
+                                      difficulty={selectedDifficulty || ""}
+                                      category={selectedCategory || ""}
+                                      ingredients={selectedIngredients.join(",")}
+                                      Rating ={selectedRating || ""}
+                                      Allergien = {allergien.filter(item => item.ausgewählt&&item.allergie != "Vegan"&& item.allergie != "Vegetarisch").map(item=> item.allergie).join(",")||""}
+                                      Vegetarian = {allergien[1].ausgewählt?"1":""}
+                                      Vegan = {allergien[0].ausgewählt?"1":""} >
 
                     </SearchRecipeView>
                 </div>
