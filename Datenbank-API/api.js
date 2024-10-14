@@ -255,7 +255,7 @@ app.get('/getFilteredRecipes', (req, res) => {
         const allergenArray = allergens.split(',');
         allergenArray.forEach((allergen) => {
             query += ' AND Allergen LIKE ?';
-            queryParams.push(allergen);
+            queryParams.push(`%${allergen}%`);
         });
     }
 
