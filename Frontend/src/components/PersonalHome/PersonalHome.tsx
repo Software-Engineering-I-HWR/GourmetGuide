@@ -161,6 +161,33 @@ const PersonalHome: React.FC = () => {
         }
     }, [recipeIds]);
 
+
+    async function handleDeleteRecipe(id: number) {
+        const confirmed = window.confirm("Möchten Sie dieses Rezept wirklich löschen?");
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(
+                `https://canoob.de:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
+                {
+                    method: "POST",
+                }
+            );
+
+            if (response.ok) {
+                alert("Rezept wurde erfolgreich gelöscht.");
+                setOwnRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.id !== id));
+            } else if (response.status === 404) {
+                alert("Rezept wurde nicht gefunden!");
+            } else {
+                alert(`Fehler beim Löschen des Rezepts: ${response.statusText}`);
+            }
+        } catch (error) {
+            alert("Netzwerkfehler. Bitte versuchen Sie es später erneut.");
+            console.error("Network error:", error);
+        }
+    }
+
     return (
         <div className="personalHome">
             <Hero
@@ -218,6 +245,7 @@ const PersonalHome: React.FC = () => {
                                     <th scope="col2">Titel</th>
                                     <th scope="col3">Kategorie</th>
                                     <th scope="col4">Bild</th>
+                                    <th scope="col5">Aktionen</th> {/* Added a new column for actions */}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -236,6 +264,17 @@ const PersonalHome: React.FC = () => {
                                                 alt="Bild Rezept"
                                             />
                                         </td>
+                                        <td>
+                                            {/* Add Delete Button Here */}
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteRecipe(recipe.id);
+                                                }}
+                                            >
+                                                Löschen
+                                            </button>
+                                        </td> {/* Added delete button */}
                                     </tr>
                                 ))}
                                 </tbody>
