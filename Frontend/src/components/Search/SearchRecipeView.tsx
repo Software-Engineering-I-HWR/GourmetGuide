@@ -39,7 +39,7 @@ async function getRecipes({name, difficulty, category, ingredients, Rating, Alle
         `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}&`) +
         `vegetarian=`+ (Vegetarian==``? `&`: `${encodeURIComponent(Vegetarian)}&`) +
         `vegan=`+ (Vegan==``? `&`: `${encodeURIComponent(Vegan)}&`) +
-        `allergen=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}&`) +
+        `allergens=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}&`) +
         `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}&`)
     console.log(promt);
     try {
