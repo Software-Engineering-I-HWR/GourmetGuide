@@ -31,18 +31,16 @@ interface ListItem {
 }
 
 async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; Vegan: string; Vegetarian: string; }): Promise<Recipe[] | null> {
+    console.log(Allergien);
     const promt = `https://canoob.de:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
         `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}&`) +
         `vegetarian=`+ (Vegetarian==``? `&`: `${encodeURIComponent(Vegetarian)}&`) +
-        `vegan=`+ (Vegan==``? `&`: `${encodeURIComponent(Vegan)}&`)
-        //*Api anfrage muss überarbeitet werden
-        /*        +
-        `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}`) +
-        `allergien=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}`)
-        */
+        `vegan=`+ (Vegan==``? `&`: `${encodeURIComponent(Vegan)}&`) +
+        `allergen=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}&`) +
+        `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}&`)
     console.log(promt);
     try {
         const response = await fetch(promt);
