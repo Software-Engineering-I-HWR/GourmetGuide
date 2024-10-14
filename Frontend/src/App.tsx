@@ -13,6 +13,7 @@ import "./PopupWindow.css";
 import PopupWindow from "./PopupWindow.tsx";
 import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
+import {jwtDecode} from "jwt-decode";
 
 
 const App: React.FC = () => {
@@ -28,12 +29,28 @@ const App: React.FC = () => {
 
 
     useEffect(() => {
-        const isUserLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')!);
-        if (isUserLoggedIn == null) {
+        const isTokenValid = (token: string) => {
+            if (!token) return false;
+
+            try {
+                const decodedToken: any = jwtDecode(token);
+                const currentTime = Date.now() / 1000; // Aktuelle Zeit in Sekunden
+
+                // Überprüfe das 'exp' Feld des Tokens
+                return decodedToken.exp > currentTime; // Gültig, wenn 'exp' größer ist als die aktuelle Zeit
+            } catch (error) {
+                console.error("Token kann nicht dekodiert werden:", error);
+                return false;
+            }
+        };
+        const token = localStorage.getItem('access token');
+        if (!token){
             setIsLoggedIn(false);
         }
-        if (isUserLoggedIn) {
-            setIsLoggedIn(isUserLoggedIn);
+        if (isTokenValid(token!)){
+            setIsLoggedIn(true);
+        }else{
+            setIsLoggedIn(false);
         }
     }, []);
 
@@ -52,7 +69,7 @@ const App: React.FC = () => {
     return (
         <Router>
             <>
-                {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} title="GourmetGuide" links={navLinks}/>}
+                {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide" links={navLinks}/>}
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Fruit?"
@@ -62,7 +79,8 @@ const App: React.FC = () => {
                            element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn}/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
-                    <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!} />}/>
+                    <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn}
+                                                                 username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                 </Routes>
