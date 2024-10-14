@@ -5,11 +5,12 @@ import jwt from 'jsonwebtoken';
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const {jwtsecret} = require('../config.json');
+
 
 app.use(cors());
 
-const JWT_SECRET = "dein-geheimes-jwt-schluessel"; // Dieser Schlüssel sollte sicher gespeichert werden, z.B. als Umgebungsvariable
-
+const JWT_SECRET = jwtsecret;
 // Login controller
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
