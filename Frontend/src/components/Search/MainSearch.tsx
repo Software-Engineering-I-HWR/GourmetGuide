@@ -5,20 +5,39 @@ import SearchRecipeView from "./SearchRecipeView.tsx";
 
 
 const MainSearch: React.FC = () => {
+    //receptName
     const receptStringName = useParams<{ receptName: string }>().receptName||"none";
     const [receptName, setReceptName] = useState<string>((receptStringName =="none"?"":receptStringName));
-    const selectedStringRating = useParams<{ Rating: string }>().Rating||"none";
-    const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating =="none"?"":selectedStringRating));
+    //Category
     const selectedStringCategory = useParams<{ Category: string }>().Category||"none";
     const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory =="none"?"":selectedStringCategory));
+    //Difficulty
     const selectedStringDifficulty = useParams<{ Difficulty: string }>().Difficulty||"none";
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>((selectedStringDifficulty =="none"?"":selectedStringDifficulty));
-
-
+    //zutaten
     const [selectedIngr, setSelectedIngr] = useState('');
     const selectedStringIngredients = useParams<{ zutaten: string }>().zutaten||"none";
     const selectedStringArrayIngredients = selectedStringIngredients=="none"?[]:selectedStringIngredients.split(",");
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>(selectedStringArrayIngredients);
+    //Rating
+    const selectedStringRating = useParams<{ Rating: string }>().Rating||"none";
+    const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating =="none"?"":selectedStringRating));
+    //Allergien
+    const selectedStringAllergien = useParams<{ Allergien: string }>().Allergien||"none";
+    const selectedStringArrayAllergien = selectedStringAllergien=="none"?[]:selectedStringAllergien.split(",");
+    interface AllergienMitAuswahl{
+        allergie: string;
+        ausgewählt: boolean;
+    }
+    function getAllergien(): AllergienMitAuswahl[]{
+        let temp = [{allergie:"Vegan", ausgewählt: false},{allergie:"Vegetarisch", ausgewählt: false},{allergie:"Glutenfrei", ausgewählt: false},{allergie:"Nussfrei", ausgewählt: false},{allergie:"Eifrei", ausgewählt: false},{allergie:"Lactosefrei", ausgewählt: false}];
+        console.log(selectedStringArrayAllergien);
+        temp.map((item: AllergienMitAuswahl) => {if(selectedStringArrayAllergien.some(e=> e== item.allergie) ){ item.ausgewählt = true}})
+        console.log(temp);
+        return temp
+    }
+    const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
+
 
     const addVeg = () => {
         if (!selectedIngredients.includes(selectedIngr)) {
@@ -29,6 +48,14 @@ const MainSearch: React.FC = () => {
     const removeVeg = (veg: string) => {
         setSelectedIngredients(prevVegs => prevVegs.filter(v => v !== veg));
     };
+
+    const toggelAllergien = (allergienZumToggeln: string) =>{
+        setAllergien( preAllergien =>
+            preAllergien.map(item =>
+                item.allergie === allergienZumToggeln
+                    ? { ...item, ausgewählt: !item.ausgewählt }
+                    : item));
+    }
 
     interface Recipe {
         ingredient: string;
@@ -103,7 +130,7 @@ const MainSearch: React.FC = () => {
 
     function getLink() {
         console.log(selectedIngredients);
-        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/";
+        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewählt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewählt).map(item=> item.allergie).join(",")))+"/";
         console.log(tempURL)
         return tempURL;
     }
@@ -124,17 +151,17 @@ const MainSearch: React.FC = () => {
                                 className="mainSearc__search-input"
                             />
                         </form>
-                        <table className="recipes-table">
+                        <table className="Tabel">
                             <tbody>
                             <tr>
                                 <th className="Tabel-Row">
                                     <text>Rating:</text>
                                 </th>
                                 <th>
-                                    <text>Kategorie:</text>
+                                    <text>Schwierigkeit:</text>
                                 </th>
                                 <th>
-                                    <text>Schwierigkeit:</text>
+                                    <text>Kategorie:</text>
                                 </th>
 
                             </tr>
@@ -148,11 +175,27 @@ const MainSearch: React.FC = () => {
                                             onChange={e => setSelectedRating(e.target.value)}
                                         >
                                             <option value="">Kein Rating ausgewählt</option>
-                                            <option value="1 Stern">1 Stern</option>
-                                            <option value="2 Sterne">2 Sterne</option>
-                                            <option value="3 Sterne">3 Sterne</option>
-                                            <option value="4 Sterne">4 Sterne</option>
-                                            <option value="5 Sterne">5 Sterne</option>
+                                            <option value="1">★☆☆☆☆</option>
+                                            <option value="2">★★☆☆☆</option>
+                                            <option value="3">★★★☆☆</option>
+                                            <option value="4">★★★★☆</option>
+                                            <option value="5">★★★★★</option>
+                                        </select>
+                                    </label>
+                                </th>
+                                <th scope="col">
+                                    <label className="pick-einzelnt">
+                                        <select
+                                            className="einzel-select"
+                                            value={selectedDifficulty}
+                                            onChange={e => setSelectedDifficulty(e.target.value)}
+                                        >
+                                            <option value="">Keine Schwierigkeit ausgewählt</option>
+                                            <option value="1">sehr einfach</option>
+                                            <option value="2">einfach</option>
+                                            <option value="3">mittel</option>
+                                            <option value="4">schwer</option>
+                                            <option value="5">sehr schwer</option>
                                         </select>
                                     </label>
                                 </th>
@@ -172,23 +215,23 @@ const MainSearch: React.FC = () => {
                                         </select>
                                     </label>
                                 </th>
-                                <th scope="col">
-                                    <label className="pick-einzelnt">
-                                        <select
-                                            className="einzel-select"
-                                            value={selectedDifficulty}
-                                            onChange={e => setSelectedDifficulty(e.target.value)}
-                                        >
-                                            <option value="">Keine Schwierigkeit ausgewählt</option>
-                                            <option value="einfach">einfach</option>
-                                            <option value="mittel">mittel</option>
-                                            <option value="schwer">schwer</option>
-                                        </select>
-                                    </label>
-                                </th>
+
                             </tr>
                             </tbody>
                         </table>
+                            <text style={{fontSize: "14px"}}>Allergien</text>
+                                <div className="auswahl-multi-Allergien">
+                                    {allergien.map((AllergienMitAuswahl) => (
+                                        <div className='ausgewhelt-Allerfgien' key={AllergienMitAuswahl.allergie}
+                                             style={{marginTop: '10px', backgroundColor: "#cbd6dd"}}>
+                                            {AllergienMitAuswahl.allergie}
+                                            <button className="add-allerfgie-button" style={{color: "#07546E"}}
+                                                    onClick={() => toggelAllergien(AllergienMitAuswahl.allergie) }> {AllergienMitAuswahl.ausgewählt?"✓":" " }
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+
                         <hr/>
                         <label>
                             <text>Zutaten auswählen:</text>
@@ -218,6 +261,7 @@ const MainSearch: React.FC = () => {
                                 </div>
                             ))}
                         </div>
+                        <hr/>
                         <button className="Submit-Search-Button" onClick={() => window.location.href = getLink()}>Suchen
                         </button>
 
@@ -233,7 +277,7 @@ const MainSearch: React.FC = () => {
                     </div>
 
                 ) : ""}
-                <div style={{display: "flex", justifyContent: "flex-end" }}>
+                <div style={{display: "flex", justifyContent: "flex-end"}}>
                     <button className="Toggel-such-body-Button" onClick={() => setIsVisible(!isVisible)}>
                         {isVisible ? "Suchfilter verstecken" : "Suchfilter einblenden"}
                     </button>
@@ -242,8 +286,14 @@ const MainSearch: React.FC = () => {
                 <hr/>
 
                 <div className="Zutaten-Visualation">
-                    <SearchRecipeView name={receptName || ""} difficulty={selectedDifficulty || ""}
-                                        category={selectedCategory || ""} ingredients={selectedIngredients.join(",")}>
+                    <SearchRecipeView name={receptName || ""}
+                                      difficulty={selectedDifficulty || ""}
+                                      category={selectedCategory || ""}
+                                      ingredients={selectedIngredients.join(",")}
+                                      Rating ={selectedRating || ""}
+                                      Allergien = {allergien.filter(item => item.ausgewählt&&item.allergie != "Vegan"&& item.allergie != "Vegetarisch").map(item=> item.allergie).join(",")||""}
+                                      Vegetarian = {allergien[1].ausgewählt?"1":""}
+                                      Vegan = {allergien[0].ausgewählt?"1":""} >
 
                     </SearchRecipeView>
                 </div>
