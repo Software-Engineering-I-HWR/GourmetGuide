@@ -252,8 +252,11 @@ app.get('/getFilteredRecipes', (req, res) => {
     }
 
     if (allergen) {
-        query += ' AND Allergen = ?';
-        queryParams.push(allergen);
+        const allergenArray = allergen.split(',');
+        allergenArray.forEach((allergen) => {
+            query += ' AND Allergen LIKE ?';
+            queryParams.push(allergen);
+        });
     }
 
     connection.query(query, queryParams, (error, results) => {
