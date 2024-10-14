@@ -9,6 +9,9 @@ interface SuchFilter{
     difficulty:string;
     category:string;
     ingredients:string
+    Rating: string;
+    Allergien: string;
+
 }
 
 interface Recipe {
@@ -25,12 +28,18 @@ interface ListItem {
     id: number
 }
 
-async function getRecipes({name, difficulty, category, ingredients}: { name: string, difficulty: string, category: string, ingredients: string }): Promise<Recipe[] | null> {
+async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; }): Promise<Recipe[] | null> {
     const promt = `https://canoob.de:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
         `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}`)
+        //*Api anfrage muss überarbeitet werden
+        /*        +
+        `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}`) +
+        `allergien=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}`)
+        */
+
     try {
         const response = await fetch(promt);
         if (response.ok) {
@@ -46,12 +55,12 @@ async function getRecipes({name, difficulty, category, ingredients}: { name: str
 }
 
 
-const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients}) => {
+const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients, Rating, Allergien}) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            const recipes = await getRecipes({name, difficulty, category, ingredients});
+            const recipes = await getRecipes({name, difficulty, category, ingredients, Rating, Allergien });
             if (recipes && Array.isArray(recipes)) {
                 const lastFifteenRecipes = recipes.map(recipe => ({
                     title: recipe.Title,
