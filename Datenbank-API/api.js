@@ -213,7 +213,7 @@ app.get('/getRecipesByCategory', (req, res) => {
 });
 
 app.get('/getFilteredRecipes', (req, res) => {
-    const {name, difficulty, category, ingredients, vegetarian, vegan, allergen} = req.query;
+    const {name, difficulty, category, ingredients, vegetarian, vegan, allergen, rating} = req.query;
 
     let query = 'SELECT * FROM Rezept WHERE 1=1';
     let queryParams = [];
@@ -264,7 +264,27 @@ app.get('/getFilteredRecipes', (req, res) => {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Abrufen der Rezepte');
         } else {
-            res.status(200).json(results);
+            if (rating) {
+                const query2 = `SELECT r.*, AVG(rt.Bewertung) as average_rating
+                            FROM Rezept r
+                            JOIN Bewertung rt ON r.ID = rt.ID
+                            GROUP BY r.ID
+                            HAVING average_rating >= ?`;
+
+                connection.query(query2, [rating], (error, results2) => {
+                    if (error) {
+                        console.error("Database Error:", error);
+                        res.status(500).send('Fehler beim Abrufen der Rezepte');
+                    } else {
+                        const filteredResults = results.filter(result1 =>
+                            results2.some(result2 => result1.ID === result2.ID)
+                        );
+                        res.status(200).json(filteredResults);
+                    }
+                });
+            } else {
+                res.status(200).json(results);
+            }
         }
     });
 });
