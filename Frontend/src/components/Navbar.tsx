@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import './Navbar.css';
+import PopupWindow from "../PopupWindow.tsx";
 
 interface NavbarProps {
     title: string;
     links: Array<{ name: string; path: string }>;
     isLoggedIn: boolean;
+    setIsUserLoggedIn: (isLoggedIn: boolean) => void;
 }
 
 function getLink(temp: string) {
@@ -15,8 +17,10 @@ function getLink(temp: string) {
 
 }
 
-const Navbar: React.FC<NavbarProps> = ({title}) => {
+const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [loginMessage, setLoginMessage] = useState('');
+    const [showPopupMessage, setShowPopupMessage] = useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -25,22 +29,33 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
         event.preventDefault()
         window.location.href = getLink(searchTerm);
     };
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+    const handleLogout = () => {
+        // Lösche die Daten im Local Storage
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('access token'); // Lösche gespeicherte E-Mail
+        setIsUserLoggedIn(false);
+        setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
+        setShowPopupMessage(true);
+    };
+
     useEffect(() => {
-        const isUserLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')!);
-        if (isUserLoggedIn == null) {
-            setIsLoggedIn(false);
-        }
-        if (isUserLoggedIn) {
-            setIsLoggedIn(isUserLoggedIn);
-        }
-    }, []);
+        setTimeout(() => {
+            setShowPopupMessage(false);
+        }, 5000);
+    }, [showPopupMessage]);
+
+    useEffect(() => {
+
+    }, [handleLogout]);
 
 
     return (
         <nav className="navbar">
+            {showPopupMessage && (
+                <PopupWindow message={loginMessage}/>
+            )}
             <div className="navbar__title">
                 <img src="/images/Logo%20klein%20keinHintergrund.png" alt="Logo" className="navbar__logo"
                      onClick={() => window.location.href = '/'}/>
@@ -55,7 +70,8 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                 <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link-mobile">Eigener
                     Bereich</a>
                 <a href='/categories' className="navbar__link-mobile">Kategorien</a>
-                <a href='/log-in' className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</a>
+                <button onClick={() => isLoggedIn ? handleLogout : window.location.href = '/log-in'}
+                        className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</button>
             </div>}
 
             <div className="navbar__Buttons">
@@ -73,7 +89,15 @@ const Navbar: React.FC<NavbarProps> = ({title}) => {
                     <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Eigener
                         Bereich</a>
                     <a href='/categories' className="navbar__link">Kategorien</a>
-                    <a href='/log-in' className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</a>
+                    <button onClick={() => {
+                        console.log(isLoggedIn);
+                        if (isLoggedIn) {
+                            handleLogout();
+                        } else {
+                            window.location.href = "log-in"
+                        }
+                    }}
+                            className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</button>
                 </div>
             </div>
         </nav>

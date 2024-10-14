@@ -1,7 +1,7 @@
 import './Login.css';
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
-import PropTypes from 'prop-types';
+import {jwtDecode} from 'jwt-decode';
 
 interface LoginProps {
     isUserLoggedIn: boolean;
@@ -13,30 +13,24 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
     const [showPopupMessage, setShowPopupMessage] = useState(false);
-    //const [isLoggedIn, setIsLoggedIn] = useState(false); // State for logged in status
 
-    useEffect(() => {
+    // Funktion zum Überprüfen des Access Tokens
+    const isTokenValid = (token: string) => {
+        if (!token) return false;
 
-        const checkIfLoggedIn = async () => {
-            const password = localStorage.getItem('userPassword');
-            const email = localStorage.getItem('userEmail');
+        try {
+            const decodedToken: any = jwtDecode(token);
+            const currentTime = Date.now() / 1000; // Aktuelle Zeit in Sekunden
 
-            if (email && password) {
-                const response = await sendLoginRequest(email, password);
-                setIsUserLoggedIn(response.ok && response.status === 200);
-            } else {
-                setIsUserLoggedIn(false);
-            }
+            // Überprüfe das 'exp' Feld des Tokens
+            return decodedToken.exp > currentTime; // Gültig, wenn 'exp' größer ist als die aktuelle Zeit
+        } catch (error) {
+            console.error("Token kann nicht dekodiert werden:", error);
+            return false;
         }
-
-        checkIfLoggedIn();
-
-    }, [])
-
-    // Check for authentication cookie on component mount
+    };
 
     const sendLoginRequest = async (email: string, password: string) => {
-
         return await fetch('https://canoob.de:30156/login', {
             method: 'POST',
             headers: {
@@ -44,61 +38,54 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
             },
             body: JSON.stringify({email, password}),
         })
-            .then(data => data.json())
-    }
+            .then(data => data.json());
+    };
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); // Verhindere die Standardformularübermittlung
         try {
-
             const response = await sendLoginRequest(email, password);
+            console.log(response, response.status);
 
-            if (response.status === 200) {
-                // Store email in local storage
+            if (response.message === "Login erfolgreich") {
+                // Speichere das E-Mail und den Token im Local Storage
                 localStorage.setItem('userEmail', email);
-                localStorage.setItem('userPassword', password);
+                localStorage.setItem('access token', response.token);
 
-                // Show success message and set logged-in status
-                setLoginMessage('Login erfolgreich!');
-                localStorage.setItem('loginMessage', JSON.stringify("Login erfolgreich!"));
-                setIsUserLoggedIn(true);
-                window.location.href = '/';
-            }
-
-            if (response.status === 401) {
+                // Überprüfe die Gültigkeit des Tokens
+                const token = response.token;
+                if (isTokenValid(token)) {
+                    setLoginMessage('Login erfolgreich!');
+                    setIsUserLoggedIn(true);
+                    window.location.href = '/';
+                } else {
+                    setLoginMessage('Token ist ungültig.');
+                    setShowPopupMessage(true);
+                }
+            } else {
                 setLoginMessage('Falsche Anmeldedaten');
                 setShowPopupMessage(true);
-                //return (<PopupWindow message={loginMessage}/>);
             }
-
         } catch (error) {
             console.error(error);
-            setLoginMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
+            setLoginMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Fehlernachricht anzeigen
             setShowPopupMessage(true);
-            //return(<PopupWindow message={loginMessage}/>);
-
         }
     };
 
     const handleLogout = () => {
-        // Clear the cookie
-        localStorage.removeItem('userEmail'); // Clear stored email
-        localStorage.removeItem('userPassword');
-        setIsUserLoggedIn(false)
-        setLoginMessage('Erfolgreich abgemeldet!'); // Show logout message
-        localStorage.setItem('loginMessage', JSON.stringify("Erfolgreich abgemeldet"));
+        // Lösche die Daten im Local Storage
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('access token'); // Lösche gespeicherte E-Mail
+        setIsUserLoggedIn(false);
+        setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
         window.location.href = '/';
     };
-
-    useEffect(() => {
-        localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
-    }, [isUserLoggedIn]);
 
     useEffect(() => {
         setTimeout(() => {
             setShowPopupMessage(false);
         }, 5000);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showPopupMessage]);
 
     return (
@@ -113,8 +100,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                     {isUserLoggedIn ? (
                         <div>
                             <p>Bereits angemeldet als: {localStorage.getItem("userEmail")}</p>
-                            <button onClick={handleLogout} className="logout-button">Abmelden
-                            </button>
+                            <button onClick={handleLogout} className="logout-button">Abmelden</button>
                         </div>
                     ) : (
                         <form className="login-email-field" onSubmit={handleLogin}>
@@ -136,8 +122,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                         </form>
                     )}
 
-
-                    <a type="Submit" href="/register" className="register-button">Registrieren</a>
+                    <a href="/register" className="register-button">Registrieren</a>
                     {loginMessage && <p className="login-message">{loginMessage}</p>}
                     <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
@@ -149,6 +134,5 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
         </div>
     );
 };
-
 
 export default Login;
