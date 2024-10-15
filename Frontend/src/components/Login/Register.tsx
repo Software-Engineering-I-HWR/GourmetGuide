@@ -74,7 +74,7 @@ const Register: React.FC = () => {
                     <form className="register-email-field">
                         <input
                             type="text"
-                            placeholder="E-Mail-Addresse..."
+                            placeholder="Username..."
                             value={email}
                             onChange={enterEmailAdress}
                             className="register-email-field-input"

@@ -90,7 +90,7 @@
 }
 
 .recipes-table tbody tr {
-    transition: background-color 0.3s;
+    background-color: white;
 }
 
 .recipes-table tbody tr:hover {
@@ -154,6 +154,20 @@
 .personalHome-main-div{
     display: flex;
     justify-content: flex-start;
+}
+
+.delete-button {
+    display: flex;
+    background-color: transparent;
+    border: none;
+    justify-content: center;
+    margin: 10% 10%;
+}
+
+
+.delete-icon{
+    display: flex;
+    width: 75%;
 }
 
 @media only screen and (max-width: 768px) {

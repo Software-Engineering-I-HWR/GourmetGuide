@@ -245,7 +245,7 @@ const PersonalHome: React.FC = () => {
                                     <th scope="col2">Titel</th>
                                     <th scope="col3">Kategorie</th>
                                     <th scope="col4">Bild</th>
-                                    <th scope="col5">Aktionen</th> {/* Added a new column for actions */}
+                                    <th scope="col5">Löschen</th> {/* Added a new column for actions */}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -266,13 +266,13 @@ const PersonalHome: React.FC = () => {
                                         </td>
                                         <td>
                                             {/* Add Delete Button Here */}
-                                            <button
+                                            <button className="delete-button"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleDeleteRecipe(recipe.id);
                                                 }}
                                             >
-                                                Löschen
+                                                <img src="/images/delete.png" alt="Delete recipe" className="delete-icon" />
                                             </button>
                                         </td> {/* Added delete button */}
                                     </tr>

@@ -106,7 +106,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                         <form className="login-email-field" onSubmit={handleLogin}>
                             <input
                                 type="text"
-                                placeholder="E-Mail-Adresse..."
+                                placeholder="Username..."
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 className="login-email-field-input"
