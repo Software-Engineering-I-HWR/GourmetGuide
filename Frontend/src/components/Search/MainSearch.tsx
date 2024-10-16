@@ -129,9 +129,7 @@ const MainSearch: React.FC = () => {
     };
 
     function getLink() {
-        console.log(selectedIngredients);
-        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")))+"/";
-        console.log(tempURL)
+        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")));
         return tempURL;
     }
     const [isVisible, setIsVisible] = useState(true);

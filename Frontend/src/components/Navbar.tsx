@@ -11,9 +11,9 @@ interface NavbarProps {
 
 function getLink(temp: string) {
     if (temp == "") {
-        return "/mainsearch/";
+        return "/mainsearch";
     }
-    return "/mainsearch/" + temp;
+    return "/mainsearch" + temp;
 
 }
 
@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                 <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link-mobile">Eigener
                     Bereich</a>
                 <a href='/categories' className="navbar__link-mobile">Kategorien</a>
-                <button onClick={() => isLoggedIn ? handleLogout : window.location.href = '/log-in'}
+                <button onClick={() => isLoggedIn ? handleLogout : window.location.href = window.location.origin + '/log-in'}
                         className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</button>
             </div>}
 
@@ -90,11 +90,10 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                         Bereich</a>
                     <a href='/categories' className="navbar__link">Kategorien</a>
                     <button onClick={() => {
-                        console.log(isLoggedIn);
                         if (isLoggedIn) {
                             handleLogout();
                         } else {
-                            window.location.href = "log-in"
+                            window.location.href = window.location.origin + '/log-in';
                         }
                     }}
                             className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</button>
