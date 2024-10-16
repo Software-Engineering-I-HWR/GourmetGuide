@@ -6,39 +6,50 @@ import SearchRecipeView from "./SearchRecipeView.tsx";
 
 const MainSearch: React.FC = () => {
     //receptName
-    const receptStringName = useParams<{ receptName: string }>().receptName||"none";
-    const [receptName, setReceptName] = useState<string>((receptStringName =="none"?"":receptStringName));
+    const receptStringName = useParams<{ receptName: string }>().receptName || "none";
+    const [receptName, setReceptName] = useState<string>((receptStringName == "none" ? "" : receptStringName));
     //Category
-    const selectedStringCategory = useParams<{ Category: string }>().Category||"none";
-    const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory =="none"?"":selectedStringCategory));
+    const selectedStringCategory = useParams<{ Category: string }>().Category || "none";
+    const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory == "none" ? "" : selectedStringCategory));
     //Difficulty
-    const selectedStringDifficulty = useParams<{ Difficulty: string }>().Difficulty||"none";
-    const [selectedDifficulty, setSelectedDifficulty] = useState<string>((selectedStringDifficulty =="none"?"":selectedStringDifficulty));
+    const selectedStringDifficulty = useParams<{ Difficulty: string }>().Difficulty || "none";
+    const [selectedDifficulty, setSelectedDifficulty] = useState<string>((selectedStringDifficulty == "none" ? "" : selectedStringDifficulty));
     //zutaten
     const [selectedIngr, setSelectedIngr] = useState('');
-    const selectedStringIngredients = useParams<{ zutaten: string }>().zutaten||"none";
-    const selectedStringArrayIngredients = selectedStringIngredients=="none"?[]:selectedStringIngredients.split(",");
+    const selectedStringIngredients = useParams<{ zutaten: string }>().zutaten || "none";
+    const selectedStringArrayIngredients = selectedStringIngredients == "none" ? [] : selectedStringIngredients.split(",");
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>(selectedStringArrayIngredients);
     //Rating
-    const selectedStringRating = useParams<{ Rating: string }>().Rating||"none";
-    const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating =="none"?"":selectedStringRating));
+    const selectedStringRating = useParams<{ Rating: string }>().Rating || "none";
+    const [selectedRating, setSelectedRating] = useState<string>((selectedStringRating == "none" ? "" : selectedStringRating));
+    const [showIngredientsTable, setShowIngredientsTable] = useState(false);
     //Allergien
-    const selectedStringAllergien = useParams<{ Allergien: string }>().Allergien||"none";
-    const selectedStringArrayAllergien = selectedStringAllergien=="none"?[]:selectedStringAllergien.split(",");
-    interface AllergienMitAuswahl{
+    const selectedStringAllergien = useParams<{ Allergien: string }>().Allergien || "none";
+    const selectedStringArrayAllergien = selectedStringAllergien == "none" ? [] : selectedStringAllergien.split(",");
+    const [searchTerm, setSearchTerm] = useState('');
+
+    interface AllergienMitAuswahl {
         allergie: string;
         ausgewaehlt: boolean;
     }
-    function getAllergien(): AllergienMitAuswahl[]{
-        const temp = [{allergie:"Vegan", ausgewaehlt: false},{allergie:"Vegetarisch", ausgewaehlt: false},{allergie:"Glutenfrei", ausgewaehlt: false},{allergie:"Nussfrei", ausgewaehlt: false},{allergie:"Eifrei", ausgewaehlt: false},{allergie:"Lactosefrei", ausgewaehlt: false}];
-        console.log(selectedStringArrayAllergien);
-        temp.map((item: AllergienMitAuswahl) => {if(selectedStringArrayAllergien.some(e=> e== item.allergie) ){ item.ausgewaehlt = true}})
-        console.log(temp);
+
+    function getAllergien(): AllergienMitAuswahl[] {
+        const temp = [{allergie: "Vegan", ausgewaehlt: false}, {
+            allergie: "Vegetarisch",
+            ausgewaehlt: false
+        }, {allergie: "Glutenfrei", ausgewaehlt: false}, {
+            allergie: "Nussfrei",
+            ausgewaehlt: false
+        }, {allergie: "Eifrei", ausgewaehlt: false}, {allergie: "Lactosefrei", ausgewaehlt: false}];
+        temp.map((item: AllergienMitAuswahl) => {
+            if (selectedStringArrayAllergien.some(e => e == item.allergie)) {
+                item.ausgewaehlt = true
+            }
+        })
         return temp
     }
+
     const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
-
-
     const addVeg = () => {
         if (!selectedIngredients.includes(selectedIngr)) {
             setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
@@ -49,18 +60,24 @@ const MainSearch: React.FC = () => {
         setSelectedIngredients(prevVegs => prevVegs.filter(v => v !== veg));
     };
 
-    const toggelAllergien = (allergienZumToggeln: string) =>{
-        setAllergien( preAllergien =>
+    const toggelAllergien = (allergienZumToggeln: string) => {
+        setAllergien(preAllergien =>
             preAllergien.map(item =>
                 item.allergie === allergienZumToggeln
-                    ? { ...item, ausgewaehlt: !item.ausgewaehlt }
+                    ? {...item, ausgewaehlt: !item.ausgewaehlt}
                     : item));
+    }
+
+    function handleSelectIngr(ingredient: string) {
+        setSearchTerm(ingredient);
+        setSelectedIngr(ingredient);
     }
 
     interface Recipe {
         ingredient: string;
     }
-    interface Category{
+
+    interface Category {
         Category: string;
     }
 
@@ -78,6 +95,7 @@ const MainSearch: React.FC = () => {
             return null;
         }
     }
+
     const [ingredients, setIngredients] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -90,7 +108,6 @@ const MainSearch: React.FC = () => {
 
         fetchRecipes();
     }, []);
-
 
 
     async function getAllCategories(): Promise<Category[] | null> {
@@ -129,16 +146,20 @@ const MainSearch: React.FC = () => {
     };
 
     function getLink() {
-        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")));
+        const tempURL = "/mainsearch/" + (receptName == "" ? "none" : receptName) + "/" + (selectedCategory == "" ? "none" : selectedCategory) + "/" + (selectedDifficulty == "" ? "none" : selectedDifficulty) + "/" + (selectedIngredients.toString() == "" ? "none" : selectedIngredients.join(",").toString()) + "/" + (selectedRating == "" ? "none" : selectedRating) + "/" + (allergien.filter(item => item.ausgewaehlt).map(item => item.allergie).join(",") == "" ? "none" : (allergien.filter(item => item.ausgewaehlt).map(item => item.allergie).join(",")));
         return tempURL;
     }
+
+    const filteredIngredients = ingredients.filter((ingredient) =>
+        ingredient.toLowerCase().includes(searchTerm.toLowerCase()) // Filter nach Suchbegriff
+    );
     const [isVisible, setIsVisible] = useState(true);
     return (
         <div>
             <main className="main-content">
                 {isVisible ? (
                     <div className="such-body" data-Hiden="Showen">
-                        <h1  style={{fontSize: "3rem"}} className="filter-title">Suchfilter</h1>
+                        <h1 style={{fontSize: "3rem"}} className="filter-title">Suchfilter</h1>
                         <text style={{fontSize: "1.25rem"}}>Name:</text>
                         <form className="mainSearc__search" onSubmit={handleonSubmit}>
                             <input
@@ -217,31 +238,67 @@ const MainSearch: React.FC = () => {
                             </tr>
                             </tbody>
                         </table>
-                            <text style={{fontSize: "1.25rem"}}>Allergien</text>
-                                <div className="auswahl-multi-Allergien">
-                                    {allergien.map((AllergienMitAuswahl) => (
-                                        <button className={`ausgewhelt-Allerfgien ${AllergienMitAuswahl.ausgewaehlt ? 'selected' : ''}`} onClick={() => toggelAllergien(AllergienMitAuswahl.allergie) } key={AllergienMitAuswahl.allergie}>
-                                            {AllergienMitAuswahl.allergie}
-                                        </button>
-                                    ))}
-                                </div>
+                        <text style={{fontSize: "1.25rem"}}>Allergien</text>
+                        <div className="auswahl-multi-Allergien">
+                            {allergien.map((AllergienMitAuswahl) => (
+                                <button
+                                    className={`ausgewhelt-Allerfgien ${AllergienMitAuswahl.ausgewaehlt ? 'selected' : ''}`}
+                                    onClick={() => toggelAllergien(AllergienMitAuswahl.allergie)}
+                                    key={AllergienMitAuswahl.allergie}>
+                                    {AllergienMitAuswahl.allergie}
+                                </button>
+                            ))}
+                        </div>
 
                         <hr/>
-                        <label>
+                        <label className="select-ingredients-label">
                             <text style={{fontSize: "1.25rem"}}>Zutaten auswählen:</text>
                             <div className="select-mehre-add-container">
-                                <select
-                                    className="einzel-select"
-                                    value={selectedIngr}
-                                    onChange={(e) => setSelectedIngr(e.target.value)}
-                                >
-                                    {ingredients.map((ingredient, index) => (
-                                        <option key={index} value={ingredient}>
-                                            {ingredient}
-                                        </option>
-                                    ))}
-                                </select>
-                                <button className="add-button" onClick={addVeg}>Hinzufügen</button>
+                                <input
+                                    type="text"
+                                    placeholder="Zutat suchen..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onFocus={() => setShowIngredientsTable(true)}
+                                    style={{marginBottom: '2%', padding: '2% 2%', width: '100%'}}
+                                />
+
+                                {/* Dropdown mit gefilterten Zutaten-Vorschlägen */}
+                                {showIngredientsTable && filteredIngredients.length > 0 && (
+                                    <ul style={{
+                                        position: 'absolute',
+                                        zIndex: 1,
+                                        background: 'white',
+                                        listStyle: 'none',
+                                        padding: '5px',
+                                        border: '1px solid #ccc',
+                                        width: '100%',
+                                        maxHeight: '150px',
+                                        overflowY: 'auto',
+                                        margin: 0
+                                    }}>
+                                        {showIngredientsTable && <button className="close-ingr-window"
+                                                                         onClick={() => setShowIngredientsTable(false)}>X</button>}
+                                        {showIngredientsTable && filteredIngredients.map((ingredient, index) => (
+                                            <li
+                                                key={index}
+                                                onClick={() => handleSelectIngr(ingredient)}
+                                                style={{
+                                                    padding: '5px',
+                                                    cursor: 'pointer',
+                                                    borderBottom: '1px solid #eee'
+                                                }}
+                                            >
+                                                {ingredient}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <button className="add-button-ingr" onClick={() => {
+                                    addVeg();
+                                    setShowIngredientsTable(false);
+                                }}>Hinzufügen
+                                </button>
                             </div>
                         </label>
                         <div className="auswahl-multi">
@@ -284,10 +341,10 @@ const MainSearch: React.FC = () => {
                                       difficulty={selectedDifficulty || ""}
                                       category={selectedCategory || ""}
                                       ingredients={selectedIngredients.join(",")}
-                                      Rating ={selectedRating || ""}
-                                      Allergien = {allergien.filter(item => item.ausgewaehlt&&item.allergie != "Vegan"&& item.allergie != "Vegetarisch").map(item=> item.allergie).join(",")||""}
-                                      Vegetarian = {allergien[1].ausgewaehlt?"1":""}
-                                      Vegan = {allergien[0].ausgewaehlt?"1":""} >
+                                      Rating={selectedRating || ""}
+                                      Allergien={allergien.filter(item => item.ausgewaehlt && item.allergie != "Vegan" && item.allergie != "Vegetarisch").map(item => item.allergie).join(",") || ""}
+                                      Vegetarian={allergien[1].ausgewaehlt ? "1" : ""}
+                                      Vegan={allergien[0].ausgewaehlt ? "1" : ""}>
 
                     </SearchRecipeView>
                 </div>
