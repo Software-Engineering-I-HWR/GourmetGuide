@@ -62,7 +62,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         return creator && !invalidCreators.includes(creator);
     };
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
-
+    const [showPopup, setShowPopup] = useState(false);
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -266,6 +266,15 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         }
     }
 
+    useEffect(() => {
+        if (showPopup) {
+            setTimeout(() => {
+                setShowPopup(false);
+            }, 5000);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showPopup]);
+
     return (
         <body className="showRecipe">
         <header className="showRecipe-hero">
@@ -332,7 +341,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <div className="separator-line"></div>
             <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
-                <div className="star-system">
+                <div className="star-system" onMouseOver={() => !isLoggedIn && setShowMessage(true)}
+                     onMouseLeave={() => setShowMessage(false)}>
                     {isLoggedIn && <div className="rating-system">
                         <img className="first-star"
                              alt={activeStarOnHover >= 1 || chosenStar! >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
@@ -341,6 +351,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              onClick={() => {
                                  setChosenStar(1);
                                  saveRating(1);
+                                 setShowPopup(true);
                              }}/>
                         <img className="second-star"
                              alt={activeStarOnHover >= 2 || chosenStar! >= 2 ? "ausgefüllter Stern" : "leerer Stern"}
@@ -349,6 +360,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              onClick={() => {
                                  setChosenStar(2)
                                  saveRating(2);
+                                 setShowPopup(true);
                              }}/>
                         <img className="third-star"
                              alt={activeStarOnHover >= 3 || chosenStar! >= 3 ? "ausgefüllter Stern" : "leerer Stern"}
@@ -357,6 +369,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              onClick={() => {
                                  setChosenStar(3)
                                  saveRating(3);
+                                 setShowPopup(true);
                              }}/>
                         <img className="fourth-star"
                              alt={activeStarOnHover >= 4 || chosenStar! >= 4 ? "ausgefüllter Stern" : "leerer Stern"}
@@ -365,6 +378,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              onClick={() => {
                                  setChosenStar(4)
                                  saveRating(4);
+                                 setShowPopup(true);
                              }}/>
                         <img className="fifth-star"
                              alt={activeStarOnHover >= 5 || chosenStar! >= 5 ? "ausgefüllter Stern" : "leerer Stern"}
@@ -373,10 +387,10 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                              onClick={() => {
                                  setChosenStar(5)
                                  saveRating(5);
+                                 setShowPopup(true);
                              }}/>
                     </div>}
-                    {!isLoggedIn && <div className="fake-rating-system" onMouseOver={() => setShowMessage(true)}
-                                         onMouseLeave={() => setShowMessage(false)}>
+                    {!isLoggedIn && <div className="fake-rating-system">
                         <img className="first-star"
                              alt="disableStar"
                              src="/images/emptyStar.png"/>
@@ -396,8 +410,9 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     {showMessage && <div className="message">
                         Du musst dich anmelden, um das Rezept zu bewerten!
                     </div>}
+                    {showPopup && <p className={'save-rating-confirm'}>Bewertung wurde gespeichert!</p>}
                 </div>
-                <button type="button" onClick={handleShare} className="download-button">Teilen</button>
+                <button type="button" onClick={handleShare} className="download-button">Als PDF speichern</button>
             </div>
         </div>
         </body>

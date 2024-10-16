@@ -82,7 +82,7 @@ const Register: React.FC = () => {
                     </form>
                     <form className="register-password-field">
                         <input
-                            type="text"
+                            type="password"
                             placeholder="Passwort..."
                             value={password}
                             onChange={enterPassword}
@@ -91,7 +91,7 @@ const Register: React.FC = () => {
                     </form>
                     <form className="register-password-repeat-field">
                         <input
-                            type="text"
+                            type="password"
                             placeholder="Passwort wiederholen..."
                             value={passwordRepeat}
                             onChange={enterPasswordRepeat}

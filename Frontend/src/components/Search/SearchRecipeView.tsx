@@ -86,6 +86,8 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
                 <section className="recipes">
                     <h2 className="recipes__title"/>
                     <a className="recipes__list">
+                        {sampleRecipes!.length == 0 &&
+                            <p className="no-recipes-found">Es wurden keine passenden Rezepte gefunden!</p>}
                         {sampleRecipes!.map((recipe, index) => (
                             <a
                                 key={index}

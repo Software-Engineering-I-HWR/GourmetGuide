@@ -5,3 +5,7 @@
 .main-SearchRecipeView{
     width: 100%;
 }
+
+.no-recipes-found{
+    font-size: 1.5rem;
+}
