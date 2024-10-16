@@ -370,10 +370,15 @@ app.post('/saveBookmark', (req, res) => {
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit'
-    }).replace(',', '');
+        second: '2-digit',
+        hour12: false
+    }).replace(',', '').replace(/\./g, '-');
 
-    console.log("Formatted Date:", formattedDate);
+    const [datePart, timePart] = formattedDate.split(' ');
+    const [day, month, year] = datePart.split('-');
+    const isoFormattedDate = `${year}-${month}-${day} ${timePart}`;
+
+    console.log("Formatted Date:", isoFormattedDate);
 
     const query = `
         INSERT INTO Lesezeichen (ID, Username, Bookmark, Updatetime)
@@ -384,16 +389,17 @@ app.post('/saveBookmark', (req, res) => {
     console.log(query);
 
     connection.query(query, [
-        data.id, data.user, data.bookmark, formattedDate
+        data.id, data.user, data.bookmark, isoFormattedDate
     ], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Speichern des Lesezeichens');
+            res.status(500).send('Fehler beim Speichern der Bewertung');
         } else {
             res.status(200).send('Bewertung erfolgreich gespeichert');
         }
     });
 });
+
 
 
 
