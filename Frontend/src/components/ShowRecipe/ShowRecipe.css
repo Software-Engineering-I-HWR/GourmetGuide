@@ -224,10 +224,14 @@
 
 .star-system {
     display: flex;
+    flex-direction: column;
 }
 
 .message {
-    display: flex;
+    display: block;
+    position: absolute;
+    bottom: auto;
+    left: 35%;
     padding: 1% 1%;
     background-color: #b1c3cd;
     text-align: center;
@@ -295,3 +299,18 @@
     fill: #07536D;
 }
 
+.save-rating-confirm {
+    display: block;
+    position: absolute;
+    bottom: auto;
+    left: 35%;
+    padding: 1% 1%;
+    background-color: transparent;
+    text-align: center;
+    max-height: 75%;
+    max-width: 45%;
+    color: black;
+    font-size: 1.5vh;
+    margin-left: 5%;
+    margin-top: 5vh;
+}
