@@ -62,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                 <p className="navbar__projectname" onClick={() => window.location.href = '/'}>
                     {title}
                 </p>
-                <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile"
+                <img src="/images/menuWhite.png" alt="Menü Button Mobile" className="menu-button-mobile"
                      onClick={() => setShowMobileMenu(!showMobileMenu)}/>
             </div>
 
