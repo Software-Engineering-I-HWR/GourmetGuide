@@ -357,6 +357,20 @@ app.get('/getBookmarkByIDAndUser', (req, res) => {
     });
 });
 
+app.get('/getBookmarkedRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT ID FROM Lesezeichen WHERE Username = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.post('/saveBookmark', (req, res) => {
     const data = req.query;
     console.log("Received data:", data);
@@ -399,9 +413,6 @@ app.post('/saveBookmark', (req, res) => {
         }
     });
 });
-
-
-
 
 https.createServer(credentials, app).listen(3000, () => {
     console.log('HTTPS-Server läuft auf Port 3000');
