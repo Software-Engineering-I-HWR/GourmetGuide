@@ -376,7 +376,7 @@ app.post('/saveBookmark', (req, res) => {
     console.log("Formatted Date:", formattedDate);
 
     const query = `
-        INSERT INTO Bewertung (ID, Username, Bookmark, Updatetime)
+        INSERT INTO Lesezeichen (ID, Username, Bookmark, Updatetime)
         VALUES (?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE Bookmark = VALUES(Bookmark), Updatetime = VALUES(Updatetime);
     `;
