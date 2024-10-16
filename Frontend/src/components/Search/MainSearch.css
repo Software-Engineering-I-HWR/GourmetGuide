@@ -1,40 +1,56 @@
-.auswahl-multi-Allergien{
+.auswahl-multi-Allergien {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
 }
 
-.ausgewhelt-Allerfgien{
-    min-width: 170px;
-    width: 15%;
-    margin: inherit;
+.ausgewhelt-Allerfgien {
     display: flex;
-    padding: 1%;
-
-
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #07546E;
+    background-color: #e5ebee;
+    color: #07546E;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.add-allerfgie-button{
-    min-width: 29.9px;
-    min-height: 30px;
+.ausgewhelt-Allerfgien:hover {
+    background-color: #7e9cac;
+    color: white;
+}
+
+.ausgewhelt-Allerfgien.selected {
+    background-color: #07546E;
+    color: white;
+}
+
+.add-allerfgie-button {
     display: flex;
-    margin-left: auto;
-    background: none;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
 
 }
 
-.Tabel{
+.Tabel {
     width: 100%
 }
-.recipes-table{
-    width: 30% ;!important;
+
+.recipes-table {
+    width: 30%;
+!important;
 }
 
-.Tabel-Row{
+.Tabel-Row {
     width: 33%;
 }
-.mainSearc__search-input{
+
+.mainSearc__search-input {
     width: 50%;
     display: flex;
     padding: 0.1% 1.1%;
@@ -43,6 +59,7 @@
     outline: none;
     background-color: white;
 }
+
 .Toggel-such-body-Button {
     display: inline-block;
     margin-left: auto;
@@ -63,17 +80,21 @@
 .Toggel-such-body-Button:hover {
     background-color: #65899c;
 }
+
 .such-body[data-Hiden="Hiden"] {
     display: none;
 }
+
 .such-body[data-Hiden="Showen"] {
     display: block;
 }
-text{
+
+text {
     color: #000000;
     font-weight: bold;
 }
-.Submit-Search-Button{
+
+.Submit-Search-Button {
     margin-top: 10px;
     width: 100%;
     display: flex;
@@ -92,38 +113,45 @@ text{
 .Submit-Search-Button:hover {
     background-color: #65899c;
 }
-.select-mehre-add-container{
+
+.select-mehre-add-container {
     display: flex;
 }
-.main-content{
-    flex:auto;
-    width:80%;
+
+.main-content {
+    flex: auto;
+    width: 80%;
 }
 
-.mehrfach-select{
+.mehrfach-select {
     border-radius: 20rem;
 }
-.einzel-select{
+
+.einzel-select {
     border-radius: 200rem;
 }
 
 .recipes-table {
     width: 100%;
 }
-.pick-einzelnt{
+
+.pick-einzelnt {
     display: flex;
     flex-direction: column;
 }
-.mehrfach-select{
+
+.mehrfach-select {
     display: flex;
     flex-direction: column;
 }
-.auswahl-multi{
+
+.auswahl-multi {
     display: block;
     justify-content: flex-start;
 
 }
-.ausgewhelt{
+
+.ausgewhelt {
     padding: 10% 3%;
 }
 
@@ -131,7 +159,7 @@ text{
     padding: 20px;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    width:80%;
+    width: 80%;
     margin: 0 auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -206,7 +234,7 @@ p {
     color: #333;
 }
 
-.add-button{
+.add-button {
     display: flex;
     text-decoration: none;
     justify-content: center;
@@ -221,7 +249,7 @@ p {
     margin: 1% 1%;
 }
 
-.add-button:hover{
+.add-button:hover {
     background-color: #65899c;
 }
 

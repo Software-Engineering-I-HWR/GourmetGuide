@@ -27,12 +27,12 @@ const MainSearch: React.FC = () => {
     const selectedStringArrayAllergien = selectedStringAllergien=="none"?[]:selectedStringAllergien.split(",");
     interface AllergienMitAuswahl{
         allergie: string;
-        ausgewählt: boolean;
+        ausgewaehlt: boolean;
     }
     function getAllergien(): AllergienMitAuswahl[]{
-        let temp = [{allergie:"Vegan", ausgewählt: false},{allergie:"Vegetarisch", ausgewählt: false},{allergie:"Glutenfrei", ausgewählt: false},{allergie:"Nussfrei", ausgewählt: false},{allergie:"Eifrei", ausgewählt: false},{allergie:"Lactosefrei", ausgewählt: false}];
+        const temp = [{allergie:"Vegan", ausgewaehlt: false},{allergie:"Vegetarisch", ausgewaehlt: false},{allergie:"Glutenfrei", ausgewaehlt: false},{allergie:"Nussfrei", ausgewaehlt: false},{allergie:"Eifrei", ausgewaehlt: false},{allergie:"Lactosefrei", ausgewaehlt: false}];
         console.log(selectedStringArrayAllergien);
-        temp.map((item: AllergienMitAuswahl) => {if(selectedStringArrayAllergien.some(e=> e== item.allergie) ){ item.ausgewählt = true}})
+        temp.map((item: AllergienMitAuswahl) => {if(selectedStringArrayAllergien.some(e=> e== item.allergie) ){ item.ausgewaehlt = true}})
         console.log(temp);
         return temp
     }
@@ -53,7 +53,7 @@ const MainSearch: React.FC = () => {
         setAllergien( preAllergien =>
             preAllergien.map(item =>
                 item.allergie === allergienZumToggeln
-                    ? { ...item, ausgewählt: !item.ausgewählt }
+                    ? { ...item, ausgewaehlt: !item.ausgewaehlt }
                     : item));
     }
 
@@ -130,7 +130,7 @@ const MainSearch: React.FC = () => {
 
     function getLink() {
         console.log(selectedIngredients);
-        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewählt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewählt).map(item=> item.allergie).join(",")))+"/";
+        const tempURL = "/mainsearch/"+ (receptName==""?"none":receptName)+"/"+(selectedCategory==""?"none":selectedCategory)+"/"+(selectedDifficulty==""?"none":selectedDifficulty)+"/"+(selectedIngredients.toString()==""?"none":selectedIngredients.join(",").toString())+"/"+(selectedRating==""?"none":selectedRating)+"/"+(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")==""?"none":(allergien.filter(item => item.ausgewaehlt).map(item=> item.allergie).join(",")))+"/";
         console.log(tempURL)
         return tempURL;
     }
@@ -140,8 +140,8 @@ const MainSearch: React.FC = () => {
             <main className="main-content">
                 {isVisible ? (
                     <div className="such-body" data-Hiden="Showen">
-                        <h1 className="filter-title">Suchfilter</h1>
-                        <text>Name:</text>
+                        <h1  style={{fontSize: "3rem"}} className="filter-title">Suchfilter</h1>
+                        <text style={{fontSize: "1.25rem"}}>Name:</text>
                         <form className="mainSearc__search" onSubmit={handleonSubmit}>
                             <input
                                 type="text"
@@ -155,13 +155,13 @@ const MainSearch: React.FC = () => {
                             <tbody>
                             <tr>
                                 <th className="Tabel-Row">
-                                    <text>Rating:</text>
+                                    <text style={{fontSize: "1.25rem"}}>Rating:</text>
                                 </th>
                                 <th>
-                                    <text>Schwierigkeit:</text>
+                                    <text style={{fontSize: "1.25rem"}}>Schwierigkeit:</text>
                                 </th>
                                 <th>
-                                    <text>Kategorie:</text>
+                                    <text style={{fontSize: "1.25rem"}}>Kategorie:</text>
                                 </th>
 
                             </tr>
@@ -174,7 +174,7 @@ const MainSearch: React.FC = () => {
 
                                             onChange={e => setSelectedRating(e.target.value)}
                                         >
-                                            <option value="">Kein Rating ausgewählt</option>
+                                            <option value="">Kein Rating ausgewaehlt</option>
                                             <option value="1">★☆☆☆☆</option>
                                             <option value="2">★★☆☆☆</option>
                                             <option value="3">★★★☆☆</option>
@@ -190,7 +190,7 @@ const MainSearch: React.FC = () => {
                                             value={selectedDifficulty}
                                             onChange={e => setSelectedDifficulty(e.target.value)}
                                         >
-                                            <option value="">Keine Schwierigkeit ausgewählt</option>
+                                            <option value="">Keine Schwierigkeit ausgewaehlt</option>
                                             <option value="1">sehr einfach</option>
                                             <option value="2">einfach</option>
                                             <option value="3">mittel</option>
@@ -206,7 +206,7 @@ const MainSearch: React.FC = () => {
                                             value={selectedCategory}
                                             onChange={e => setSelectedCategory(e.target.value)}
                                         >
-                                            <option value="">Keine Kategorie ausgewählt</option>
+                                            <option value="">Keine Kategorie ausgewaehlt</option>
                                             {categories.map((category, index) => (
                                                 <option key={index} value={category}>
                                                     {category}
@@ -219,22 +219,18 @@ const MainSearch: React.FC = () => {
                             </tr>
                             </tbody>
                         </table>
-                            <text style={{fontSize: "14px"}}>Allergien</text>
+                            <text style={{fontSize: "1.25rem"}}>Allergien</text>
                                 <div className="auswahl-multi-Allergien">
                                     {allergien.map((AllergienMitAuswahl) => (
-                                        <div className='ausgewhelt-Allerfgien' key={AllergienMitAuswahl.allergie}
-                                             style={{marginTop: '10px', backgroundColor: "#cbd6dd"}}>
+                                        <button className={`ausgewhelt-Allerfgien ${AllergienMitAuswahl.ausgewaehlt ? 'selected' : ''}`} onClick={() => toggelAllergien(AllergienMitAuswahl.allergie) } key={AllergienMitAuswahl.allergie}>
                                             {AllergienMitAuswahl.allergie}
-                                            <button className="add-allerfgie-button" style={{color: "#07546E"}}
-                                                    onClick={() => toggelAllergien(AllergienMitAuswahl.allergie) }> {AllergienMitAuswahl.ausgewählt?"✓":" " }
-                                            </button>
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
 
                         <hr/>
                         <label>
-                            <text>Zutaten auswählen:</text>
+                            <text style={{fontSize: "1.25rem"}}>Zutaten auswählen:</text>
                             <div className="select-mehre-add-container">
                                 <select
                                     className="einzel-select"
@@ -268,10 +264,10 @@ const MainSearch: React.FC = () => {
                         <div style={{display: "none"}}>
                             <hr/>
                             <p>Such Name: {receptName}</p>
-                            <p>Ausgewähltes Rating: {selectedRating}</p>
-                            <p>Ausgewählte Kategorie: {selectedCategory}</p>
-                            <p>Ausgewählte Schwierigkeit: {selectedDifficulty}</p>
-                            <p>Ausgewählte Zutaten: {selectedIngredients.join(', ')}</p>
+                            <p>ausgewaehltes Rating: {selectedRating}</p>
+                            <p>ausgewaehlte Kategorie: {selectedCategory}</p>
+                            <p>ausgewaehlte Schwierigkeit: {selectedDifficulty}</p>
+                            <p>ausgewaehlte Zutaten: {selectedIngredients.join(', ')}</p>
                             <p> Test: {selectedIngredients}</p>
                         </div>
                     </div>
@@ -291,9 +287,9 @@ const MainSearch: React.FC = () => {
                                       category={selectedCategory || ""}
                                       ingredients={selectedIngredients.join(",")}
                                       Rating ={selectedRating || ""}
-                                      Allergien = {allergien.filter(item => item.ausgewählt&&item.allergie != "Vegan"&& item.allergie != "Vegetarisch").map(item=> item.allergie).join(",")||""}
-                                      Vegetarian = {allergien[1].ausgewählt?"1":""}
-                                      Vegan = {allergien[0].ausgewählt?"1":""} >
+                                      Allergien = {allergien.filter(item => item.ausgewaehlt&&item.allergie != "Vegan"&& item.allergie != "Vegetarisch").map(item=> item.allergie).join(",")||""}
+                                      Vegetarian = {allergien[1].ausgewaehlt?"1":""}
+                                      Vegan = {allergien[0].ausgewaehlt?"1":""} >
 
                     </SearchRecipeView>
                 </div>
