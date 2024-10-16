@@ -362,10 +362,21 @@ app.post('/saveBookmark', (req, res) => {
     console.log("Received data:", data);
 
     const now = new Date();
-    const formattedDate = now.toISOString().slice(0, 19).replace('T', ' '); // Datum im Format 'YYYY-MM-DD HH:MM:SS'
+
+    const formattedDate = now.toLocaleString('de-DE', {
+        timeZone: 'Europe/Berlin',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).replace(',', '');
+
+    console.log("Formatted Date:", formattedDate);
 
     const query = `
-        INSERT INTO Lesezeichen (ID, Username, Bookmark, Updatetime)
+        INSERT INTO Bewertung (ID, Username, Bookmark, Updatetime)
         VALUES (?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE Bookmark = VALUES(Bookmark), Updatetime = VALUES(Updatetime);
     `;
@@ -377,12 +388,13 @@ app.post('/saveBookmark', (req, res) => {
     ], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Speichern der Bewertung');
+            res.status(500).send('Fehler beim Speichern des Lesezeichens');
         } else {
             res.status(200).send('Bewertung erfolgreich gespeichert');
         }
     });
 });
+
 
 
 https.createServer(credentials, app).listen(3000, () => {
