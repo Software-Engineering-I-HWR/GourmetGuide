@@ -342,6 +342,49 @@ app.post('/saveRating', (req, res) => {
     });
 });
 
+app.get('/getBookmarkByIDAndUser', (req, res) => {
+    const id = req.query.id;
+    const user = req.query.user;
+    const query = 'SELECT * FROM Lesezeichen WHERE ID = ? AND Username = ?';
+
+    connection.query(query, [id, user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Bewertung');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.post('/saveBookmark', (req, res) => {
+    const data = req.query;
+    console.log("Received data:", data);
+
+    const now = new Date();
+    const formattedDate = now.toISOString().slice(0, 19).replace('T', ' '); // Datum im Format 'YYYY-MM-DD HH:MM:SS'
+
+    const query = `
+        INSERT INTO Lesezeichen (ID, Username, Bookmark, Updatetime)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE Bookmark = VALUES(Bookmark), Updatetime = VALUES(Updatetime);
+    `;
+
+    console.log(query);
+
+    connection.query(query, [
+        data.id, data.user, data.bookmark, formattedDate
+    ], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Speichern der Bewertung');
+        } else {
+            res.status(200).send('Bewertung erfolgreich gespeichert');
+        }
+    });
+});
+
+
 https.createServer(credentials, app).listen(3000, () => {
     console.log('HTTPS-Server läuft auf Port 3000');
 });
