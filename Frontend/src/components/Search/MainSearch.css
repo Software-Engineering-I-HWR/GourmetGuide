@@ -116,6 +116,7 @@ text {
 
 .select-mehre-add-container {
     display: flex;
+    height: 100%;
 }
 
 .main-content {
@@ -352,4 +353,8 @@ li:hover {
     background-color: #07546E;
     border: none;
     border-radius: 5px;
+}
+
+.show-ingredients {
+    width: 100%;
 }
