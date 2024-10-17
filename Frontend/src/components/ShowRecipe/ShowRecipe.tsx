@@ -70,7 +70,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 
 
-
     const getBookmark = async () => {
         try{
             const respone = await fetch(`https://canoob.de:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
@@ -104,6 +103,10 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
     // Function to toggle bookmark state
     const toggleBookmark = async () => {
+        if (!isLoggedIn) {
+            return; // Exit early
+        }
+
         try {
             const newBookmarkState = !isBookmarked; // Toggle the bookmark state
             setIsBookmarked(newBookmarkState);
@@ -406,14 +409,17 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <div className="separator-line"></div>
             <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
-                {/* Bookmark button */}
-                <button className="bookmark-button" onClick={toggleBookmark}>
-                    <img
-                        src={isBookmarked ? bookmarkFilledIcon : bookmarkEmptyIcon}
-                        alt={isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
-                        className="bookmark-icon"
-                    />
-                </button>
+
+                <div className="bookmark" >
+                    {isLoggedIn &&
+                    <button className="bookmark-button" onClick={toggleBookmark}>
+                        <img
+                            src={isBookmarked ? bookmarkFilledIcon : bookmarkEmptyIcon}
+                            alt={isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
+                            className="bookmark-icon"
+                        />
+                    </button>}
+                </div>
                 <div className="star-system" onMouseOver={() => !isLoggedIn && setShowMessage(true)}
                      onMouseLeave={() => setShowMessage(false)}>
                     {isLoggedIn && <div className="rating-system">
