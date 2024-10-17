@@ -359,7 +359,7 @@ app.get('/getBookmarkByIDAndUser', (req, res) => {
 
 app.get('/getBookmarkedRecipesByUser', (req, res) => {
     const user = req.query.user;
-    const query = 'SELECT ID FROM Lesezeichen WHERE Username = ?';
+    const query = 'SELECT ID FROM Lesezeichen WHERE Username = ? AND Bookmark = 1';
 
     connection.query(query, [user], (error, results) => {
         if (error) {
