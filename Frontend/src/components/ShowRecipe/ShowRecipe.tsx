@@ -2,6 +2,9 @@ import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
+import bookmarkFilledIcon from '/images/fullBookmark.png';
+import bookmarkEmptyIcon from '/images/lightBookmark.png';
+
 const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
 
 interface Recipe {
@@ -63,6 +66,37 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     };
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
     const [showPopup, setShowPopup] = useState(false);
+
+    const [isBookmarked, setIsBookmarked] = useState(false);
+
+    // Function to toggle bookmark state
+    const toggleBookmark = async () => {
+        try {
+            const newBookmarkState = !isBookmarked; // Toggle the bookmark state
+            setIsBookmarked(newBookmarkState);
+
+            // Send the API request to save the bookmark
+            const response = await fetch(`https://canoob.de:3007/saveBookmark?
+            id=${encodeURIComponent(id)}
+            &user=${encodeURIComponent(username)}
+            &bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update bookmark');
+            }
+
+            // Optionally handle the response
+            const data = await response.json();
+            console.log('Bookmark saved:', data);
+
+        } catch (error) {
+            console.error('Error saving bookmark:', error);
+            // Revert the bookmark state if the API request fails
+            setIsBookmarked(!isBookmarked);
+        }
+    };
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -340,6 +374,16 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             </div>
             <div className="separator-line"></div>
             <p>Ersteller: {validCreator}</p>
+            <div className="bookmark-container">
+                {/* Bookmark button */}
+                <button className="bookmark-button" onClick={toggleBookmark}>
+                    <img
+                        src={isBookmarked ? bookmarkFilledIcon : bookmarkEmptyIcon}
+                        alt={isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
+                        className="bookmark-icon"
+                    />
+                </button>
+            </div>
             <div className="actions-field">
                 <div className="star-system" onMouseOver={() => !isLoggedIn && setShowMessage(true)}
                      onMouseLeave={() => setShowMessage(false)}>
