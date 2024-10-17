@@ -33,7 +33,6 @@ const PersonalHome: React.FC = () => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [whichIsDisable, setWhichIsDisable] = useState(0);
     const [ownRecipes, setOwnRecipes] = useState<ListItem[]>([]);
-    const [bookmarkRecipes, setBookmarkRecipes] = useState<ListItem[]>([]);
     const [recipeIds, setRecipeIds] = useState<number[]>([]);
     const [recipeIds2, setRecipeId2s] = useState<number[]>([]);
     const [ratedRecipes, setRatedRecipes] = useState<ListItem2[]>([]);
@@ -100,35 +99,10 @@ const PersonalHome: React.FC = () => {
         }
     }
 
-    async function getBookmarkRecipes(): Promise<void> {
-        try {
-            const response = await fetch(
-                `https://canoob.de:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(username!)}`,
-                {
-                    method: "GET",
-                }
-            );
-            if (response.ok) {
-                const indexes = await response.json();
-                const ids = indexes.map((item: { ID: number }) => item.ID);
-                setRecipeIds(ids);
-            } else {
-                console.error("API request error:", response.status);
-            }
-        } catch (error) {
-            console.error("Network error:", error);
-        }
-    }
 
     useEffect(() => {
         if (username) {
             getOwnRecipes();
-        }
-    }, [username]);
-
-    useEffect(() => {
-        if (username){
-            getBookmarkRecipes();
         }
     }, [username]);
 
@@ -322,9 +296,6 @@ const PersonalHome: React.FC = () => {
                     )}
                     {whichIsDisable === 0 && ownRecipes.length === 0 && (
                         <div className="home-recipes-error">Du hast noch kein Rezept erstellt!</div>
-                    )}
-                    {whichIsDisable === 2 && (
-                        <div className="home-recipes-error">Du hast noch keine Bookmarks</div>
                     )}
                     {whichIsDisable === 1 && ratedRecipes.length !== 0 && (
                         <div className="home-recipes-table"

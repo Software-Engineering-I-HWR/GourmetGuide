@@ -67,7 +67,39 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
     const [showPopup, setShowPopup] = useState(false);
 
-    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+
+
+
+    const getBookmark = async () => {
+        try{
+            const respone = await fetch(`https://canoob.de:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                method: 'GET'
+
+            });
+            const isBookmarked = await respone.json();
+            return isBookmarked.Bookmark === 1
+        }
+
+        catch (error) {
+            console.error('Error getting bookmark status:', error);
+            return false
+        }
+    }
+
+    useEffect(() => {
+
+        const checkBookmark = async () => {
+            try {
+                const isBookmarked = await getBookmark();
+                setIsBookmarked(isBookmarked); // Assuming 1 means bookmarked
+            } catch (error) {
+                console.error("Error checking bookmark status:", error);
+            }
+        };
+
+        checkBookmark();
+    }, []); // Empty dependency array to run only on mount
 
     // Function to toggle bookmark state
     const toggleBookmark = async () => {
