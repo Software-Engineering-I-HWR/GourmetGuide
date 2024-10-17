@@ -20,6 +20,14 @@
     color: #333;
 }
 
+.bookmark-button .bookmark-icon {
+    width: 24px;  /* Set your desired width */
+    height: 24px; /* Set your desired height */
+    /* Optionally add other styling */
+    display: inline-block; /* Makes sure the button fits the icon size */
+    margin: 0; /* Remove any margin if applicable */
+}
+
 .showRecipe {
     margin: 0;
     font-family: Arial, sans-serif;

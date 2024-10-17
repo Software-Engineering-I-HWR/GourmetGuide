@@ -2,6 +2,9 @@ import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
+import bookmarkFilledIcon from '/images/fullBookmark.png';
+import bookmarkEmptyIcon from '/images/lightBookmark.png';
+
 const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
 
 interface Recipe {
@@ -64,6 +67,70 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
     const [showPopup, setShowPopup] = useState(false);
 
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+
+
+    const getBookmark = async () => {
+        try{
+            const respone = await fetch(`https://canoob.de:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                method: 'GET'
+
+            });
+            const isBookmarked = await respone.json();
+            console.log("DATA:", isBookmarked);
+            return isBookmarked[0].Bookmark === 1
+        }
+
+        catch (error) {
+            console.error('Error getting bookmark status:', error);
+            return false
+        }
+    }
+
+    useEffect(() => {
+
+        const checkBookmark = async () => {
+            try {
+                const isBookmarked = await getBookmark();
+                setIsBookmarked(isBookmarked); // Assuming 1 means bookmarked
+            } catch (error) {
+                console.error("Error checking bookmark status:", error);
+            }
+        };
+
+        checkBookmark();
+    }, []); // Empty dependency array to run only on mount
+
+    // Function to toggle bookmark state
+    const toggleBookmark = async () => {
+        if (!isLoggedIn) {
+            return; // Exit early
+        }
+
+        try {
+            const newBookmarkState = !isBookmarked; // Toggle the bookmark state
+            setIsBookmarked(newBookmarkState);
+
+            // Send the API request to save the bookmark
+            const response = await fetch(`https://canoob.de:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update bookmark');
+            }
+
+            // Optionally handle the response
+            const data = await response.json();
+            console.log('Bookmark saved:', data);
+
+        } catch (error) {
+            console.error('Error saving bookmark:', error);
+            // Revert the bookmark state if the API request fails
+            setIsBookmarked(!isBookmarked);
+        }
+    };
+
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
             const response = await fetch(`https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
@@ -92,6 +159,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 setAvRating(onlyRating);
                 return onlyRating;
             } else {
+                console.error('API request error:', response.status);
                 console.error('API request error:', response.status);
                 return null;
             }
@@ -341,6 +409,17 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <div className="separator-line"></div>
             <p>Ersteller: {validCreator}</p>
             <div className="actions-field">
+
+                <div className="bookmark" >
+                    {isLoggedIn &&
+                    <button className="bookmark-button" onClick={toggleBookmark}>
+                        <img
+                            src={isBookmarked ? bookmarkFilledIcon : bookmarkEmptyIcon}
+                            alt={isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
+                            className="bookmark-icon"
+                        />
+                    </button>}
+                </div>
                 <div className="star-system" onMouseOver={() => !isLoggedIn && setShowMessage(true)}
                      onMouseLeave={() => setShowMessage(false)}>
                     {isLoggedIn && <div className="rating-system">

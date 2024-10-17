@@ -38,6 +38,9 @@ const PersonalHome: React.FC = () => {
     const [ratedRecipes, setRatedRecipes] = useState<ListItem2[]>([]);
     const username = localStorage.getItem("userEmail");
 
+    const [bookmarkRecipesIDs, setBookmarkRecipesIDs] = useState<number[]>([]);
+    const [bookmarkRecipes, setBookmarkRecipes] = useState<ListItem[]>([]);
+
     async function getRecipes(id: number): Promise<Recipe | null> {
         try {
             const response = await fetch(
@@ -79,6 +82,26 @@ const PersonalHome: React.FC = () => {
         }
     }
 
+    async function getBookmarkedRecipes() {
+        try {
+            const response = await fetch(
+                `https://canoob.de:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(username!)}`,
+                {
+                    method: "GET",
+                }
+            );
+            if (response.ok) {
+                const indexes = await response.json();
+                const ids = indexes.map((item: { ID: number }) => item.ID)
+                setBookmarkRecipesIDs(ids);
+            } else {
+                console.error("API request error:", response.status);
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+        }
+    }
+
     async function getRatedRecipes(): Promise<void> {
         try {
             const response = await fetch(
@@ -99,9 +122,16 @@ const PersonalHome: React.FC = () => {
         }
     }
 
+
     useEffect(() => {
         if (username) {
             getOwnRecipes();
+        }
+    }, [username]);
+
+    useEffect(() => {
+        if (username) {
+            getBookmarkedRecipes();
         }
     }, [username]);
 
@@ -125,7 +155,6 @@ const PersonalHome: React.FC = () => {
                         id: recipe[0].ID,
                     };
                     loadedRecipes.push(newRecipe);
-                    console.log(loadedRecipes);
                 }
             }
             setRatedRecipes(loadedRecipes);
@@ -150,7 +179,6 @@ const PersonalHome: React.FC = () => {
                         id: recipe[0].ID,
                     };
                     loadedRecipes.push(newRecipe);
-                    console.log(loadedRecipes);
                 }
             }
             setOwnRecipes(loadedRecipes);
@@ -160,6 +188,32 @@ const PersonalHome: React.FC = () => {
             fetchRecipes2();
         }
     }, [recipeIds]);
+
+    useEffect(() => {
+        const fetchRecipes3 = async () => {
+            const loadedRecipes: ListItem[] = [];
+
+            for (const id of bookmarkRecipesIDs) {
+                const recipe = await getRecipes(id);
+                if (recipe && Array.isArray(recipe)) {
+                    const newRecipe: ListItem = {
+                        title: recipe[0].Title,
+                        category: recipe[0].Category,
+                        imageUrl: recipe[0].Image,
+                        id: recipe[0].ID,
+                    };
+                    loadedRecipes.push(newRecipe);
+                    console.log(loadedRecipes);
+                }
+            }
+
+            setBookmarkRecipes(loadedRecipes);
+        };
+
+        if (bookmarkRecipesIDs.length > 0) {
+            fetchRecipes3();
+        }
+    }, [bookmarkRecipesIDs]);
 
 
     async function handleDeleteRecipe(id: number) {
@@ -207,6 +261,11 @@ const PersonalHome: React.FC = () => {
                         setWhichIsDisable(1);
                     }}>Bewertete Rezepte
                     </button>
+                    <button className="ownPage-mobile-menu-buttons" onClick={() => {
+                        setShowMobileMenu(false);
+                        setWhichIsDisable(2);
+                    }}>Bookmarks
+                    </button>
                 </div>}
                 <div className="personalHome-main-head">
                     <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
@@ -233,6 +292,13 @@ const PersonalHome: React.FC = () => {
                             value={whichIsDisable === 1 ? "enable" : "disable"}
                         >
                             Bewertete Rezepte
+                        </button>
+                        <button
+                            className="personalHome-ownRecipes"
+                            onClick={() => setWhichIsDisable(2)}
+                            value={whichIsDisable === 2 ? "enable" : "disable"}
+                        >
+                            Bookmarks
                         </button>
                     </div>
                     {whichIsDisable === 0 && ownRecipes.length !== 0 && (
@@ -284,7 +350,43 @@ const PersonalHome: React.FC = () => {
                     {whichIsDisable === 0 && ownRecipes.length === 0 && (
                         <div className="home-recipes-error">Du hast noch kein Rezept erstellt!</div>
                     )}
-
+                    {whichIsDisable === 2 && bookmarkRecipes.length === 0 && (
+                        <div className="home-recipes-error">Du hast noch keine Bookmarks!</div>
+                    )}
+                    {whichIsDisable === 2 && bookmarkRecipes.length !== 0 && (
+                        <div className="home-recipes-table"
+                             style={bookmarkRecipes.length == 1 ? {marginBottom: "30%"} : bookmarkRecipes.length == 2 ? {marginBottom: "20%"} : bookmarkRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
+                            <table className="recipes-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col1">#</th>
+                                    <th scope="col2">Titel</th>
+                                    <th scope="col3">Kategorie</th>
+                                    <th scope="col4">Bild</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {bookmarkRecipes.map((recipe, index) => (
+                                    <tr
+                                        key={recipe.id} // Verwende die ID als eindeutigen Schlüssel
+                                        onClick={() => (window.location.href = `/recipe/${recipe.id}/`)}
+                                    >
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{recipe.title}</td>
+                                        <td>{recipe.category}</td>
+                                        <td>
+                                            <img
+                                                src={recipe.imageUrl}
+                                                style={{height: "7vw", objectFit: "cover", width: "100%"}}
+                                                alt="Bild Rezept"
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                     {whichIsDisable === 1 && ratedRecipes.length !== 0 && (
                         <div className="home-recipes-table"
                              style={ratedRecipes.length == 1 ? {marginBottom: "30%"} : ratedRecipes.length == 2 ? {marginBottom: "20%"} : ratedRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
