@@ -207,6 +207,11 @@ const PersonalHome: React.FC = () => {
                         setWhichIsDisable(1);
                     }}>Bewertete Rezepte
                     </button>
+                    <button className="ownPage-mobile-menu-buttons" onClick={() => {
+                        setShowMobileMenu(false);
+                        setWhichIsDisable(2);
+                    }}>Bookmarks
+                    </button>
                 </div>}
                 <div className="personalHome-main-head">
                     <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
@@ -233,6 +238,13 @@ const PersonalHome: React.FC = () => {
                             value={whichIsDisable === 1 ? "enable" : "disable"}
                         >
                             Bewertete Rezepte
+                        </button>
+                        <button
+                            className="personalHome-ownRecipes"
+                            onClick={() => setWhichIsDisable(2)}
+                            value={whichIsDisable === 2 ? "enable" : "disable"}
+                        >
+                            Bookmarks
                         </button>
                     </div>
                     {whichIsDisable === 0 && ownRecipes.length !== 0 && (
@@ -284,7 +296,9 @@ const PersonalHome: React.FC = () => {
                     {whichIsDisable === 0 && ownRecipes.length === 0 && (
                         <div className="home-recipes-error">Du hast noch kein Rezept erstellt!</div>
                     )}
-
+                    {whichIsDisable === 2 && (
+                        <div className="home-recipes-error">Du hast noch keine Bookmarks</div>
+                    )}
                     {whichIsDisable === 1 && ratedRecipes.length !== 0 && (
                         <div className="home-recipes-table"
                              style={ratedRecipes.length == 1 ? {marginBottom: "30%"} : ratedRecipes.length == 2 ? {marginBottom: "20%"} : ratedRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
