@@ -78,7 +78,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
             });
             const isBookmarked = await respone.json();
-            return isBookmarked.Bookmark === 1
+            console.log("DATA:", isBookmarked);
+            return isBookmarked[0].Bookmark === 1
         }
 
         catch (error) {
@@ -108,10 +109,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             setIsBookmarked(newBookmarkState);
 
             // Send the API request to save the bookmark
-            const response = await fetch(`https://canoob.de:3007/saveBookmark?
-            id=${encodeURIComponent(id)}
-            &user=${encodeURIComponent(username)}
-            &bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+            const response = await fetch(`https://canoob.de:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
                 method: 'POST',
             });
 
@@ -158,6 +156,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 setAvRating(onlyRating);
                 return onlyRating;
             } else {
+                console.error('API request error:', response.status);
                 console.error('API request error:', response.status);
                 return null;
             }
@@ -406,7 +405,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             </div>
             <div className="separator-line"></div>
             <p>Ersteller: {validCreator}</p>
-            <div className="bookmark-container">
+            <div className="actions-field">
                 {/* Bookmark button */}
                 <button className="bookmark-button" onClick={toggleBookmark}>
                     <img
@@ -415,8 +414,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                         className="bookmark-icon"
                     />
                 </button>
-            </div>
-            <div className="actions-field">
                 <div className="star-system" onMouseOver={() => !isLoggedIn && setShowMessage(true)}
                      onMouseLeave={() => setShowMessage(false)}>
                     {isLoggedIn && <div className="rating-system">
