@@ -138,11 +138,33 @@ app.get('/getRecipeByID', (req, res) => {
 
 app.post('/deleteRecipeByID', (req, res) => {
     const id = req.query.id;
-    const query = 'DELETE FROM Rezept WHERE ID = ?';
+    const query1 = 'DELETE FROM Rezept WHERE ID = ?';
+    const query2 = 'DELETE FROM Bewertung WHERE ID = ?';
+    const query3 = 'DELETE FROM Lesezeichen WHERE ID = ?';
 
-    console.log(query);
+    console.log(query1);
+    console.log(query2);
+    console.log(query3);
 
-    connection.query(query, [id], (error, results) => {
+    connection.query(query1, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Löschen des Rezepts');
+        } else {
+            res.status(200).send('Rezept erfolgreich gelöscht');
+        }
+    });
+
+    connection.query(query2, [id], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Löschen des Rezepts');
+        } else {
+            res.status(200).send('Rezept erfolgreich gelöscht');
+        }
+    });
+
+    connection.query(query3, [id], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Löschen des Rezepts');
