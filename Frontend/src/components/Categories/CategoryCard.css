@@ -40,11 +40,12 @@
     height: 10%;
 }
 
-.category-card-info{
+.category-card-info {
     display: flex;
     justify-content: center;
-    width: 65%;
     align-items: center;
+    width: 65%;
+    height: 100%; /* Sicherstellen, dass die Höhe definiert ist */
 }
 
 .category-card__title[value='true'] {
