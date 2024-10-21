@@ -13,7 +13,7 @@ function getLink(temp: string) {
     if (temp == "") {
         return "/mainsearch";
     }
-    return "/mainsearch" + temp;
+    return "/mainsearch/" + temp;
 
 }
 

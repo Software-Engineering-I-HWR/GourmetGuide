@@ -153,14 +153,7 @@ const Categories: React.FC = () => {
         return (
             <div className="main-content">
                 <div className="categories-main-content">
-                    {showMobileMenu && <div className="categories-actions-mobile">
-                        {sampleCategories!.sort().map((item) => (
-                            <button className="categories-mobile-menu-buttons" disabled={!item.active} onClick={() => {
-                                setShowMobileMenu(false);
-                                setCurrentCategory(item.title)
-                            }}>{item.title}</button>
-                        ))}
-                    </div>}
+
                     <div className="categories">
                         <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
                              onClick={() => setShowMobileMenu(!showMobileMenu)}/>
@@ -171,6 +164,14 @@ const Categories: React.FC = () => {
                             ))}
                         </div>
                     </div>
+                    {showMobileMenu && <div className="categories-actions-mobile">
+                        {sampleCategories!.sort().map((item) => (
+                            <button className="categories-mobile-menu-buttons" disabled={!item.active} onClick={() => {
+                                setShowMobileMenu(false);
+                                setCurrentCategory(item.title)
+                            }}>{item.title}</button>
+                        ))}
+                    </div>}
                     <div className="recipes-by-category">
                         <h2 className="categories__title"></h2>
                         <div className="recipes-by-category-list">
