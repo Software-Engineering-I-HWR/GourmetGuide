@@ -7,7 +7,6 @@
 .categories__list {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
     flex-direction: column; /* Ändere auf row, wenn die Karten nebeneinander stehen sollen */
     margin: 5% 5%;
     margin-right: 15%;
@@ -95,13 +94,13 @@
     display: none;
 }
 
-@media only screen and (min-width: 769px) {
+@media only screen and (min-width: 1201px) {
     .menu-button-mobile-categories {
         display: none;
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1200px) {
     .categories__list {
         display: none;
     }
