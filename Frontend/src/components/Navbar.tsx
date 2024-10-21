@@ -38,6 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
         setIsUserLoggedIn(false);
         setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
         setShowPopupMessage(true);
+        window.location.href = '/';
     };
 
     useEffect(() => {
