@@ -21,6 +21,7 @@
 
 .categories-main-content {
     display: flex;
+    position: relative;
     justify-content: space-between; /* Verteile den Platz zwischen den beiden Sektionen */
     width: 100%; /* Stelle sicher, dass der Container die gesamte Breite hat */
     flex-direction: row;
@@ -149,12 +150,12 @@
 
     .categories-actions-mobile {
         display: flex;
-        position: fixed;
+        position: absolute;
         justify-content: center;
         flex-direction: column;
         background-color: #e5ebee;
         width: 100%;
-        top: 30vh;
+        top: 11vw;
         border-right: 15px;
         z-index: 10010;
     }

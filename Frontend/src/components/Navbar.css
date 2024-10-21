@@ -253,12 +253,12 @@
 
 .navbar-actions-mobile {
     display: flex;
-    position: fixed;
+    position: absolute;
     justify-content: center;
     flex-direction: column;
     background-color: #e5ebee;
     width: 100%;
-    top: 12%;
+    top: 22vw;
     border-right: 15px;
     z-index: 10010;
 }
