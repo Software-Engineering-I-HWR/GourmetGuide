@@ -208,7 +208,6 @@ const createRecipePDF = async (recipe: any) => {
 
     description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, description_max_size);
     description_with_new_lines = description_with_new_lines.replace(/\./g, ". ");
-    description_with_new_lines = description_with_new_lines.replace(/\. /g, ". ");
 
     page.drawText(description_with_new_lines, {
         x: 50,
