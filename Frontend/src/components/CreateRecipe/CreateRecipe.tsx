@@ -243,7 +243,7 @@ const CreateRecipe: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                        <ul className="ingredients-list">
+                        <div className="ingredients-list">
                             {ingredientsList.map((ing, index) => (
                                 <li key={index}>
                                     {ing}
@@ -256,7 +256,7 @@ const CreateRecipe: React.FC = () => {
                                     </button>
                                 </li>
                             ))}
-                        </ul>
+                        </div>
 
                         <button type="submit" className="submit-recipe-button">
                             Rezept einsenden
