@@ -20,12 +20,27 @@
     color: #333;
 }
 
-.bookmark-button .bookmark-icon {
-    width: 24px;  /* Set your desired width */
-    height: 24px; /* Set your desired height */
+.bookmark {
+    width: 33%;
+}
+
+.bookmark-button {
+    width: 20%;  /* Set your desired width */
+    height: 20%; /* Set your desired height */
     /* Optionally add other styling */
     display: inline-block; /* Makes sure the button fits the icon size */
     margin: 0; /* Remove any margin if applicable */
+    background-color: #e5ebee;
+    padding: 2% 2%;
+    border-radius: 10px;
+}
+
+.bookmark-button:hover {
+    background-color: #b1c3cd;
+}
+
+.star-system {
+    display: flex;
 }
 
 .showRecipe {
@@ -233,6 +248,7 @@
 .star-system {
     display: flex;
     flex-direction: column;
+    margin-right: 3vw;
 }
 
 .message {

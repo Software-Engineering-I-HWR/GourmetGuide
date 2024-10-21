@@ -28,6 +28,13 @@ interface ListItem2 {
     id: number;
 }
 
+interface ListItem2 {
+    title: string;
+    category: string;
+    imageUrl: string;
+    id: number;
+}
+
 const PersonalHome: React.FC = () => {
 
     const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -242,6 +249,7 @@ const PersonalHome: React.FC = () => {
         }
     }
 
+
     return (
         <div className="personalHome">
             <Hero
@@ -387,7 +395,7 @@ const PersonalHome: React.FC = () => {
                             </table>
                         </div>
                     )}
-                    {whichIsDisable === 1 && ratedRecipes.length !== 0 && (
+                    {whichIsDisable === 1 && (ratedRecipes.length !== 0 ? (
                         <div className="home-recipes-table"
                              style={ratedRecipes.length == 1 ? {marginBottom: "30%"} : ratedRecipes.length == 2 ? {marginBottom: "20%"} : ratedRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
                             <table className="recipes-table">
@@ -420,10 +428,8 @@ const PersonalHome: React.FC = () => {
                                 </tbody>
                             </table>
                         </div>
-                    )}
-                    {whichIsDisable === 1 && ownRecipes.length === 0 && (
-                        <div className="home-recipes-error">Du hast noch keine Rezepte bewertet!</div>
-                    )}
+                    ) :  (<div className="home-recipes-error">Du hast noch keine Rezepte bewertet!</div>
+                    ))}
                 </div>
             </div>
         </div>
