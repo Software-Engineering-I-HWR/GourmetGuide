@@ -15,17 +15,80 @@ ID, Zeit, Dauer, Person, Thema
 14,11.09.2024, 30 min, Carlo, Qualitätskriterien
 15,11.09.2024, 30 min, Tobias; Sven; Josi; Carlo, Qualitätskriterien
 16,11.09.2024, 60 min, Tobias; Sven; Josi; Carlo,Risikoregister und Risikoprofil
-17,18.09.2024, 60 min, alle, Aufwandsschätzung
-18,18.09.2024, 40 min, alle, Datenbankentwurf
-19,18.09.2024, 90 min, Carlo, Datenbank
-20,18.09.2024, 120 min, Tobias, PDF-Erstellung
-21,18.09.2024, 90 min, Sven, Suchfunktion
-22,18.09.2024, 90 min, Mia, Login
-23,18.09.2024, 90 min, Carlo, Datenbank
-24,18.09.2024, 30 min, Sven, Fehlerbehebung
-25,20.09.2024, 180 min, Tobias, PDF-Erstellung
-26,20.09.2024, 120 min, Sven, Suchfunktion
-27,20.09.2024, 60 min, Carlo, Server-Hosting
-28,24.09.2024, 120 min, Sven, Frontend Umbenennung 
-29,24.09.2024, 120 min, Carlo, Zwischenpräsentation
-30,25.09.2024, 120 min, Carlo, Datenbank
+17,11.09.2024, 60 min, Josi, Startseite (v.a. CSS-Files)
+18,13.09.2024, 120 min, Josi, Startseite
+19,18.09.2024, 60 min, alle, Aufwandsschätzung
+20,18.09.2024, 40 min, alle, Datenbankentwurf
+21,18.09.2024, 180 min, Carlo, Datenbank
+22,18.09.2024, 120 min, Tobias, PDF-Erstellung
+23,18.09.2024, 90 min, Sven, Suchfunktion
+24,18.09.2024, 90 min, Mia, Login
+25,18.09.2024, 90 min, Carlo, Datenbank
+26,18.09.2024, 30 min, Sven, Fehlerbehebung
+27,20.09.2024, 180 min, Tobias, PDF-Erstellung
+28,20.09.2024, 120 min, Sven, Suchfunktion
+29,20.09.2024, 60 min, Carlo, Server-Hosting
+30,24.09.2024, 120 min, Sven, Frontend Umbenennung 
+31,24.09.2024, 120 min, Carlo, Zwischenpräsentation
+32,18.09.2024, 60 min, Josi, Fehlerbehebung
+33,24.09.2024, 60 min, Josi, Suchseite (Struktur; Funktionen und Style)
+34,24.09.2024, 60 min, Josi, Kategorien-Seite (Struktur; Funktionen)
+35,25.09.2024, 90 min, Josi, Kategorien-Seite (Funktionen; Style)
+36,25.09.2024, 120 min, Carlo, Datenbank
+37,25.09.2024, 30 min, Josi, Anbindung Datenbank auf Startseite
+38,26.09.2024, 60 min, Josi, Datenbank auf Startseite
+39,26.09.2024, 45 min, Josi, Login Seite Frontend (Funktionen und Struktur)
+40,27.09.2024, 90 min, Josi, Login-Seite Style
+41,28.09.2024, 80 min, Carlo, Login
+42,29.09.2024, 120 min, Josi, Suche
+43,29.09.2024, 60 min, Josi, Rezept-Seite
+44,29.09.2024, 180 min, Carlo, Datenbank
+45,30.09.2024, 90 min, Tobias, Login
+46,30.09.2024, 120 min, Josi, Rezept-Seite (Aussehen)
+47,01.10.2024, 90 min, Tobias, Login
+48,01.10.2024, 60 min, Josi, Rezept-Seite (Aussehen)
+49,02.10.2024, 60 min, Tobias, AKV und Ziele Tabelle
+50,02.10.2024, 60 min, Josi, Rezepte-Seite
+51,02.10.2024, 30 min, Josi, Login
+52,02.10.2024, 90 min, Carlo, Datenbank
+53,02.10.2024, 90 min, Sven, Rezept-Suche
+54,02.10.2024, 120 min, Josi, Login-Einbindung (Übergabe an restlichen Komponenten; Startseiten-Button; automatische Weiterleitung)
+55,03.10.2024, 90 min, Sven, Rezepte-Suche-Zwischenstand-Fertig
+56,04.10.2024, 120 min, Tobias, Teilen Funktion
+57,04.10.2024, 30 min, Calo, Security
+58,04.10.2024, 90 min, Carlo, Website-Hosting
+59,04.10.2024, 60 min, Sven, Merge Konflikte mit Josi + fix href button+ Search fix
+60,04.10.2024, 60 min, Sven, Host problem fix reserc
+61,04.10.2024, 45 min, Josi, Merge Konflikte Suche
+62,04.10.2024, 45 min, Josi, bug fixing (Searc und andere Namensprobleme; href-Probleme; Teilen-Button; Login)
+63,04.10.2024, 30 min, Josi, Popup-Fester für Login
+64,04.10.2024, 60 min, Josi, Popup-Fenster für Login
+65,04.10.2024, 90 min, Josi, Privater Bereich eingerichtet
+66,04.10.2024, 45 min, Josi, css-Styles verbessert (v.a. Mainsearch)
+67,05.10.2024, 180 min, Carlo, Hosting
+68,05.10.2024, 90 min, Carlo, Datenbank
+69,05.10.2024, 120 min, Josi, Bewertung
+70,05.10.2024, 105 min, Tobias, Rezept erstellen
+71,06.10.2024, 210 min, Josi, Bewertung
+72,06.10.2024, 30 min, Josi, Bewertung (Datenbankanbindung)
+73,06.10.2024, 30 min, Carlo, Datenbank
+74,06.10.2024, 210 min, Carlo, Fehlerbehebung
+75,06.10.2024, 90 min, Carlo, Hosting
+76,07.10.2024, 15 min, Tobias, Rezept erstellen UI
+77,08.10.2024, 45 min, Tobias, Rezept erstellen UI
+78,08.10.2024, 45 min, Tobias, Rezept erstellen Bufixes
+79,08.10.2024, 60 min, Josi, Kategorien Seite (Versuch Datenbank anbinden)
+80,09.10.2024, 240 min, Josi, Kategorien Seite (Datenbank; css-Style)
+81,09.10.2024, 30 min, Josi, Bewertungssystem
+82,09.10.2024, 180 min, Carlo, Fehlerbehebung
+83,09.10.2024, 120 min, Carlo, Datenbank
+84,10.10.2024, 180 min, Carlo, Fehlerbehebung
+85,10.10.2024, 120 min, Josi, Privater Bereich fertiggestellt (v.a.Datenbank)
+86,10.10.2024, 90 min, Josi, Allergene mit Icons anzeigen
+87,11.10.2024, 100 min, Josi, Fehlerbehebungen
+88,11.10.2024, 30 min, Josi, Login Access-Token informieren
+89,11.10.2024, 75 min, Tobias, PDF erstellen und Rezept anzeigen angepasst
+90,11.10.2024, 180 min, Carlo, Fehlerbehebung
+91,14.10.2024, 30 min, Tobias, Rezepte löschen
+92,17.10.2024, 180 min, Tobias, Bookmark
+93,18.10.2024, 30 min, Tobias, Fehlersuche Rezept Erstellen
