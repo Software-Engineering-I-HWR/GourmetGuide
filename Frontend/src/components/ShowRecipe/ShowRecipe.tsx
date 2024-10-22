@@ -385,16 +385,19 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                                 {sampleRecipe?.vegetarian == 1 &&
                                     <img className={"allergen-symbol"}
                                          src='/images/vegetarian.png'
-                                         alt="vegetarisch-Symbol"/>}
+                                         alt="vegetarisch-Symbol"
+                                         title={"Vegetarisch"}/>}
                                 {sampleRecipe?.vegan == 1 &&
                                     <img className={"allergen-symbol"}
                                          src='/images/vegan.png'
-                                         alt="vegan-symbol"/>}
+                                         alt="vegan-symbol"
+                                         title={"Vegan"}/>}
                                 {sampleRecipe?.allergen && dietaryTags.map((item) => (
                                     sampleRecipe?.allergen != null && sampleRecipe.allergen.includes(item) &&
                                     <img className={"allergen-symbol"}
                                          src={`/images/${item.toLowerCase()}.png`}
-                                         alt={`${item.toLowerCase()}-symbol`}/>))}
+                                         alt={`${item.toLowerCase()}-symbol`}
+                                         title={item}/>))}
                             </div>
                         </div>
                     </div>
