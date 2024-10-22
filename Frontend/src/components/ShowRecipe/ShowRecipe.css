@@ -237,6 +237,11 @@
     width: 30%;
 }
 
+.rating-text {
+    font-size: 1.5rem;
+    margin-left: 2%;
+    width: 110%
+}
 
 
 .rating-null {
@@ -316,6 +321,10 @@
         width: 20px; /* Kleinere Sterne auf mobilen Geräten */
         margin: 0 3px;
     }
+
+    .rating-text {
+        font-size: 1rem;
+    }
 }
 
 /* Hover-Effekt für gefüllte Sterne */
@@ -335,6 +344,6 @@
     max-width: 45%;
     color: black;
     font-size: 1.5vh;
-    margin-left: 5%;
-    margin-top: 5vh;
+    margin-left: 7%;
+    margin-top: 4.5%;
 }
