@@ -68,10 +68,10 @@ const Register: React.FC = () => {
                 <PopupWindow message={registerMessage}/>
             )}
             <div className="register-body">
-                <div className="register-left">
+                <form className="register-left" onSubmit={handleRegister}>
                     <h1 className="register-title">Registrieren</h1>
 
-                    <form className="register-email-field">
+                    <div className="register-email-field">
                         <input
                             type="text"
                             placeholder="Username..."
@@ -79,8 +79,8 @@ const Register: React.FC = () => {
                             onChange={enterEmailAdress}
                             className="register-email-field-input"
                         />
-                    </form>
-                    <form className="register-password-field">
+                    </div>
+                    <div className="register-password-field">
                         <input
                             type="password"
                             placeholder="Passwort..."
@@ -88,8 +88,8 @@ const Register: React.FC = () => {
                             onChange={enterPassword}
                             className="register-password-field-input"
                         />
-                    </form>
-                    <form className="register-password-repeat-field">
+                    </div>
+                    <div className="register-password-repeat-field">
                         <input
                             type="password"
                             placeholder="Passwort wiederholen..."
@@ -97,20 +97,18 @@ const Register: React.FC = () => {
                             onChange={enterPasswordRepeat}
                             className="register-password-repeat-field-input"
                         />
-                    </form>
+                    </div>
 
-                    <form className="register-password-repeat-field" onSubmit={handleRegister}>
                         <button type="submit" className="login-button">Registrieren</button>
-                    </form>
 
                     {/* Render the login message */}
                     {registerMessage && <p className="register-message">{registerMessage}</p>}
 
                     <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
-                </div>
+                </form>
 
                 <div className="register-right">
-                    <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
+                <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
 
             </div>
