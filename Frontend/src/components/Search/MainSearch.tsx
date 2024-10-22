@@ -274,6 +274,7 @@ const MainSearch: React.FC = () => {
                                 <text style={{fontSize: "1.25rem"}}>Zutaten auswählen:</text>
                                 <div className="select-mehre-add-container" onFocus={() => setShowIngredientsTable(true)}>
                                     <input
+                                        className="select-mehre-add-container-text"
                                         type="text"
                                         placeholder="Zutat suchen..."
                                         value={searchTerm}

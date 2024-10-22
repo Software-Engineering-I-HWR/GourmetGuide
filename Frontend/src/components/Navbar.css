@@ -1,6 +1,6 @@
 .navbar__Buttons {
     display: flex;
-    width: 70%;
+    width: calc(100% / 3*2);
 }
 /* Destop Options*/
 .recipes__list{
@@ -29,7 +29,7 @@
     font-weight: bold;
     margin: 0 1%;
     align-items: center;
-    width: 30%;
+    width: calc(100% / 3);
     flex: 1;
 }
 
@@ -51,7 +51,7 @@
 /* Styles für die Suchleiste */
 .navbar__search {
     display: flex;
-    width: 30%;
+    width: calc(100% / 3);
     flex: 1;
 }
 
@@ -90,7 +90,7 @@
 /* Container für Login und Kategorien Buttons */
 .navbar-actions {
     display: flex;
-    width:30%;
+    width:calc(100% / 3);
     justify-content: right;
     flex: 1;
 }
