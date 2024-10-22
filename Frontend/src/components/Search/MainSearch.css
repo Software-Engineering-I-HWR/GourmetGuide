@@ -273,7 +273,7 @@ p {
         width: 100%;
     }
 
-    input[type="text"] {
+    .select-mehre-add-container-text {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -287,18 +287,6 @@ p {
 .select-mehre-add-container {
     position: relative;
     width: 100%;
-}
-
-@media only screen and (min-width: 768px) {
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-        box-sizing: border-box;
-    }
 }
 
 ul {
