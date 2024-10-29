@@ -60,7 +60,7 @@ const App: React.FC = () => {
             setTimeout(() => {
                 setShowPopup(false);
                 localStorage.removeItem('loginMessage');
-            }, 5000);
+            }, 3000);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorage.getItem('loginMessage')]);

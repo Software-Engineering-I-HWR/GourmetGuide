@@ -1,33 +1,32 @@
+/* PopupWindow.css */
+
 .popupWindow {
     position: fixed;
-    padding: 3% 5%;
-    background-color: #b4806d;
-    left: 1px;
-    top: 1px;
-    text-align: center;
-    max-height: 10%;
-    max-width: 40%;
-    color: white;
-    border-radius: 15px;
-    border: 10px solid #6e2107;
-    font-size: 3vh;
-    line-height: 5%;
+    top: 20px;
+    right: 35vw;
+    padding: 0.5% 10%;
+    background-color: rgba(50, 50, 50, 0.9);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 1000;
+    animation: fadeInOut 10s ease forwards;
 }
 
-@media only screen and (max-width: 768px) {
-    .popupWindow {
-        position: fixed;
-        padding: 3% 5%;
-        background-color: #b4806d;
-        left: 1px;
-        top: 1px;
-        text-align: center;
-        max-height: 15%;
-        max-width: 100%;
-        color: white;
-        border-radius: 15px;
-        border: 10px solid #6e2107;
-        font-size: 3vh;
-        line-height: 5%;
+/* Animation: Einblenden und nach 5 Sekunden ausblenden */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
     }
 }

@@ -56,19 +56,23 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                 const token = response.token;
                 if (isTokenValid(token)) {
                     setLoginMessage('Login erfolgreich!');
+                    localStorage.setItem('loginMessage', JSON.stringify("Login erfolgreich!"));
                     setIsUserLoggedIn(true);
                     window.location.href = '/';
                 } else {
                     setLoginMessage('Token ist ungültig.');
+                    localStorage.setItem('loginMessage', JSON.stringify("Token ist ungültig!"));
                     setShowPopupMessage(true);
                 }
             } else {
                 setLoginMessage('Falsche Anmeldedaten');
+                localStorage.setItem('loginMessage', JSON.stringify("Falsche Anmeldedaten!"));
                 setShowPopupMessage(true);
             }
         } catch (error) {
             console.error(error);
             setLoginMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Fehlernachricht anzeigen
+            localStorage.setItem('loginMessage', JSON.stringify("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut!"));
             setShowPopupMessage(true);
         }
     };
@@ -85,7 +89,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     useEffect(() => {
         setTimeout(() => {
             setShowPopupMessage(false);
-        }, 5000);
+        }, 3000);
     }, [showPopupMessage]);
 
     return (

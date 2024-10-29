@@ -37,6 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
         localStorage.removeItem('access token'); // Lösche gespeicherte E-Mail
         setIsUserLoggedIn(false);
         setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
+        localStorage.setItem('loginMessage', JSON.stringify("Erfolgreich abgemeldet!"));
         setShowPopupMessage(true);
         window.location.href = '/';
     };

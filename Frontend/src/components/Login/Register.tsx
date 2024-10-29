@@ -41,6 +41,7 @@ const Register: React.FC = () => {
 
                 if (response.status === 500) {
                     setRegisterMessage('User Existiert schon');
+                    localStorage.setItem('loginMessage', JSON.stringify("User existiert schon!"));
                     setShowPopupMessage(true);
                 }
 
@@ -48,17 +49,19 @@ const Register: React.FC = () => {
                 console.error(error);
                 setShowPopupMessage(true);
                 setRegisterMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
+                localStorage.setItem('loginMessage', JSON.stringify("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut!"));
             }
 
         } else {
             setShowPopupMessage(true);
             setRegisterMessage('Unterschiedliche Passwörter eingegeben')
+            localStorage.setItem('loginMessage', JSON.stringify("Unterschiedliche Passwörter eingegeben!"));
         }
     }
     useEffect(() => {
         setTimeout(() => {
             setShowPopupMessage(false);
-        }, 5000);
+        }, 3000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showPopupMessage]);
 
