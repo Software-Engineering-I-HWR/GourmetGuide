@@ -56,6 +56,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (localStorage.getItem('loginMessage') != null) {
+            localStorage.removeItem('loginMessage');
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
@@ -85,7 +86,7 @@ const App: React.FC = () => {
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
-                {showPopup && (
+                {showPopup && localStorage.getItem('loginMessage')!=undefined && (
                     <PopupWindow message={localStorage.getItem('loginMessage')!}/>
                 )}
             </>
