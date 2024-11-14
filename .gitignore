@@ -7,10 +7,10 @@
 ./config.json
 /Datenbank-API/.idea/
 .idea/
+/Datenbank-API/config.json
 /Backend/Login/config.json
 
 /Backend/Login/node_modules/
 /Backend/PDF-Share/node_modules/
 /Datenbank-API/node_modules/
 /Frontend/node_modules/
-/config/

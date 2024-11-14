@@ -1,5 +1,5 @@
 const express = require('express');
-const {host, user, password, database} = require('../config/config.json');
+const {host, user, password, database} = require('./config.json');
 const mysql = require('mysql2');
 const cors = require('cors');
 
