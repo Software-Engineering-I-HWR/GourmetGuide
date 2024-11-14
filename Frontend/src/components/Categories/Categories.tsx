@@ -2,9 +2,6 @@ import './Categories.css';
 import CategoryCard from "./CategoryCard.tsx";
 import React, {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fs from "fs";
-
-const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface Recipe {
     Title: string;
@@ -47,7 +44,7 @@ const Categories: React.FC = () => {
 
         async function getAllCategories(): Promise<Category[] | null> {
             try {
-                const response = await fetch('https://' + hostData.host + ':3007/getAllCategories');
+                const response = await fetch('https://canoob.de:3007/getAllCategories');
                 if (response.ok) {
                     return await response.json();
                 } else {
@@ -62,7 +59,7 @@ const Categories: React.FC = () => {
 
         async function getRecipesByCategory(currentCat: string): Promise<Recipe[] | null> {
             try {
-                const response = await fetch(`https://` + hostData.host + `:3007/getRecipesByCategory?category=${encodeURIComponent(currentCat)}`, {
+                const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(currentCat)}`, {
                     method: 'GET'
                 });
                 if (response.ok) {
@@ -89,7 +86,7 @@ const Categories: React.FC = () => {
         async function getRecipes(category: string): Promise<Recipe[] | null> {
             try {
                 if (sampleCategories.some(item => item.title === category)) return null;
-                const response = await fetch(`https://` + hostData.host + `:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`, {
+                const response = await fetch(`https://canoob.de:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`, {
                     method: 'GET'
                 });
                 if (response.ok) {
