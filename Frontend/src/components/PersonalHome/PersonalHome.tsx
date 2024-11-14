@@ -1,6 +1,9 @@
 import "./PersonalHome.css";
 import React, {useEffect, useState} from "react";
 import Hero from "../Home/Hero.tsx";
+import fs from "fs";
+
+const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface Recipe {
     Title: string;
@@ -51,7 +54,7 @@ const PersonalHome: React.FC = () => {
     async function getRecipes(id: number): Promise<Recipe | null> {
         try {
             const response = await fetch(
-                `https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`,
+                `https://`+ hostData.host +`:3007/getRecipeByID?id=${encodeURIComponent(id)}`,
                 {
                     method: "GET",
                 }
@@ -72,7 +75,7 @@ const PersonalHome: React.FC = () => {
     async function getOwnRecipes(): Promise<void> {
         try {
             const response = await fetch(
-                `https://canoob.de:3007/getRecipesByUser?user=${encodeURIComponent(username!)}`,
+                `https://`+ hostData.host +`:3007/getRecipesByUser?user=${encodeURIComponent(username!)}`,
                 {
                     method: "GET",
                 }
@@ -92,7 +95,7 @@ const PersonalHome: React.FC = () => {
     async function getBookmarkedRecipes() {
         try {
             const response = await fetch(
-                `https://canoob.de:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(username!)}`,
+                `https://`+ hostData.host +`:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(username!)}`,
                 {
                     method: "GET",
                 }
@@ -112,7 +115,7 @@ const PersonalHome: React.FC = () => {
     async function getRatedRecipes(): Promise<void> {
         try {
             const response = await fetch(
-                `https://canoob.de:3007/getRatedRecipesByUser?user=${encodeURIComponent(username!)}`,
+                `https://`+ hostData.host +`:3007/getRatedRecipesByUser?user=${encodeURIComponent(username!)}`,
                 {
                     method: "GET",
                 }
@@ -229,7 +232,7 @@ const PersonalHome: React.FC = () => {
 
         try {
             const response = await fetch(
-                `https://canoob.de:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
+                `https://`+ hostData.host +`:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
                 {
                     method: "POST",
                 }

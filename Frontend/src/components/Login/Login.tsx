@@ -2,6 +2,9 @@ import './Login.css';
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
 import {jwtDecode} from 'jwt-decode';
+import fs from "fs";
+
+const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface LoginProps {
     isUserLoggedIn: boolean;
@@ -31,7 +34,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     };
 
     const sendLoginRequest = async (email: string, password: string) => {
-        return await fetch('https://canoob.de:30156/login', {
+        return await fetch('https://' + hostData.host + ':30156/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

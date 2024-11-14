@@ -1,8 +1,10 @@
-
 import RecipeCard from '../Home/RecipeCard.tsx';
 import '../../App.css';
 import './SearchRecipeView.css'
 import React, {useEffect, useState} from "react";
+import fs from "fs";
+
+const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface SuchFilter{
     name:string;
@@ -32,7 +34,7 @@ interface ListItem {
 
 async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; Vegan: string; Vegetarian: string; }): Promise<Recipe[] | null> {
     console.log(Allergien);
-    const promt = `https://canoob.de:3007/getFilteredRecipes` +
+    const promt = `https://` + hostData.host + `:3007/getFilteredRecipes` +
         `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
         `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
         `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
