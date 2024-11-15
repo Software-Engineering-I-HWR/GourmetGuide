@@ -2,6 +2,9 @@ import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import "./Home.css"
 import React, {useEffect, useState} from "react";
+import fs from "fs";
+
+const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface Recipe {
     Title: string;
@@ -23,7 +26,7 @@ const Home: React.FC = () => {
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch('https://canoob.de:3007/getRecipes');
+            const response = await fetch('https://' + hostData.host + ':3007/getRecipes');
             if (response.ok) {
                 return await response.json();
             } else {
