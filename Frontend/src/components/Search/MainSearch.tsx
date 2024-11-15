@@ -2,7 +2,16 @@ import React, {useEffect, useRef, useState} from "react";
 import './MainSearch.css';
 import {useParams} from "react-router-dom";
 import SearchRecipeView from "./SearchRecipeView.tsx";
+import configData from '../../../../config/config.json';
 
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
+
+const hostData: Config = configData;
 
 const MainSearch: React.FC = () => {
     //receptName
@@ -102,7 +111,7 @@ const MainSearch: React.FC = () => {
 
     async function getAllIngredients(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch('https://canoob.de:3007/getAllIngredients');
+            const response = await fetch('https://' + hostData.host + ':3007/getAllIngredients');
             if (response.ok) {
                 return await response.json();
             } else {
@@ -131,7 +140,7 @@ const MainSearch: React.FC = () => {
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
-            const response = await fetch('https://canoob.de:3007/getAllCategories');
+            const response = await fetch('https://' + hostData.host + ':3007/getAllCategories');
             if (response.ok) {
                 return await response.json();
             } else {

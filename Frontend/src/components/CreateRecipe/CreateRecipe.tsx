@@ -2,12 +2,22 @@ import "./CreateRecipe.css"
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
 import {useParams} from "react-router-dom";
+import configData from '../../../../config/config.json';
 
-const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
 
 interface Category {
     Category: string;
 }
+
+const hostData: Config = configData;
+
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
 
 const CreateRecipe: React.FC = () => {
     const [title, setTitle] = useState<string>('');
@@ -24,7 +34,7 @@ const CreateRecipe: React.FC = () => {
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
-            const response = await fetch('https://canoob.de:3007/getAllCategories');
+            const response = await fetch('https://' + hostData.host + ':3007/getAllCategories');
             if (response.ok) {
                 return await response.json();
             } else {
@@ -103,7 +113,7 @@ const CreateRecipe: React.FC = () => {
             allergen: selectedTags.filter(tag => tag !== "Vegan" && tag !== "Vegetarisch").join(", "),
         };
 
-        const response: Response = await fetch('https://canoob.de:3007/saveRecipe', {
+        const response: Response = await fetch('https://' + hostData.host + ':3007/saveRecipe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
