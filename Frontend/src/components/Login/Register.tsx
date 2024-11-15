@@ -1,6 +1,16 @@
 import './Register.css';
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
+import configData from '../../../../config/config.json';
+
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
+
+const hostData: Config = configData;
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -25,7 +35,7 @@ const Register: React.FC = () => {
         event.preventDefault(); // Prevent default form submission
         if (password == passwordRepeat) {
             try {
-                const response = await fetch('https://canoob.de:30156/register', {
+                const response = await fetch('https://' + hostData.host + ':30156/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

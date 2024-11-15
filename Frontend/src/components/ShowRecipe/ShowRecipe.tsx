@@ -5,8 +5,14 @@ import {useLocation} from "react-router-dom";
 import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
 import ErrorPage from "../errorPage.tsx";
+import configData from '../../../../config/config.json';
 
-const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
 
 interface Recipe {
     Title: string;
@@ -38,6 +44,10 @@ interface showRecipeProps {
     isLoggedIn: boolean;
     username: string;
 }
+
+const hostData: Config = configData;
+
+const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei", "Lactosefrei"];
 
 const extractString = (str: string, startMarker: string, endMarker: string): string => {
     const startIndex = str.indexOf(startMarker);
@@ -74,7 +84,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         const getBookmark = async () => {
             try {
-                const respone = await fetch(`https://canoob.de:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                const respone = await fetch(`https://` + hostData.host + `:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
                     method: 'GET'
 
                 });
@@ -112,7 +122,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 setIsBookmarked(newBookmarkState);
 
                 // Send the API request to save the bookmark
-                const response = await fetch(`https://canoob.de:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+                const response = await fetch(`https://` + hostData.host + `:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
                     method: 'POST',
                 });
 
@@ -133,7 +143,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         async function getRecipes(): Promise<Recipe[] | null> {
             try {
-                const response = await fetch(`https://canoob.de:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
+                const response = await fetch(`https://` + hostData.host + `:3007/getRecipeByID?id=${encodeURIComponent(id)}`, {
                     method: 'GET'
                 });
                 if (response.ok) {
@@ -150,7 +160,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         async function getAvRating(): Promise<number | null> {
             try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
+                const response = await fetch(`https://` + hostData.host + `:3007/getRatingByID?id=${encodeURIComponent(id)}`, {
                     method: 'GET'
                 });
                 if (response.ok) {
@@ -236,7 +246,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 id: sampleRecipe?.id,
             };
 
-            const response = await fetch('https://canoob.de:30157/generate-pdf', {
+            const response = await fetch('https://' + hostData.host + ':30157/generate-pdf', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -263,7 +273,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         async function getRating(): Promise<number | null> {
             try {
-                const response = await fetch(`https://canoob.de:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
+                const response = await fetch(`https://` + hostData.host + `:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
                     method: 'GET'
                 });
                 if (response.ok) {
@@ -319,7 +329,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         async function saveRating(ratingNumber: number): Promise<number | null> {
             try {
-                const response = await fetch(`https://canoob.de:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
+                const response = await fetch(`https://` + hostData.host + `:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
                     method: 'POST'
                 });
                 if (response.ok) {

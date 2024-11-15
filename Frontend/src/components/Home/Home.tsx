@@ -2,6 +2,14 @@ import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import "./Home.css"
 import React, {useEffect, useState} from "react";
+import configData from '../../../../config/config.json';
+
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
 
 interface Recipe {
     Title: string;
@@ -17,12 +25,14 @@ interface ListItem {
     id: number
 }
 
+const hostData: Config = configData;
+
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch('https://canoob.de:3007/getRecipes');
+            const response = await fetch('https://' + hostData.host + ':3007/getRecipes');
             if (response.ok) {
                 return await response.json();
             } else {
