@@ -2,9 +2,9 @@ import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import "./Home.css"
 import React, {useEffect, useState} from "react";
-import fs from "fs";
+//import fs from "fs";
 
-const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
+//const hostData = JSON.parse(fs.readFileSync('../../../../config/config.json', 'utf8'));
 
 interface Recipe {
     Title: string;
@@ -20,6 +20,7 @@ interface ListItem {
     id: number
 }
 
+const hostData = require('../../../../config/config.json');
 
 const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
