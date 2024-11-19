@@ -32,7 +32,7 @@ const Home: React.FC = () => {
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
-            const response = await fetch('https://' + hostData.host + ':3007/getRecipes');
+            const response = await fetch('http://' + hostData.host + ':3007/getRecipes');
             if (response.ok) {
                 return await response.json();
             } else {
