@@ -35,7 +35,7 @@ const Register: React.FC = () => {
         event.preventDefault(); // Prevent default form submission
         if (password == passwordRepeat) {
             try {
-                const response = await fetch('https://' + hostData.host + ':30156/register', {
+                const response = await fetch('https://' + hostData.host + ':30155/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ const CreateRecipe: React.FC = () => {
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
-            const response = await fetch('https://' + hostData.host + ':3007/getAllCategories');
+            const response = await fetch('https://' + hostData.host + ':30155/getAllCategories');
             if (response.ok) {
                 return await response.json();
             } else {
@@ -113,7 +113,7 @@ const CreateRecipe: React.FC = () => {
             allergen: selectedTags.filter(tag => tag !== "Vegan" && tag !== "Vegetarisch").join(", "),
         };
 
-        const response: Response = await fetch('https://' + hostData.host + ':3007/saveRecipe', {
+        const response: Response = await fetch('https://' + hostData.host + ':30155/saveRecipe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

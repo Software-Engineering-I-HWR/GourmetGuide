@@ -41,7 +41,7 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     };
 
     const sendLoginRequest = async (email: string, password: string) => {
-        return await fetch('https://' + hostData.host + ':30156/login', {
+        return await fetch('https://' + hostData.host + ':30155/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
