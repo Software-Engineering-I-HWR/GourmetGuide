@@ -12,9 +12,9 @@ const empty_line_width = 1.5;
 const min_font_size = 5;
 
 // SSL-Zertifikate laden
-const privateKey = fs.readFileSync('../../../config/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('../../../config/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('../../../config/cert/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('../../config/cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('../../config/cert/cert.pem', 'utf8');
+const ca = fs.readFileSync('../../config/cert/chain.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
