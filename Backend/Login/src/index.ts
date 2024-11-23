@@ -5,9 +5,9 @@ import fs from "fs";
 import https from "https";
 import { login, register } from "./authcontroller";
 
-const privateKey = fs.readFileSync('../../../config/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('../../../config/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('../../../config/cert/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('../../config/cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('../../config/cert/cert.pem', 'utf8');
+const ca = fs.readFileSync('../../config/cert/chain.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
