@@ -31,7 +31,7 @@ app.post('/saveRecipe', async (req, res) => {
             body: JSON.stringify(data),
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
@@ -122,7 +122,7 @@ app.post('/deleteRecipeByID', async (req, res) => {
             }
         );
 
-        if (response.ok) {
+        if (response.status === 200) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
@@ -281,7 +281,7 @@ app.post('/saveRating', async (req, res) => {
             method: 'POST'
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
@@ -342,7 +342,7 @@ app.post('/saveBookmark', async (req, res) => {
             method: 'POST',
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
