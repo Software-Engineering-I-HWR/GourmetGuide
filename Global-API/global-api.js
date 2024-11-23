@@ -357,8 +357,7 @@ app.post('/saveBookmark', async (req, res) => {
 
 //LOGIN_API
 app.post('/login', async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const data = req.body;
 
     try {
         const response = await fetch('http://' + host + ':30156/login', {
@@ -366,7 +365,7 @@ app.post('/login', async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password}),
+            body: JSON.stringify(data),
         })
             .then(data => data.json());
 
@@ -384,8 +383,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const data = req.body;
 
     try {
         const response = await fetch('http://' + host + ':30156/register', {
@@ -393,7 +391,7 @@ app.post('/register', async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password}),
+            body: JSON.stringify(data),
         });
 
         if (response.ok) {
