@@ -8,9 +8,9 @@ const cors = require('cors');
 const app = express();
 
 // SSL-Zertifikat und privater Schlüssel
-const privateKey = fs.readFileSync('/usr/local/app/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/usr/local/app/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('/usr/local/app/cert/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('../config/cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('../config/cert/cert.pem', 'utf8');
+const ca = fs.readFileSync('../config/cert/chain.pem', 'utf8');
 
 const credentials = {key: privateKey, cert: certificate, ca: ca};
 
