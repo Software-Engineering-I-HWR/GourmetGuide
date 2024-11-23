@@ -31,12 +31,14 @@ app.post('/saveRecipe', async (req, res) => {
             body: JSON.stringify(data),
         });
 
-        if (response.status === 200) {
+        console.log('API Antwort:', response);
+
+        if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).json({ error: 'Error saving recipe' });
         }
     } catch (error) {
         console.error('Network error:', error.message);
@@ -122,7 +124,7 @@ app.post('/deleteRecipeByID', async (req, res) => {
             }
         );
 
-        if (response.status === 200) {
+        if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
@@ -281,7 +283,7 @@ app.post('/saveRating', async (req, res) => {
             method: 'POST'
         });
 
-        if (response.status === 200) {
+        if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
@@ -342,7 +344,7 @@ app.post('/saveBookmark', async (req, res) => {
             method: 'POST',
         });
 
-        if (response.status === 200) {
+        if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
