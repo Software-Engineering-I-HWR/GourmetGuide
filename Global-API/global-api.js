@@ -23,7 +23,7 @@ app.post('/saveRecipe', async (req, res) => {
     console.log("Received data:", data);
 
     try {
-        const response = await fetch('https://' + host + ':3007/saveRecipe', {
+        const response = await fetch('http://' + host + ':3007/saveRecipe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +46,8 @@ app.post('/saveRecipe', async (req, res) => {
 
 app.get('/getRecipes', async (req, res) => {
     try {
-        const response = await fetch('https://' + host + ':3007/getRecipes');
+        const response = await fetch('http://' + host + ':3007/getRecipes');
+        console.log(response);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -62,7 +63,7 @@ app.get('/getRecipes', async (req, res) => {
 
 app.get('/getAllCategories', async (req, res) => {
     try {
-        const response = await fetch('https://' + host + ':3007/getAllCategories');
+        const response = await fetch('http://' + host + ':3007/getAllCategories');
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -78,7 +79,7 @@ app.get('/getAllCategories', async (req, res) => {
 
 app.get('/getAllIngredients', async (req, res) => {
     try {
-        const response = await fetch('https://' + host + ':3007/getAllIngredients');
+        const response = await fetch('http://' + host + ':3007/getAllIngredients');
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -96,7 +97,7 @@ app.get('/getRecipeByID', async (req, res) => {
     const id = req.query.id;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRecipeByID?id=${encodeURIComponent(id)}`);
+        const response = await fetch(`http://` + host + `:3007/getRecipeByID?id=${encodeURIComponent(id)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -115,7 +116,7 @@ app.post('/deleteRecipeByID', async (req, res) => {
 
     try {
         const response = await fetch(
-            `https://` + host + `:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
+            `http://` + host + `:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
             {
                 method: "POST",
             }
@@ -138,7 +139,7 @@ app.get('/getRecipesByRating', async (req, res) => {
     const rating = req.query.rating;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRecipesByRating?rating=${encodeURIComponent(rating)}`);
+        const response = await fetch(`http://` + host + `:3007/getRecipesByRating?rating=${encodeURIComponent(rating)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -156,7 +157,7 @@ app.get('/getRecipesByUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRecipesByUser?user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:3007/getRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -174,7 +175,7 @@ app.get('/getRatedRecipesByUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`https://` + host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -192,7 +193,7 @@ app.get('/getRecipesByCategory', async (req, res) => {
     const category = req.query.category;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`);
+        const response = await fetch(`http://` + host + `:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -210,7 +211,7 @@ app.get('/getFilteredRecipes', async (req, res) => {
     const {name, difficulty, category, ingredients, vegetarian, vegan, allergens, rating} = req.query;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getFilteredRecipes` +
+        const response = await fetch(`http://` + host + `:3007/getFilteredRecipes` +
             `?name=${encodeURIComponent(name)}&` +
             `difficulty=${encodeURIComponent(difficulty)}&` +
             `category=${encodeURIComponent(category)}&` +
@@ -236,7 +237,7 @@ app.get('/getRatingByID', async (req, res) => {
     const id = req.query.id;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRatingByID?id=${encodeURIComponent(id)}`);
+        const response = await fetch(`http://` + host + `:3007/getRatingByID?id=${encodeURIComponent(id)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -255,7 +256,7 @@ app.get('/getRatingByIDAndUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -276,7 +277,7 @@ app.post('/saveRating', async (req, res) => {
     console.log("Received data:", req.query);
 
     try {
-        const response = await fetch(`https://` + host + `:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
+        const response = await fetch(`http://` + host + `:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
             method: 'POST'
         });
 
@@ -298,7 +299,7 @@ app.get('/getBookmarkByIDAndUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -316,7 +317,7 @@ app.get('/getBookmarkedRecipesByUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`https://` + host + `:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -337,7 +338,7 @@ app.post('/saveBookmark', async (req, res) => {
     console.log("Received data:", req.query);
 
     try {
-        const response = await fetch(`https://` + host + `:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+        const response = await fetch(`http://` + host + `:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
             method: 'POST',
         });
 
@@ -360,7 +361,7 @@ app.post('/login', async (req, res) => {
     const password = req.query.password;
 
     try {
-        const response = await fetch('https://' + host + ':30156/login', {
+        const response = await fetch('http://' + host + ':30156/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -387,7 +388,7 @@ app.post('/register', async (req, res) => {
     const password = req.query.password;
 
     try {
-        const response = await fetch('https://' + host + ':30156/register', {
+        const response = await fetch('http://' + host + ':30156/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -413,7 +414,7 @@ app.post('/generate-pdf', async (req, res) => {
     const requestData = req.query;
 
     try {
-        const response = await fetch('https://' + host + ':30157/generate-pdf', {
+        const response = await fetch('http://' + host + ':30157/generate-pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -434,6 +435,6 @@ app.post('/generate-pdf', async (req, res) => {
     }
 });
 
-https.createServer(credentials, app).listen(3000, () => {
+https.createServer(credentials, app).listen(3001, () => {
     console.log('HTTPS-Server läuft auf Port 3000');
 });

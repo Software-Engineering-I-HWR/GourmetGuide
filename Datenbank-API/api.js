@@ -1,18 +1,9 @@
-const fs = require('fs');
-const https = require('https');
 const express = require('express');
 const {host, user, password, database} = require('../config/config.json');
 const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-
-// SSL-Zertifikat und privater Schlüssel
-const privateKey = fs.readFileSync('../config/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('../config/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('../config/cert/chain.pem', 'utf8');
-
-const credentials = {key: privateKey, cert: certificate, ca: ca};
 
 const connection = mysql.createConnection({
     host: host,
@@ -436,6 +427,6 @@ app.post('/saveBookmark', (req, res) => {
     });
 });
 
-https.createServer(credentials, app).listen(3000, () => {
-    console.log('HTTPS-Server läuft auf Port 3000');
+app.listen(3000, () => {
+    console.log('Server läuft auf Port 3000');
 });

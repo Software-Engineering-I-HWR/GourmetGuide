@@ -2,21 +2,12 @@ import express, { Request, Response } from 'express';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import { Recipe } from './recipe';
 import cors from "cors";
-import fs from 'fs';
-import https from 'https';
 
 const page_width = 600;
 const page_height = 800;
 const right_border_size = 25;
 const empty_line_width = 1.5;
 const min_font_size = 5;
-
-// SSL-Zertifikate laden
-const privateKey = fs.readFileSync('../../config/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('../../config/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('../../config/cert/chain.pem', 'utf8');
-
-const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 const app = express();
 const port = 3000;
@@ -268,6 +259,6 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 
 // Start the server
 
-https.createServer(credentials, app).listen(port, () => {
-    console.log(`HTTPS Server running at https://localhost:${port}`);
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
