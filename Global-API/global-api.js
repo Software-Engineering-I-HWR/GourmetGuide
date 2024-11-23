@@ -176,7 +176,7 @@ app.get('/getRatedRecipesByUser', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`http://` + host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(user)}`);
+        const response = await fetch(`http://` + host + `:3007/getRatedRecipesByUser?user=${encodeURIComponent(user)}`);
         console.log(response);
         if (response.ok) {
             const data = await response.text();
