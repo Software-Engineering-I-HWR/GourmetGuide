@@ -1,7 +1,7 @@
 import './Register.css';
 import React, {useEffect, useState} from 'react';
 import PopupWindow from "../../PopupWindow.tsx";
-import configData from '../../../../config/config.json';
+import configData from '../../../../config/frontend-config.json';
 
 interface Config {
     host: string;

@@ -5,7 +5,7 @@ import {useLocation} from "react-router-dom";
 import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
 import ErrorPage from "../errorPage.tsx";
-import configData from '../../../../config/config.json';
+import configData from '../../../../config/frontend-config.json';
 
 interface Config {
     host: string;

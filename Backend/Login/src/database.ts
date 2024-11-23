@@ -1,13 +1,23 @@
+import configData from '../../../config/frontend-config.json';
+
+interface Config {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+}
 
 interface User {
   email: string;
   password: string;
 }
 
+const hostData: Config = configData;
+
 export const addUser = async (email: string, password: string) => {
   try {
     const postData: User = { email, password };
-    const response: Response = await fetch('http://192.168.1.99:3006/createUser', {
+    const response: Response = await fetch('http://' + hostData.host + ':3006/createUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,7 +41,7 @@ export const addUser = async (email: string, password: string) => {
 
 export const findUserByEmail = async (email: string): Promise<User | undefined> => {
   try {
-    const response: Response = await fetch(`http://192.168.1.99:3006/getUserByEmail?email=${encodeURIComponent(email)}`, {
+    const response: Response = await fetch(`http://` + hostData.host + `:3006/getUserByEmail?email=${encodeURIComponent(email)}`, {
       method: 'GET'
     });
 

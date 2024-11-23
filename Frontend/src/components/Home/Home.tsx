@@ -2,7 +2,7 @@ import Hero from './Hero.tsx';
 import RecipeCard from './RecipeCard.tsx';
 import "./Home.css"
 import React, {useEffect, useState} from "react";
-import configData from '../../../../config/config.json';
+import configData from '../../../../config/frontend-config.json';
 
 interface Config {
     host: string;
