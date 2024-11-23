@@ -2,7 +2,7 @@ import './Categories.css';
 import CategoryCard from "./CategoryCard.tsx";
 import React, {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import configData from '../../../../config/config.json';
+import configData from '../../../../config/frontend-config.json';
 
 interface Config {
     host: string;
