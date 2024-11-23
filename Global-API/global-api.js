@@ -51,15 +51,15 @@ app.get('/getRecipes', async (req, res) => {
         const response = await fetch('http://' + host + ':3007/getRecipes');
         console.log(response);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -67,15 +67,15 @@ app.get('/getAllCategories', async (req, res) => {
     try {
         const response = await fetch('http://' + host + ':3007/getAllCategories');
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -83,15 +83,15 @@ app.get('/getAllIngredients', async (req, res) => {
     try {
         const response = await fetch('http://' + host + ':3007/getAllIngredients');
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -101,15 +101,15 @@ app.get('/getRecipeByID', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRecipeByID?id=${encodeURIComponent(id)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -123,17 +123,16 @@ app.post('/deleteRecipeByID', async (req, res) => {
                 method: "POST",
             }
         );
-
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -143,15 +142,15 @@ app.get('/getRecipesByRating', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRecipesByRating?rating=${encodeURIComponent(rating)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -161,15 +160,15 @@ app.get('/getRecipesByUser', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -179,15 +178,15 @@ app.get('/getRatedRecipesByUser', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -197,15 +196,15 @@ app.get('/getRecipesByCategory', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRecipesByCategory?category=${encodeURIComponent(category)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -223,15 +222,15 @@ app.get('/getFilteredRecipes', async (req, res) => {
             `allergens=${encodeURIComponent(allergens)}&`+
             `rating=${encodeURIComponent(rating)}&`)
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -241,15 +240,15 @@ app.get('/getRatingByID', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRatingByID?id=${encodeURIComponent(id)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -260,15 +259,15 @@ app.get('/getRatingByIDAndUser', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -282,17 +281,16 @@ app.post('/saveRating', async (req, res) => {
         const response = await fetch(`http://` + host + `:3007/saveRating?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&rating=${encodeURIComponent(ratingNumber)}`, {
             method: 'POST'
         });
-
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -303,15 +301,15 @@ app.get('/getBookmarkByIDAndUser', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getBookmarkByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -321,15 +319,15 @@ app.get('/getBookmarkedRecipesByUser', async (req, res) => {
     try {
         const response = await fetch(`http://` + host + `:3007/getBookmarkedRecipesByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -343,17 +341,16 @@ app.post('/saveBookmark', async (req, res) => {
         const response = await fetch(`http://` + host + `:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
             method: 'POST',
         });
-
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
@@ -369,7 +366,6 @@ app.post('/login', async (req, res) => {
             },
             body: JSON.stringify(data),
         });
-
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -394,7 +390,6 @@ app.post('/register', async (req, res) => {
             },
             body: JSON.stringify(data),
         });
-
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
@@ -420,7 +415,6 @@ app.post('/generate-pdf', async (req, res) => {
             },
             body: JSON.stringify(requestData),
         });
-
         if (response.ok) {
             const pdfBuffer = await response.arrayBuffer();
 
