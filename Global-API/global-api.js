@@ -34,15 +34,15 @@ app.post('/saveRecipe', async (req, res) => {
         console.log('API Antwort:', response);
 
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
             console.error('API 2 Error Status:', response.status);
-            res.status(response.status).json({ error: 'Error saving recipe' });
+            res.status(response.status).send('Error saving recipe');
         }
     } catch (error) {
         console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).send('Internal server error');
     }
 });
 
