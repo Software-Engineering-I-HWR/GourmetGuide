@@ -366,15 +366,14 @@ app.post('/login', async (req, res) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        })
-            .then(data => data.json());
+        });
 
         if (response.ok) {
             const data = await response.json();
             res.status(200).json(data);
         } else {
             console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            res.status(response.status).json({error: 'Error fetching from API'});
         }
     } catch (error) {
         console.error('Network error:', error.message);
