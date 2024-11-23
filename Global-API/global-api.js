@@ -357,8 +357,8 @@ app.post('/saveBookmark', async (req, res) => {
 
 //LOGIN_API
 app.post('/login', async (req, res) => {
-    const email = req.query.email;
-    const password = req.query.password;
+    const email = req.body.email;
+    const password = req.body.password;
 
     try {
         const response = await fetch('http://' + host + ':30156/login', {
@@ -384,8 +384,8 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    const email = req.query.email;
-    const password = req.query.password;
+    const email = req.body.email;
+    const password = req.body.password;
 
     try {
         const response = await fetch('http://' + host + ':30156/register', {
@@ -411,7 +411,7 @@ app.post('/register', async (req, res) => {
 
 //PDF-API
 app.post('/generate-pdf', async (req, res) => {
-    const requestData = req.query;
+    const requestData = req.body;
 
     try {
         const response = await fetch('http://' + host + ':30157/generate-pdf', {
@@ -423,15 +423,19 @@ app.post('/generate-pdf', async (req, res) => {
         });
 
         if (response.ok) {
-            const data = await response.json();
-            res.status(200).json(data);
+            const pdfBuffer = await response.arrayBuffer();
+
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=recipe.pdf');
+
+            res.send(Buffer.from(pdfBuffer));
         } else {
-            console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            console.error('Fehler bei der PDF-API:', response.status);
+            res.status(response.status).json({ error: 'Fehler bei der PDF-Generierung' });
         }
     } catch (error) {
-        console.error('Network error:', error.message);
-        res.status(500).json({error: 'Internal server error'});
+        console.error('Netzwerkfehler:', error.message);
+        res.status(500).json({ error: 'Interner Serverfehler' });
     }
 });
 
