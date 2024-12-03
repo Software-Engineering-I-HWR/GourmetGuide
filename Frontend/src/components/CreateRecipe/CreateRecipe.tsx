@@ -242,7 +242,7 @@ const CreateRecipe: React.FC = () => {
                                     type="text"
                                     value={ingredient}
                                     onChange={(e) => setIngredient(e.target.value)}
-                                    placeholder="Gib eine Zutat an und füge sie mit '+' hinzu..."
+                                    placeholder="Geben Sie eine Zutat an und füge Sie sie mit '+' hinzu..."
                                 />
                                 <button
                                     type="button"

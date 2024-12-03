@@ -264,7 +264,7 @@ const PersonalHome: React.FC = () => {
         <div className="personalHome">
             <Hero
                 title="Privater Bereich"
-                subtitle="Hier sehen Sie Ihre Rezepte und die Rezepte, die sie bewertet haben!"
+                subtitle="Hier sehen Sie Ihre Rezepte und die Rezepte, die Sie bewertet haben!"
             />
             <div className="personalHome-main">
                 {showMobileMenu && <div className="ownPage-actions-mobile">
