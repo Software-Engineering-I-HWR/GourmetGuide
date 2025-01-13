@@ -12,7 +12,7 @@ import ShowRecipe from "./components/ShowRecipe/ShowRecipe";
 import "./PopupWindow.css";
 import PopupWindow from "./PopupWindow.tsx";
 import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
-import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
+import CreateRecipe from "./components/new-CreateRecipe (delete folder)/CreateRecipe.tsx";
 import {jwtDecode} from "jwt-decode";
 
 

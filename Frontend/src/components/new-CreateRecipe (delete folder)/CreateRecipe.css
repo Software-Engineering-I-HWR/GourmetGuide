@@ -1,0 +1,349 @@
+.rfilled:hover {
+    fill: #07536D;
+}
+.rfilled{
+    fill: #ffffff;
+}
+.filled{
+    fill: #07536D;
+}
+.rating-system-header {
+    display: contents;
+    padding: 1% 1%;
+    align-items: center;
+    width: 20%;
+    margin:auto;
+}
+.body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.bookmark {
+    width: 33%;
+}
+
+.bookmark-button {
+    width: 20%;  /* Set your desired width */
+    height: 20%; /* Set your desired height */
+    /* Optionally add other styling */
+    display: inline-block; /* Makes sure the button fits the icon size */
+    margin: 0; /* Remove any margin if applicable */
+    background-color: #e5ebee;
+    padding: 2% 2%;
+    border-radius: 10px;
+}
+
+.bookmark-button:hover {
+    background-color: #b1c3cd;
+}
+
+.star-system {
+    display: flex;
+}
+
+.showRecipe {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 100%;
+    background-color: white;
+    align-items: center;
+}
+
+.showRecipe-hero {
+    background-color: #07536D;
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.showRecipe-contentfield {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+}
+
+.showRecipe-contentfield-left {
+    flex: 1;
+    text-align: center;
+    align-items: center;
+}
+
+.showRecipe-contentfield-right {
+    position: absolute;
+    right: 0;
+    top: 75%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: flex-end;
+    width: 30%;
+    border-radius: 20px;
+}
+
+.showRecipe-title {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.showRecipe-category {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #b1c3cd;
+}
+
+.showRecipe-properties {
+    display: flex;
+    width: 100%;
+    margin: 10% 10%;
+    font-size: 1000px;
+    color: white;
+}
+
+.showRecipe-properties-allergen .showRecipe-properties-vegetarian .showRecipe-properties-vegan {
+    font-size: 1000%;
+    color: white;
+}
+
+.showRecipe-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+.showRecipe-main-head {
+    display: flex;
+}
+
+.separator-line {
+    border-bottom: 2px solid #ccc;
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.hero__img {
+    display: flex;
+    width: 45%;
+    height: 45%;
+    padding: max(5%) max(5%);
+    align-items: center;
+    justify-content: center;
+}
+
+.showRecipe-properties-ingredients {
+    display: flex;
+    width: 45%;
+    height: auto;
+    text-align: left;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding-left: 5%;
+}
+
+.showRecipe-properties-steps {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 3% 3%;
+    padding-left: 7%;
+    margin-left: 10%;
+    margin-right: 10%;
+    counter-reset: step-counter;
+}
+
+.recipes-step {
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 7%;
+    margin-bottom: 10px;
+}
+
+.recipes-step::before {
+    content: counter(step-counter) ". ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: black;
+}
+
+
+
+.showRecipe-properties-ingredients-title {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: start;
+    justify-content: center;
+    padding: 1% 1%;
+}
+
+.showRecipe-properties-step-title {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: start;
+    justify-content: center;
+    padding: 1% 1%;
+}
+
+.recipes-ingredient, .recipes-step {
+    margin: 5px 0;
+}
+
+.actions-field{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3% 3%;
+    padding-left: 7%;
+    margin-left: 10%;
+    margin-right: 10%;
+
+}
+
+.download-button {
+    display: flex;
+    color: white;
+    font-size: 1.5rem;
+    padding: 2% 5%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5% 5%;
+}
+
+.download-button:hover {
+    background-color: #65899c;
+}
+
+.rating-system, .fake-rating-system {
+    display: flex;
+    padding: 1% 1%;
+    align-items: center;
+    margin-left: 10%;
+    width: 30%;
+}
+
+.rating-text {
+    font-size: 1.5rem;
+    margin-left: 2%;
+    width: 110%
+}
+
+
+.rating-null {
+    margin-left: auto;
+    font-size: 1rem;
+    color: #65899c;
+}
+
+.star-system {
+    display: flex;
+    flex-direction: column;
+    margin-right: 3vw;
+}
+
+.message {
+    display: block;
+    position: absolute;
+    bottom: auto;
+    left: 35%;
+    padding: 1% 1%;
+    background-color: #b1c3cd;
+    text-align: center;
+    max-height: 75%;
+    max-width: 45%;
+    color: white;
+    border-radius: 15px;
+    border: 3px solid #7e9cac;
+    font-size: 1.5vh;
+    margin-left: 5%;
+}
+
+.allergen-symbol{
+    display: flex;
+    width: 20%;
+    margin: 1% 1%;
+}
+
+.rating-null {
+    margin-left: auto;
+    font-size: 1rem;
+    color: #65899c;
+}
+
+/* Optimierung der Sterne im Header (Bewertung) */
+.rating-system-header {
+    display: flex;
+    padding: 1%;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* anstelle eines festen Wertes wie 20% */
+    margin: 0 auto;
+    gap: 5px; /* Platz zwischen den Sternen */
+}
+
+/* Optimierung der Sterne im Rating-System */
+.rating-system, .fake-rating-system {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    width: auto; /* entfernt feste Breite */
+    gap: 5px; /* Platz zwischen den Sternen */
+}
+
+/* Verbesserte Größensteuerung der Sterne */
+.first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+    display: flex;
+    width: 25px;  /* Feste Breite für die Sterne */
+    height: auto; /* Höhe automatisch basierend auf der Breite */
+    margin: 0 5px; /* Abstand zwischen den Sternen */
+    object-fit: contain; /* Verhindert Verzerrung */
+}
+
+/* Optional: Responsives Verhalten bei kleineren Bildschirmen */
+@media (max-width: 768px) {
+    .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
+        width: 20px; /* Kleinere Sterne auf mobilen Geräten */
+        margin: 0 3px;
+    }
+
+    .rating-text {
+        font-size: 1rem;
+    }
+}
+
+/* Hover-Effekt für gefüllte Sterne */
+.rfilled:hover {
+    fill: #07536D;
+}
+
+.save-rating-confirm {
+    display: block;
+    position: absolute;
+    bottom: auto;
+    left: 35%;
+    padding: 1% 1%;
+    background-color: transparent;
+    text-align: center;
+    max-height: 75%;
+    max-width: 45%;
+    color: black;
+    font-size: 1.5vh;
+    margin-left: 7%;
+    margin-top: 4.5%;
+}
