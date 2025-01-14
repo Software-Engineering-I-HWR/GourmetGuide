@@ -206,19 +206,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             let stepStartIndex = 0;
 
             for (let i = 0; i < stepsAsString.length; i++) {
-                if (stepsAsString[i] === ".") {
-                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i + 1).trim(); // Trimmen, um Leerzeichen zu entfernen
+                if (stepsAsString[i] === "|") {
+                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i); // Trimmen, um Leerzeichen zu entfernen
                     stepsArray.push(newStepToAdd); // Füge die neue Zutat zum temporären Array hinzu
                     stepStartIndex = i + 1;
                 }
             }
-
-            // Füge das letzte Element nach der Schleife hinzu
-            const lastStep = stepsAsString.substring(stepStartIndex).trim();
-            if (lastStep) {
-                stepsArray.push(lastStep);
-            }
-
             // Aktualisiere den Zustand mit dem neuen Array
             setStepsAsArray(stepsArray);
         };
