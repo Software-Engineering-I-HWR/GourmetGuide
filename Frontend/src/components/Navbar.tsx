@@ -92,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                                 window.location.href = getLink(searchTerm);
                             } else {
                                 alert("Ungültiges Suchmuster!" + "\n"+
-                                    "Such Name Darf keine Sonderzeichen beinhalten");
+                                    "Suche darf keine Sonderzeichen beinhalten");
                             }
                         }}
                         className="navbar__link"
