@@ -252,7 +252,7 @@ const CreateRecipe: React.FC = () => {
                 <div className="showRecipe-main">
                     <div className="showRecipe-main-head">
                         <img className="hero__img"
-                             src={"https://s.yimg.com/uu/api/res/1.2/xy8jxuV2zpB956RYZ5b0hA--~B/Zmk9ZmlsbDtoPTQyMTt3PTY3NTthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2021-02/572c4830-721d-11eb-bb63-96959c3b62f2.cf.jpg"}
+                             src={"https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuidePictures/refs/heads/main/2025-01-15-10-22-23.png"}
                              alt={"Rezept Bild"}/>
                         <div className="showRecipe-properties-ingredients">
                             <h1 className="showRecipe-properties-ingredients-title"> Zutaten: </h1>

@@ -51,11 +51,11 @@ const dietaryTags = ["Vegan", "Vegetarisch", "Glutenfrei", "Nussfrei", "Eifrei",
 
 const extractString = (str: string, startMarker: string, endMarker: string): string => {
     const startIndex = str.indexOf(startMarker);
-    if (startIndex === -1) return ""; // Falls Startmarkierung nicht gefunden wird
+    if (startIndex === -1) return "";
 
     const start = startIndex + startMarker.length;
     const endIndex = str.indexOf(endMarker, start);
-    if (endIndex === -1) return ""; // Falls Endmarkierung nicht gefunden wird
+    if (endIndex === -1) return "";
 
     return str.substring(start, endIndex);
 };
@@ -72,7 +72,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         const [showMessage, setShowMessage] = useState<boolean>(false);
         const [avRating, setAvRating] = useState<number>(0);
         const isValidCreator = (creator: string | undefined) => {
-            const invalidCreators = ["1", "12345"]; // Add more invalid values here as needed
+            const invalidCreators = ["1", "12345"];
             return creator && !invalidCreators.includes(creator);
         };
         const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
@@ -102,26 +102,25 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             const checkBookmark = async () => {
                 try {
                     const isBookmarked = await getBookmark();
-                    setIsBookmarked(isBookmarked); // Assuming 1 means bookmarked
+                    setIsBookmarked(isBookmarked);
                 } catch (error) {
                     console.error("Error checking bookmark status:", error);
                 }
             };
 
             checkBookmark();
-        }, []); // Empty dependency array to run only on mount
+        }, []);
 
-        // Function to toggle bookmark state
         const toggleBookmark = async () => {
             if (!isLoggedIn) {
-                return; // Exit early
+                return;
             }
 
             try {
-                const newBookmarkState = !isBookmarked; // Toggle the bookmark state
+                const newBookmarkState = !isBookmarked;
                 setIsBookmarked(newBookmarkState);
 
-                // Send the API request to save the bookmark
+
                 const response = await fetch(`https://` + hostData.host + `:30155/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
                     method: 'POST',
                 });
@@ -130,13 +129,13 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     throw new Error('Failed to update bookmark');
                 }
 
-                // Optionally handle the response
+
                 const data = await response.json();
                 console.log('Bookmark saved:', data);
 
             } catch (error) {
                 console.error('Error saving bookmark:', error);
-                // Revert the bookmark state if the API request fails
+
                 setIsBookmarked(!isBookmarked);
             }
         };
@@ -180,44 +179,42 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         }
 
         const formatIngredients = (ingredientsAsString: string) => {
-            const ingredientsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
+            const ingredientsArray: string[] = [];
             let ingredientStartIndex = 0;
 
             for (let i = 0; i < ingredientsAsString.length; i++) {
                 if (ingredientsAsString[i] === "|") {
-                    const newIngredientToAdd: string = ingredientsAsString.substring(ingredientStartIndex, i).trim(); // Trimmen, um Leerzeichen zu entfernen
-                    ingredientsArray.push(newIngredientToAdd); // Füge die neue Zutat zum temporären Array hinzu
+                    const newIngredientToAdd: string = ingredientsAsString.substring(ingredientStartIndex, i).trim();
+                    ingredientsArray.push(newIngredientToAdd);
                     ingredientStartIndex = i + 1;
                 }
             }
 
-            // Füge das letzte Element nach der Schleife hinzu
             const lastIngredient = ingredientsAsString.substring(ingredientStartIndex).trim();
             if (lastIngredient) {
                 ingredientsArray.push(lastIngredient);
             }
 
-            // Aktualisiere den Zustand mit dem neuen Array
             setIngredientsAsArray(ingredientsArray);
         };
 
         const formatSteps = (stepsAsString: string) => {
-            const stepsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
+            const stepsArray: string[] = [];
             let stepStartIndex = 0;
 
             for (let i = 0; i < stepsAsString.length; i++) {
                 if (stepsAsString[i] === "|") {
-                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i); // Trimmen, um Leerzeichen zu entfernen
-                    stepsArray.push(newStepToAdd); // Füge die neue Zutat zum temporären Array hinzu
+                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i);
+                    stepsArray.push(newStepToAdd);
                     stepStartIndex = i + 1;
                 }
             }
-            // Aktualisiere den Zustand mit dem neuen Array
+
             setStepsAsArray(stepsArray);
         };
 
         const handleShare = async (event: React.MouseEvent<HTMLButtonElement>) => {
-            event.preventDefault(); // Prevent default button behavior
+            event.preventDefault();
 
             let ingredientsArray = ["Fehler", "Aufgetreten"];
             let steps = "";
@@ -255,7 +252,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'recipe.pdf';  // Filename for the downloaded PDF
+            a.download = 'recipe.pdf';
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -270,10 +267,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     method: 'GET'
                 });
                 if (response.ok) {
-                    /*if (response.json.length == 0) {
-                        con
-                        return null;
-                    }*/
                     const recipes = await response.json();
                     const onlyRating = recipes[0].Bewertung;
                     setChosenStar(onlyRating);
@@ -343,7 +336,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     setShowPopup(false);
                 }, 5000);
             }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [showPopup]);
 
         useEffect(() => {
