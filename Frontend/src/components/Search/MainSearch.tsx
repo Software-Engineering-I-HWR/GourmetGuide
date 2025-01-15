@@ -348,7 +348,7 @@ const MainSearch: React.FC = () => {
                                     window.location.href = getLink()
                                 } else {
                                     alert("Ungültiges Suchmuster!" + "\n"+
-                                        "Such Name Darf keine Sonderzeichen beinhalten");
+                                        "Suche darf keine Sonderzeichen beinhalten");
                                 }
                             }}>Suchen
                             </button>
