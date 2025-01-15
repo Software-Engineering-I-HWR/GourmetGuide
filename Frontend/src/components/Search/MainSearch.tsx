@@ -192,6 +192,7 @@ const MainSearch: React.FC = () => {
                             <form className="mainSearc__search" onSubmit={handleonSubmit}>
                                 <input
                                     type="text"
+                                    pattern="[A-Za-z0-9ÄÖÜäöüß ]{0,}"
                                     placeholder="Suche..."
                                     value={receptName}
                                     onChange={handleSearchChange}
@@ -342,7 +343,14 @@ const MainSearch: React.FC = () => {
                                 ))}
                             </div>
                             <hr/>
-                            <button className="Submit-Search-Button" onClick={() => window.location.href = getLink()}>Suchen
+                            <button className="Submit-Search-Button" onClick={() => {
+                                if (/^[A-Za-z0-9ÄÖÜäöüß ]*$/.test(receptName)) {
+                                    window.location.href = getLink()
+                                } else {
+                                    alert("Ungültiges Suchmuster!" + "\n" +
+                                        "Suche darf keine Sonderzeichen beinhalten!");
+                                }
+                            }}>Suchen
                             </button>
 
                             <div style={{display: "none"}}>
@@ -381,10 +389,8 @@ const MainSearch: React.FC = () => {
                     </SearchRecipeView>
                 </div>
             </main>
-
         </div>
-    )
-        ;
+    );
 };
 
 export default MainSearch;
