@@ -347,8 +347,8 @@ const MainSearch: React.FC = () => {
                                 if (/^[A-Za-z0-9ÄÖÜäöüß ]*$/.test(receptName)) {
                                     window.location.href = getLink()
                                 } else {
-                                    alert("Ungültiges Suchmuster!" + "\n"+
-                                        "Suche darf keine Sonderzeichen beinhalten");
+                                    alert("Ungültiges Suchmuster!" + "\n" +
+                                        "Suche darf keine Sonderzeichen beinhalten!");
                                 }
                             }}>Suchen
                             </button>
@@ -389,10 +389,8 @@ const MainSearch: React.FC = () => {
                     </SearchRecipeView>
                 </div>
             </main>
-
         </div>
-    )
-        ;
+    );
 };
 
 export default MainSearch;
