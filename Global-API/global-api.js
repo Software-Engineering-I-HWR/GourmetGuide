@@ -465,6 +465,8 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
             body: formData,
         });
 
+        console.log(response);
+
         if (response.ok) {
             const data = await response.text();
             res.status(200).send(data);
