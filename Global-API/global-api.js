@@ -3,6 +3,7 @@ const https = require('https');
 const express = require('express');
 const {host} = require('../config/config.json');
 const cors = require('cors');
+const multer = require('multer');
 
 const app = express();
 
@@ -11,6 +12,19 @@ const certificate = fs.readFileSync('../config/cert/cert.pem', 'utf8');
 const ca = fs.readFileSync('../config/cert/chain.pem', 'utf8');
 
 const credentials = {key: privateKey, cert: certificate, ca: ca};
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error("Ungültiger Dateityp. Erlaubt sind nur JPEG, PNG oder WEBP."));
+        }
+    },
+    limits: {fileSize: 5 * 1024 * 1024},
+});
 
 app.use(express.json());
 app.use(cors());
@@ -395,7 +409,7 @@ app.post('/register', async (req, res) => {
             res.status(200).json(data);
         } else {
             console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error fetching recipes from API'});
+            res.status(response.status).json({error: 'Error while registering'});
         }
     } catch (error) {
         console.error('Network error:', error.message);
@@ -431,6 +445,38 @@ app.post('/generate-pdf', async (req, res) => {
         res.status(500).json({ error: 'Interner Serverfehler' });
     }
 });
+
+//UploadImage
+app.post('/upload-image', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('Keine Datei hochgeladen.');
+    }
+
+    const fileBuffer = req.file.buffer;
+    const mimeType = req.file.mimetype;
+    const blob = new Blob([fileBuffer], { type: mimeType });
+
+    const formData = new FormData();
+    formData.append('file', blob, req.file.originalname);
+
+    try {
+        const response = await fetch('http://' + host + ':30158/upload', {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error uploading image');
+        }
+    } catch (error) {
+        console.error("Fehler bei der Weiterleitung:", error);
+        res.status(500).send("Fehler beim Weiterleiten der Anfrage.");
+    }
+})
 
 https.createServer(credentials, app).listen(3000, () => {
     console.log('HTTPS-Server läuft auf Port 3000');
