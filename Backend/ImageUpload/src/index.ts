@@ -3,7 +3,6 @@ import multer from "multer";
 import sharp from "sharp";
 import path from "path";
 import dayjs from "dayjs";
-import https from "https";
 import gitConfig = require('../../../config/github-config.json');
 
 interface GithubConfig {
