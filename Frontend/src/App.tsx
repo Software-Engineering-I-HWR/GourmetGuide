@@ -15,7 +15,6 @@ import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
 import {jwtDecode} from "jwt-decode";
 
-
 const App: React.FC = () => {
     const navLinks = [
         {name: 'Home', path: '/'},
@@ -27,17 +26,15 @@ const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
 
-
     useEffect(() => {
         const isTokenValid = (token: string) => {
             if (!token) return false;
 
             try {
                 const decodedToken: any = jwtDecode(token);
-                const currentTime = Date.now() / 1000; // Aktuelle Zeit in Sekunden
+                const currentTime = Date.now() / 1000;
 
-                // Überprüfe das 'exp' Feld des Tokens
-                return decodedToken.exp > currentTime; // Gültig, wenn 'exp' größer ist als die aktuelle Zeit
+                return decodedToken.exp > currentTime;
             } catch (error) {
                 console.error("Token kann nicht dekodiert werden:", error);
                 return false;
@@ -53,7 +50,6 @@ const App: React.FC = () => {
             setIsLoggedIn(false);
         }
     }, []);
-
 
     useEffect(() => {
         if (localStorage.getItem('loginMessage') != null) {
