@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const {jwtsecret} = require('../config.json');
+const {jwtsecret} = require('../../../config/jwt-secret.json');
 
 
 app.use(cors());
