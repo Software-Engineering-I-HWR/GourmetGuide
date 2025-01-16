@@ -21,15 +21,15 @@
 }
 
 .category-card[value='false'] {
-    filter:grayscale(100%);
-    color:grey;
+    filter: grayscale(100%);
+    color: grey;
     width: 75%;
     height: 8%;
 }
 
 .category-card[value='false']:hover {
-    filter:grayscale(100%);
-    color:black;
+    filter: grayscale(100%);
+    color: black;
     width: 75%;
     height: 8%;
 }
@@ -45,7 +45,7 @@
     justify-content: center;
     align-items: center;
     width: 65%;
-    height: 100%; /* Sicherstellen, dass die Höhe definiert ist */
+    height: 100%;
 }
 
 .category-card__title[value='true'] {

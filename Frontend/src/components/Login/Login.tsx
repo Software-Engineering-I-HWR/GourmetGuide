@@ -24,16 +24,14 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     const [loginMessage, setLoginMessage] = useState('');
     const [showPopupMessage, setShowPopupMessage] = useState(false);
 
-    // Funktion zum Überprüfen des Access Tokens
     const isTokenValid = (token: string) => {
         if (!token) return false;
 
         try {
             const decodedToken: any = jwtDecode(token);
-            const currentTime = Date.now() / 1000; // Aktuelle Zeit in Sekunden
+            const currentTime = Date.now() / 1000;
 
-            // Überprüfe das 'exp' Feld des Tokens
-            return decodedToken.exp > currentTime; // Gültig, wenn 'exp' größer ist als die aktuelle Zeit
+            return decodedToken.exp > currentTime;
         } catch (error) {
             console.error("Token kann nicht dekodiert werden:", error);
             return false;
@@ -52,17 +50,14 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     };
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Verhindere die Standardformularübermittlung
+        event.preventDefault();
         try {
             const response = await sendLoginRequest(email, password);
-            console.log(response, response.status);
 
             if (response.message === "Login erfolgreich") {
-                // Speichere das E-Mail und den Token im Local Storage
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('access token', response.token);
 
-                // Überprüfe die Gültigkeit des Tokens
                 const token = response.token;
                 if (isTokenValid(token)) {
                     setLoginMessage('Login erfolgreich!');
@@ -88,11 +83,10 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
     };
 
     const handleLogout = () => {
-        // Lösche die Daten im Local Storage
         localStorage.removeItem('userEmail');
-        localStorage.removeItem('access token'); // Lösche gespeicherte E-Mail
+        localStorage.removeItem('access token');
         setIsUserLoggedIn(false);
-        setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
+        setLoginMessage('Erfolgreich abgemeldet!');
         window.location.href = '/';
     };
 
@@ -110,7 +104,6 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
             <div className="login-body">
                 <div className="login-left">
                     <h1 className="login-title">Login</h1>
-
                     {isUserLoggedIn ? (
                         <div>
                             <p>Bereits angemeldet als: {localStorage.getItem("userEmail")}</p>
@@ -135,12 +128,10 @@ const Login: React.FC<LoginProps> = ({isUserLoggedIn, setIsUserLoggedIn}) => {
                             <button type="submit" className="login-button">Anmelden</button>
                         </form>
                     )}
-
                     <a href="/register" className="register-button">Registrieren</a>
                     {loginMessage && <p className="login-message">{loginMessage}</p>}
                     <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </div>
-
                 <div className="login-right">
                     <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>

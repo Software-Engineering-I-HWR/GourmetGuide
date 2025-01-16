@@ -1,10 +1,11 @@
 import "./PopupWindow.css"
 import React from "react";
+
 interface PopupWindowProps {
     message: string;
 }
 
-const PopupWindow: React.FC <PopupWindowProps> = ({message}) => {
+const PopupWindow: React.FC<PopupWindowProps> = ({message}) => {
     return (
         <div className="popupWindow">
             {message}

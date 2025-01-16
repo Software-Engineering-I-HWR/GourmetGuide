@@ -2,10 +2,11 @@
     max-width: 100%;
     margin: 0 auto;
 }
-.main-SearchRecipeView{
+
+.main-SearchRecipeView {
     width: 100%;
 }
 
-.no-recipes-found{
+.no-recipes-found {
     font-size: 1.5rem;
 }

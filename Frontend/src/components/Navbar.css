@@ -1,9 +1,9 @@
 .navbar__Buttons {
     display: flex;
-    width: calc(100% / 3*2);
+    width: calc(100% / 3 * 2);
 }
-/* Destop Options*/
-.recipes__list{
+
+.recipes__list {
     display: flex;
     justify-content: space-around;
 }
@@ -15,16 +15,16 @@
     color: #fff;
     height: 10%;
 }
+
 .navbar__logo {
     display: flex;
-    width: 25%; /* Breite des Bildes */
-    height: auto; /* Höhe wird automatisch angepasst */
-    margin: 0 2%; /* Abstand zwischen Bild und Text */
+    width: 25%;
+    height: auto;
+    margin: 0 2%;
 }
 
-
 .navbar__title {
-    display:flex;
+    display: flex;
     float: left;
     font-weight: bold;
     margin: 0 1%;
@@ -43,12 +43,11 @@
     font-weight: bold;
     margin: 0 2%;
     align-items: center;
-    width:52%;
+    width: 52%;
     color: #ffffff;
     text-decoration: none;
 }
 
-/* Styles für die Suchleiste */
 .navbar__search {
     display: flex;
     width: calc(100% / 3);
@@ -68,7 +67,7 @@
 }
 
 .navbar__search-input:focus {
-    border-color: #007acc; /* Fokus-Farbe (blau) */
+    border-color: #007acc;
 }
 
 .navbar__search-button {
@@ -87,10 +86,9 @@
     background-color: #005f99;
 }
 
-/* Container für Login und Kategorien Buttons */
 .navbar-actions {
     display: flex;
-    width:calc(100% / 3);
+    width: calc(100% / 3);
     justify-content: right;
     flex: 1;
 }
@@ -115,23 +113,23 @@
 }
 
 .navbar__link:disabled {
-    filter:grayscale(100%);
+    filter: grayscale(100%);
 }
 
 @media only screen and (min-width: 769px) {
-    .menu-button-mobile{
+    .menu-button-mobile {
         display: none;
     }
 }
 
-/*Destop Small Option */
 @media only screen and (max-width: 768px) {
     .navbar__Buttons {
         display: flex;
         width: 100%;
         flex-direction: column;
     }
-    .recipes__list{
+
+    .recipes__list {
         display: flex;
         justify-content: space-around;
     }
@@ -143,17 +141,17 @@
         color: #fff;
         height: 10%;
         flex-direction: column;
-        /*align-items: center;*/
     }
+
     .navbar__logo {
         display: flex;
-        width: 25%; /* Breite des Bildes */
-        height: auto; /* Höhe wird automatisch angepasst */
-        margin: 0 2%; /* Abstand zwischen Bild und Text */
+        width: 25%;
+        height: auto;
+        margin: 0 2%;
     }
 
     .navbar__title {
-        display:flex;
+        display: flex;
         float: left;
         font-weight: bold;
         margin: 0 1%;
@@ -167,7 +165,7 @@
         font-weight: bold;
         margin: 0 2%;
         align-items: center;
-        width:52%;
+        width: 52%;
         color: #ffffff;
         text-decoration: none;
     }
@@ -189,7 +187,7 @@
     }
 
     .navbar__search-input:focus {
-        border-color: #007acc; /* Fokus-Farbe (blau) */
+        border-color: #007acc;
     }
 
     .navbar__search-button {
@@ -208,7 +206,6 @@
         background-color: #005f99;
     }
 
-    /* Container für Login und Kategorien Buttons */
     .navbar-actions {
         display: none;
     }
@@ -233,9 +230,10 @@
     }
 
     .navbar__link:disabled {
-        filter:grayscale(100%);
+        filter: grayscale(100%);
     }
-    .menu-button-mobile{
+
+    .menu-button-mobile {
         display: flex;
         width: 10%;
         float: right;

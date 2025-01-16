@@ -1,11 +1,7 @@
-
-/*Destop Big Option */
 .main-content {
     width: 60%;
 }
 
-
-/*Destop Small Option */
 @media only screen and (max-width: 768px) {
     .main-content {
         width: 100%;

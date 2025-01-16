@@ -1,7 +1,6 @@
 import "./ShowRecipe.css";
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
-
 import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
 import ErrorPage from "../errorPage.tsx";
@@ -60,7 +59,6 @@ const extractString = (str: string, startMarker: string, endMarker: string): str
     return str.substring(start, endIndex);
 };
 
-
 const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [sampleRecipe, setSampleRecipe] = useState<ListItem | undefined>(undefined);
     const location = useLocation();
@@ -87,7 +85,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
             });
             const isBookmarked = await respone.json();
-            console.log("DATA:", isBookmarked);
             return isBookmarked[0].Bookmark === 1
         } catch (error) {
             console.error('Error getting bookmark status:', error);
@@ -125,10 +122,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             if (!response.ok) {
                 throw new Error('Failed to update bookmark');
             }
-
-            const data = await response.json();
-            console.log('Bookmark saved:', data);
-
         } catch (error) {
             console.error('Error saving bookmark:', error);
             setIsBookmarked(!isBookmarked);
@@ -256,7 +249,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         window.URL.revokeObjectURL(url);
     };
 
-
     async function getRating(): Promise<number | null> {
         try {
             const response = await fetch(`https://` + hostData.host + `:30155/getRatingByIDAndUser?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}`, {
@@ -339,7 +331,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         } else {
             setShowErrorPage(0)
         }
-        console.log("hier", sampleRecipe, showErrorPage);
     }, [sampleRecipe]);
 
     return (
@@ -413,7 +404,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 <div className="separator-line"></div>
                 <p>Ersteller: {validCreator}</p>
                 <div className="actions-field">
-
                     <div className="bookmark">
                         {isLoggedIn &&
                             <img
@@ -506,7 +496,6 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
             </div>
         </>}
-
         {showErrorPage == 1 && <ErrorPage/>}
         </body>
     );

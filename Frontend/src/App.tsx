@@ -15,7 +15,6 @@ import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
 import {jwtDecode} from "jwt-decode";
 
-
 const App: React.FC = () => {
     const navLinks = [
         {name: 'Home', path: '/'},
@@ -26,7 +25,6 @@ const App: React.FC = () => {
     const noNavbarFooterRoutes = ['/log-in', '/register'];
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
-
 
     useEffect(() => {
         const isTokenValid = (token: string) => {
@@ -44,12 +42,12 @@ const App: React.FC = () => {
             }
         };
         const token = localStorage.getItem('access token');
-        if (!token){
+        if (!token) {
             setIsLoggedIn(false);
         }
-        if (isTokenValid(token!)){
+        if (isTokenValid(token!)) {
             setIsLoggedIn(true);
-        }else{
+        } else {
             setIsLoggedIn(false);
         }
     }, []);
@@ -63,14 +61,15 @@ const App: React.FC = () => {
                 localStorage.removeItem('loginMessage');
             }, 3000);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorage.getItem('loginMessage')]);
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
         <Router>
             <>
-                {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide" links={navLinks}/>}
+                {shouldShowNavbarFooter &&
+                    <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
+                            links={navLinks}/>}
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Rating?/:Allergien?"
@@ -86,7 +85,7 @@ const App: React.FC = () => {
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
-                {showPopup && localStorage.getItem('loginMessage')!=undefined && (
+                {showPopup && localStorage.getItem('loginMessage') != undefined && (
                     <PopupWindow message={localStorage.getItem('loginMessage')!}/>
                 )}
             </>

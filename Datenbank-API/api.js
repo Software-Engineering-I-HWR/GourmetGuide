@@ -6,10 +6,7 @@ const cors = require('cors');
 const app = express();
 
 const connection = mysql.createConnection({
-    host: host,
-    user: user,
-    password: password,
-    database: database
+    host: host, user: user, password: password, database: database
 });
 
 app.use(express.json());
@@ -20,15 +17,13 @@ app.post('/saveRecipe', (req, res) => {
     console.log("Received data:", data);
 
     const query = `
-        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen, Creator)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen,
+                            Creator)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     console.log(query);
 
-    connection.query(query, [
-        data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator
-    ], (error, results) => {
+    connection.query(query, [data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Speichern des Rezepts');
@@ -72,9 +67,7 @@ app.get('/getAllIngredients', (req, res) => {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Abrufen der Zutaten');
         } else {
-            const unwantedWords = [
-                'Bunch', 'Stout', 'Stock', 'The', 'Other', 'Halved', 'Pieces', 'Sprigs', 'Fresh', 'Shredded', 'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze', 'Tbsp', 'Tsp', 'Serve', 'Sliced', 'Can', 'Of', 'Into', 'inch', 'To', 'Dash', 'Finely', 'Unsalted', 'Cup', 'Piece', 'Cut', 'Handful', 'Peeled', 'And', 'Coarsely Grated', 'Diced', 'Ground', 'Stewing', 'Thin', 'Bulb', 'Pod', 'Steamed', 'Crushed', 'Top', 'Pack', 'Clove', 'Taste', 'Teaspoon'
-            ];
+            const unwantedWords = ['Bunch', 'Stout', 'Stock', 'The', 'Other', 'Halved', 'Pieces', 'Sprigs', 'Fresh', 'Shredded', 'Garnish', 'Topping', 'Small', 'Big', 'minced', 'chopped', 'pinch', 'as required', 'to glaze', 'Tbsp', 'Tsp', 'Serve', 'Sliced', 'Can', 'Of', 'Into', 'inch', 'To', 'Dash', 'Finely', 'Unsalted', 'Cup', 'Piece', 'Cut', 'Handful', 'Peeled', 'And', 'Coarsely Grated', 'Diced', 'Ground', 'Stewing', 'Thin', 'Bulb', 'Pod', 'Steamed', 'Crushed', 'Top', 'Pack', 'Clove', 'Taste', 'Teaspoon'];
 
             let allIngredients = results.map(row => row.Ingredients)
                 .join('|')
@@ -134,23 +127,17 @@ app.post('/deleteRecipeByID', (req, res) => {
     const query2 = 'DELETE FROM Bewertung WHERE ID = ?';
     const query3 = 'DELETE FROM Lesezeichen WHERE ID = ?';
 
-    const queries = [
-        { query: query1, params: [id] },
-        { query: query2, params: [id] },
-        { query: query3, params: [id] },
-    ];
+    const queries = [{query: query1, params: [id]}, {query: query2, params: [id]}, {query: query3, params: [id]},];
 
-    const promises = queries.map(({ query, params }) =>
-        new Promise((resolve, reject) => {
-            connection.query(query, params, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        })
-    );
+    const promises = queries.map(({query, params}) => new Promise((resolve, reject) => {
+        connection.query(query, params, (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    }));
 
     Promise.all(promises)
         .then(() => {
@@ -165,10 +152,10 @@ app.post('/deleteRecipeByID', (req, res) => {
 app.get('/getRecipesByRating', (req, res) => {
     const rating = req.query.rating;
     const query = `SELECT r.*, AVG(rt.Bewertung) as average_rating
-        FROM Rezept r
-        JOIN Bewertung rt ON r.ID = rt.ID
-        GROUP BY r.ID
-        HAVING average_rating >= ?`;
+                   FROM Rezept r
+                            JOIN Bewertung rt ON r.ID = rt.ID
+                   GROUP BY r.ID
+                   HAVING average_rating >= ?`;
 
     connection.query(query, [rating], (error, results) => {
         if (error) {
@@ -276,19 +263,17 @@ app.get('/getFilteredRecipes', (req, res) => {
         } else {
             if (rating) {
                 const query2 = `SELECT r.*, AVG(rt.Bewertung) as average_rating
-                            FROM Rezept r
-                            JOIN Bewertung rt ON r.ID = rt.ID
-                            GROUP BY r.ID
-                            HAVING average_rating >= ?`;
+                                FROM Rezept r
+                                         JOIN Bewertung rt ON r.ID = rt.ID
+                                GROUP BY r.ID
+                                HAVING average_rating >= ?`;
 
                 connection.query(query2, [rating], (error, results2) => {
                     if (error) {
                         console.error("Database Error:", error);
                         res.status(500).send('Fehler beim Abrufen der Rezepte');
                     } else {
-                        const filteredResults = results.filter(result1 =>
-                            results2.some(result2 => result1.ID === result2.ID)
-                        );
+                        const filteredResults = results.filter(result1 => results2.some(result2 => result1.ID === result2.ID));
                         res.status(200).json(filteredResults);
                     }
                 });
@@ -334,15 +319,14 @@ app.post('/saveRating', (req, res) => {
 
     const query = `
         INSERT INTO Bewertung (ID, Username, Bewertung)
-        VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE Bewertung = VALUES(Bewertung);
+        VALUES (?, ?, ?) ON DUPLICATE KEY
+        UPDATE Bewertung =
+        VALUES (Bewertung);
     `;
 
     console.log(query);
 
-    connection.query(query, [
-        data.id, data.user, data.rating
-    ], (error, results) => {
+    connection.query(query, [data.id, data.user, data.rating], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Speichern der Bewertung');
@@ -406,15 +390,15 @@ app.post('/saveBookmark', (req, res) => {
 
     const query = `
         INSERT INTO Lesezeichen (ID, Username, Bookmark, Updatetime)
-        VALUES (?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE Bookmark = VALUES(Bookmark), Updatetime = VALUES(Updatetime);
+        VALUES (?, ?, ?, ?) ON DUPLICATE KEY
+        UPDATE Bookmark =
+        VALUES (Bookmark), Updatetime =
+        VALUES (Updatetime);
     `;
 
     console.log(query);
 
-    connection.query(query, [
-        data.id, data.user, data.bookmark, isoFormattedDate
-    ], (error, results) => {
+    connection.query(query, [data.id, data.user, data.bookmark, isoFormattedDate], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Speichern der Bewertung');

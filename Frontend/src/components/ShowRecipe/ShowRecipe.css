@@ -1,19 +1,23 @@
 .rfilled:hover {
     fill: #07536D;
 }
-.rfilled{
+
+.rfilled {
     fill: #ffffff;
 }
-.filled{
+
+.filled {
     fill: #07536D;
 }
+
 .rating-system-header {
     display: contents;
     padding: 1% 1%;
     align-items: center;
     width: 20%;
-    margin:auto;
+    margin: auto;
 }
+
 .body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -25,7 +29,7 @@
 }
 
 .bookmark-button {
-    width: 20%;  /* Set your desired width */
+    width: 20%; /* Set your desired width */
     height: 20%; /* Set your desired height */
     /* Optionally add other styling */
     display: inline-block; /* Makes sure the button fits the icon size */
@@ -177,8 +181,6 @@
     color: black;
 }
 
-
-
 .showRecipe-properties-ingredients-title {
     display: flex;
     flex-direction: column;
@@ -201,7 +203,7 @@
     margin: 5px 0;
 }
 
-.actions-field{
+.actions-field {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -209,7 +211,6 @@
     padding-left: 7%;
     margin-left: 10%;
     margin-right: 10%;
-
 }
 
 .download-button {
@@ -243,7 +244,6 @@
     width: 110%
 }
 
-
 .rating-null {
     margin-left: auto;
     font-size: 1rem;
@@ -273,7 +273,7 @@
     margin-left: 5%;
 }
 
-.allergen-symbol{
+.allergen-symbol {
     display: flex;
     width: 20%;
     margin: 1% 1%;
@@ -285,40 +285,36 @@
     color: #65899c;
 }
 
-/* Optimierung der Sterne im Header (Bewertung) */
 .rating-system-header {
     display: flex;
     padding: 1%;
     justify-content: center;
     align-items: center;
-    width: auto; /* anstelle eines festen Wertes wie 20% */
+    width: auto;
     margin: 0 auto;
-    gap: 5px; /* Platz zwischen den Sternen */
+    gap: 5px;
 }
 
-/* Optimierung der Sterne im Rating-System */
 .rating-system, .fake-rating-system {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1%;
-    width: auto; /* entfernt feste Breite */
-    gap: 5px; /* Platz zwischen den Sternen */
+    width: auto;
+    gap: 5px;
 }
 
-/* Verbesserte Größensteuerung der Sterne */
 .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
     display: flex;
-    width: 25px;  /* Feste Breite für die Sterne */
-    height: auto; /* Höhe automatisch basierend auf der Breite */
-    margin: 0 5px; /* Abstand zwischen den Sternen */
-    object-fit: contain; /* Verhindert Verzerrung */
+    width: 25px;
+    height: auto;
+    margin: 0 5px;
+    object-fit: contain;
 }
 
-/* Optional: Responsives Verhalten bei kleineren Bildschirmen */
 @media (max-width: 768px) {
     .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
-        width: 20px; /* Kleinere Sterne auf mobilen Geräten */
+        width: 20px;
         margin: 0 3px;
     }
 
@@ -327,7 +323,6 @@
     }
 }
 
-/* Hover-Effekt für gefüllte Sterne */
 .rfilled:hover {
     fill: #07536D;
 }

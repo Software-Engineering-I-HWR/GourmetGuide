@@ -46,7 +46,6 @@ interface ListItem2 {
 const hostData: Config = configData;
 
 const PersonalHome: React.FC = () => {
-
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [whichIsDisable, setWhichIsDisable] = useState(0);
     const [ownRecipes, setOwnRecipes] = useState<ListItem[]>([]);
@@ -78,7 +77,6 @@ const PersonalHome: React.FC = () => {
         }
     }
 
-    // Funktion zum Abrufen der eigenen Rezept-IDs des Benutzers
     async function getOwnRecipes(): Promise<void> {
         try {
             const response = await fetch(
@@ -138,7 +136,6 @@ const PersonalHome: React.FC = () => {
             console.error("Network error:", error);
         }
     }
-
 
     useEffect(() => {
         if (username) {
@@ -220,10 +217,8 @@ const PersonalHome: React.FC = () => {
                         id: recipe[0].ID,
                     };
                     loadedRecipes.push(newRecipe);
-                    console.log(loadedRecipes);
                 }
             }
-
             setBookmarkRecipes(loadedRecipes);
         };
 
@@ -258,7 +253,6 @@ const PersonalHome: React.FC = () => {
             console.error("Network error:", error);
         }
     }
-
 
     return (
         <div className="personalHome">
@@ -329,7 +323,8 @@ const PersonalHome: React.FC = () => {
                                     <th scope="col2">Titel</th>
                                     <th scope="col3">Kategorie</th>
                                     <th scope="col4">Bild</th>
-                                    <th scope="col5">Löschen</th> {/* Added a new column for actions */}
+                                    <th scope="col5">Löschen</th>
+                                    {/* Added a new column for actions */}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -351,14 +346,16 @@ const PersonalHome: React.FC = () => {
                                         <td>
                                             {/* Add Delete Button Here */}
                                             <button className="delete-button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleDeleteRecipe(recipe.id);
-                                                }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteRecipe(recipe.id);
+                                                    }}
                                             >
-                                                <img src="/images/delete.png" alt="Delete recipe" className="delete-icon" />
+                                                <img src="/images/delete.png" alt="Delete recipe"
+                                                     className="delete-icon"/>
                                             </button>
-                                        </td> {/* Added delete button */}
+                                        </td>
+                                        {/* Added delete button */}
                                     </tr>
                                 ))}
                                 </tbody>
@@ -438,7 +435,7 @@ const PersonalHome: React.FC = () => {
                                 </tbody>
                             </table>
                         </div>
-                    ) :  (<div className="home-recipes-error">Du hast noch keine Rezepte bewertet!</div>
+                    ) : (<div className="home-recipes-error">Du hast noch keine Rezepte bewertet!</div>
                     ))}
                 </div>
             </div>

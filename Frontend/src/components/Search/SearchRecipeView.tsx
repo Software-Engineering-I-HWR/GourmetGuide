@@ -1,4 +1,3 @@
-
 import RecipeCard from '../Home/RecipeCard.tsx';
 import '../../App.css';
 import './SearchRecipeView.css'
@@ -12,11 +11,11 @@ interface Config {
     database: string;
 }
 
-interface SuchFilter{
-    name:string;
-    difficulty:string;
-    category:string;
-    ingredients:string
+interface SuchFilter {
+    name: string;
+    difficulty: string;
+    category: string;
+    ingredients: string
     Rating: string;
     Allergien: string;
     Vegan: string;
@@ -40,18 +39,25 @@ interface ListItem {
 
 const hostData: Config = configData;
 
-async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}: { name: string, difficulty: string, category: string, ingredients: string, Rating: string; Allergien: string; Vegan: string; Vegetarian: string; }): Promise<Recipe[] | null> {
-    console.log(Allergien);
+async function getRecipes({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}: {
+    name: string,
+    difficulty: string,
+    category: string,
+    ingredients: string,
+    Rating: string;
+    Allergien: string;
+    Vegan: string;
+    Vegetarian: string;
+}): Promise<Recipe[] | null> {
     const promt = `https://` + hostData.host + `:30155/getFilteredRecipes` +
-        `?name=`+ (name==``? `&`: `${encodeURIComponent(name) }&`) +
-        `difficulty=`+ (difficulty==``? `&`: `${encodeURIComponent(difficulty)}&`) +
-        `category=`+ (category==``? `&`: `${encodeURIComponent(category)}&`) +
-        `ingredients=` + (ingredients==``? `&`: `${encodeURIComponent(ingredients)}&`) +
-        `vegetarian=`+ (Vegetarian==``? `&`: `${encodeURIComponent(Vegetarian)}&`) +
-        `vegan=`+ (Vegan==``? `&`: `${encodeURIComponent(Vegan)}&`) +
-        `allergens=` + (Allergien==``? `&`: `${encodeURIComponent(Allergien)}&`) +
-        `rating=` + (Rating==``? `&`: `${encodeURIComponent(Rating)}&`)
-    console.log(promt);
+        `?name=` + (name == `` ? `&` : `${encodeURIComponent(name)}&`) +
+        `difficulty=` + (difficulty == `` ? `&` : `${encodeURIComponent(difficulty)}&`) +
+        `category=` + (category == `` ? `&` : `${encodeURIComponent(category)}&`) +
+        `ingredients=` + (ingredients == `` ? `&` : `${encodeURIComponent(ingredients)}&`) +
+        `vegetarian=` + (Vegetarian == `` ? `&` : `${encodeURIComponent(Vegetarian)}&`) +
+        `vegan=` + (Vegan == `` ? `&` : `${encodeURIComponent(Vegan)}&`) +
+        `allergens=` + (Allergien == `` ? `&` : `${encodeURIComponent(Allergien)}&`) +
+        `rating=` + (Rating == `` ? `&` : `${encodeURIComponent(Rating)}&`)
     try {
         const response = await fetch(promt);
         if (response.ok) {
@@ -66,14 +72,30 @@ async function getRecipes({name, difficulty, category, ingredients, Rating, Alle
     }
 }
 
-
-const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ingredients, Rating, Allergien, Vegan, Vegetarian}) => {
+const SearchRecipeView: React.FC<SuchFilter> = ({
+                                                    name,
+                                                    difficulty,
+                                                    category,
+                                                    ingredients,
+                                                    Rating,
+                                                    Allergien,
+                                                    Vegan,
+                                                    Vegetarian
+                                                }) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
-    console.log(Vegan);
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            const recipes = await getRecipes({name, difficulty, category, ingredients, Rating, Allergien , Vegan, Vegetarian});
+            const recipes = await getRecipes({
+                name,
+                difficulty,
+                category,
+                ingredients,
+                Rating,
+                Allergien,
+                Vegan,
+                Vegetarian
+            });
             if (recipes && Array.isArray(recipes)) {
                 const lastFifteenRecipes = recipes.map(recipe => ({
                     title: recipe.Title,
@@ -86,7 +108,6 @@ const SearchRecipeView: React.FC<SuchFilter> = ({name, difficulty, category, ing
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
-
         fetchRecipes();
     }, []);
 

@@ -50,11 +50,12 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1.5rem; !important;
+    font-size: 1.5rem;
+!important;
     background-color: #e5ebee;
 }
 
-.login-button{
+.login-button {
     text-align: center;
     display: inline-block;
     margin-top: 20px;
@@ -66,7 +67,6 @@
     font-size: 125%;
     margin-right: 10px;
 }
-
 
 .register-button {
     text-align: center;
@@ -113,7 +113,7 @@
     color: #07546E;
 }
 
-.home-button:hover{
+.home-button:hover {
     cursor: pointer;
     text-decoration: underline;
 }
@@ -125,10 +125,12 @@
         width: 100%;
         padding: 0 0;
     }
+
     .login-left {
         width: 100%;
         height: 50vh;
     }
+
     .login-right {
         margin-top: 20px;
     }
