@@ -25,11 +25,10 @@
 }
 
 .bookmark-button {
-    width: 20%;  /* Set your desired width */
-    height: 20%; /* Set your desired height */
-    /* Optionally add other styling */
-    display: inline-block; /* Makes sure the button fits the icon size */
-    margin: 0; /* Remove any margin if applicable */
+    width: 20%;
+    height: 20%;
+    display: inline-block;
+    margin: 0;
     background-color: #e5ebee;
     padding: 2% 2%;
     border-radius: 10px;
@@ -53,7 +52,7 @@
 }
 
 .showRecipe-hero {
-    background-color: #07536D;
+    background-color: #b1c3cd;
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -74,6 +73,7 @@
     flex: 1;
     text-align: center;
     align-items: center;
+    color: #07546E;
 }
 
 .showRecipe-contentfield-right {
@@ -95,15 +95,15 @@
 }
 
 .input-field-reqired-filled {
-    background-color: #07546E;
-    border-color: #65899c;
-    border-radius: 15px;
+    background-color: #65899c;
+    border-color: #07546E;
+    border-radius: 10px;
 }
 
 .input-field-reqired-empty {
-    background-color: #07546E;
-    border-color: #5C0002;
-    border-radius: 15px;
+    background-color: #65899c;
+    border: solid 3px #5C0002;
+    border-radius: 10px;
 }
 
 .showRecipe-category {
@@ -122,15 +122,15 @@
 }
 
 .category-dropdown-filled {
-    background-color: #07546E;
-    border-color: #65899c;
-    border-radius: 15px;
+    background-color: #65899c;
+    border-color: #07546E;
+    border-radius: 10px;
 }
 
 .category-dropdown-empty {
-    background-color: #07546E;
-    border-color: #5C0002;
-    border-radius: 15px;
+    background-color: #65899c;
+    border: solid 3px #5C0002;
+    border-radius: 10px;
 }
 
 .showRecipe-properties-allergen .showRecipe-properties-vegetarian .showRecipe-properties-vegan {
@@ -202,7 +202,7 @@
 .step-input-field-filled {
     background-color: #fafafa;
     border: solid 3px #fafafa;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
     margin: 1% 1%;
@@ -211,7 +211,7 @@
 .step-input-field-empty {
     background-color: #fafafa;
     border: solid 3px #5C0002;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
     margin: 1% 1%;
@@ -316,7 +316,7 @@
     max-height: 75%;
     max-width: 45%;
     color: white;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 3px solid #7e9cac;
     font-size: 1.5vh;
     margin-left: 5%;
@@ -372,7 +372,7 @@
 .ingredient-input-filled{
     background-color: #fafafa;
     border: solid 3px #fafafa;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
     margin: 1% 1%;
@@ -385,8 +385,8 @@
     border: solid 2px #07546E;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px; /* Adjust the button font size */
-    align-items: center; /* Centers the "+" inside the button */
+    font-size: 16px;
+    align-items: center;
     justify-content: center;
 }
 
@@ -412,7 +412,7 @@
 .ingredient-input-empty{
     background-color: #fafafa;
     border: solid 3px #5C0002;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
     margin: 1% 1%;
@@ -424,40 +424,36 @@
     color: #65899c;
 }
 
-/* Optimierung der Sterne im Header (Bewertung) */
 .rating-system-header {
     display: flex;
     padding: 1%;
     justify-content: center;
     align-items: center;
-    width: auto; /* anstelle eines festen Wertes wie 20% */
+    width: auto;
     margin: 0 auto;
-    gap: 5px; /* Platz zwischen den Sternen */
+    gap: 5px;
 }
 
-/* Optimierung der Sterne im Rating-System */
 .rating-system, .fake-rating-system {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1%;
-    width: auto; /* entfernt feste Breite */
-    gap: 5px; /* Platz zwischen den Sternen */
+    width: auto;
+    gap: 5px;
 }
 
-/* Verbesserte Größensteuerung der Sterne */
 .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
     display: flex;
-    width: 25px;  /* Feste Breite für die Sterne */
-    height: auto; /* Höhe automatisch basierend auf der Breite */
-    margin: 0 5px; /* Abstand zwischen den Sternen */
-    object-fit: contain; /* Verhindert Verzerrung */
+    width: 25px;
+    height: auto;
+    margin: 0 5px;
+    object-fit: contain;
 }
 
-/* Optional: Responsives Verhalten bei kleineren Bildschirmen */
 @media (max-width: 768px) {
     .first-star, .second-star, .third-star, .fourth-star, .fifth-star {
-        width: 20px; /* Kleinere Sterne auf mobilen Geräten */
+        width: 20px;
         margin: 0 3px;
     }
 
@@ -466,7 +462,6 @@
     }
 }
 
-/* Hover-Effekt für gefüllte Sterne */
 .rfilled:hover {
     fill: #07536D;
 }
@@ -498,8 +493,8 @@
 .difficulty-labels {
     display: flex;
     justify-content: space-between;
-    width: 60%;  /* Ensure this matches slider width */
-    margin-bottom: 10px;  /* Add space between labels and slider */
+    width: 60%;
+    margin-bottom: 10px;
     padding: 0 20px;
 }
 
@@ -507,23 +502,23 @@
     font-size: 14px;
     font-weight: bold;
     color: #333;
-    flex-grow: 1; /* Ensures labels are evenly spaced */
+    flex-grow: 1;
     text-align: center;
 }
 
 .difficulty-label:first-child {
-    text-align: left;   /* Align "Easy" to the left */
+    text-align: left;
 }
 
 .difficulty-label:last-child {
-    text-align: right;  /* Align "Extreme" to the right */
+    text-align: right;
 }
 
 .difficulty-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 60%;
-    height: 16px; /* Slightly bigger track for better visibility */
+    height: 16px;
     background: #ddd;
     outline: none;
     opacity: 0.9;
@@ -540,17 +535,17 @@
 .difficulty-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 28px;  /* Larger thumb for a more visible button */
+    width: 28px;
     height: 28px;
     border-radius: 50%;
     background: #07546E;
     cursor: pointer;
-    margin-top: -6px; /* Adjust this for alignment of thumb with slider */
+    margin-top: -6px;
     transition: background 0.15s ease-in-out;
 }
 
 .difficulty-slider::-moz-range-thumb {
-    width: 28px;  /* Larger thumb */
+    width: 28px;
     height: 28px;
     border-radius: 50%;
     background: #07546E;
@@ -560,7 +555,7 @@
 
 .difficulty-slider::-webkit-slider-thumb:hover,
 .difficulty-slider::-moz-range-thumb:hover {
-    background: #07546E; /* Slightly darker green on hover */
+    background: #07546E;
 }
 
 .submit-recipe-button {
@@ -576,4 +571,75 @@
 .submit-recipe-button:hover {
     background-color: #7e9cac;
     color: #07546E;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: none;
+    width: 50%;
+    margin: auto;
+}
+
+.image-preview {
+    position: relative;
+    border: solid 2px #07546E;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero__img {
+    width: 90%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.remove-image-button {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #94a9b3;
+    color: white;
+    border: solid 2px #07546E;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease;
+}
+
+.remove-image-button:hover {
+    background-color: #07546E;
+    color: white;
+}
+
+.image-upload-input, .image-url-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: solid 2px #5C0002;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.image-upload-input:focus, .image-url-input:focus {
+    border-color: #07546E;
+    outline: none;
+    box-shadow: none;
 }
