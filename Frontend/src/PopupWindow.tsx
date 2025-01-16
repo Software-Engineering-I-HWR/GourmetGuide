@@ -5,6 +5,8 @@ interface PopupWindowProps {
 }
 
 const PopupWindow: React.FC <PopupWindowProps> = ({message}) => {
+
+
     return (
         <div className="popupWindow">
             {message}

@@ -54,17 +54,19 @@ const App: React.FC = () => {
         }
     }, []);
 
+
     useEffect(() => {
         if (localStorage.getItem('loginMessage') != null) {
-            localStorage.removeItem('loginMessage');
             setShowPopup(true);
             setTimeout(() => {
-                setShowPopup(false);
                 localStorage.removeItem('loginMessage');
-            }, 3000);
+            }, 1000);
+
+            setTimeout(() => {
+                setShowPopup(false);
+            }, 2000);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [localStorage.getItem('loginMessage')]);
+    }, []);
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
