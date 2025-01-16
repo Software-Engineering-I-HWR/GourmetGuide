@@ -2,7 +2,6 @@ import express, {Request, Response} from "express";
 import multer from "multer";
 import sharp from "sharp";
 import path from "path";
-import fs from "fs";
 import dayjs from "dayjs";
 import https from "https";
 import gitConfig = require('../../../config/github-config.json');
@@ -12,11 +11,6 @@ interface GithubConfig {
     password: string;
     token: string;
 }
-
-const privateKey = fs.readFileSync('../../config/cert/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('../../config/cert/cert.pem', 'utf8');
-const ca = fs.readFileSync('../../config/cert/chain.pem', 'utf8');
-const credentials = {key: privateKey, cert: certificate, ca: ca};
 
 const configData: GithubConfig = gitConfig;
 
@@ -115,6 +109,6 @@ async function processImage(file: {
     }
 }
 
-https.createServer(credentials, app).listen(5000, () => {
-    console.log("HTTPS-Server läuft auf https://localhost:5000");
+app.listen(5000, () => {
+    console.log("HTTP-Server läuft auf http://localhost:5000");
 });
