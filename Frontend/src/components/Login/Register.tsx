@@ -47,6 +47,26 @@ const Register: React.FC = () => {
                     setRegisterMessage('Registrieren erfolgreich!');
                     localStorage.setItem('loginMessage', JSON.stringify("Registrieren erfolgreich!"));
                     setShowPopupMessage(true);
+                    const sendLoginRequest = async (email: string, password: string) => {
+                        return await fetch('https://' + hostData.host + ':30155/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({email, password}),
+                        })
+                            .then(data => data.json());
+                    };
+                    const responseLogin = await sendLoginRequest(email, password);
+                    console.log(responseLogin.token);
+                    if (responseLogin.message === "Login erfolgreich") {
+                        // Speichere das E-Mail und den Token im Local Storage
+                        localStorage.setItem('userEmail', email);
+                        localStorage.setItem('access token', responseLogin.token);
+                    }
+                    localStorage.setItem('loginMessage', JSON.stringify("Registrieren erfolgreich!"));
+                    setShowPopupMessage(true);
+                    window.location.href = '/'
                 }
 
                 if (response.status === 500) {
