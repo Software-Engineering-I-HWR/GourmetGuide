@@ -466,11 +466,10 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
         });
 
         console.log("API Antwort:" + response);
-        console.log("JSON" + response.json());
 
         if (response.ok) {
-            const data = await response.text();
-            res.status(200).send(data);
+            const data = await response.json();
+            res.status(200).json(data);
         } else {
             console.error('API 2 Error Status:', response.status);
             res.status(response.status).send('Error uploading image');

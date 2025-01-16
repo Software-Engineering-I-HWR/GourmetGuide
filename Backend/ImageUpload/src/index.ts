@@ -65,9 +65,8 @@ app.post("/upload", upload.single("file"), async (req: Request, res: Response): 
 
         const responseData = await response.json();
 
-        res.json({
-            message: "Datei erfolgreich hochgeladen und komprimiert.",
-            gitUrl: responseData.content.download_url,
+        res.status(200).json({
+            gitUrl: responseData.content.download_url
         });
     } catch (error) {
         console.error(error);
