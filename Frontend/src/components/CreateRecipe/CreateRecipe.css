@@ -52,7 +52,7 @@
 }
 
 .showRecipe-hero {
-    background-color: #b1c3cd;
+    background-color: #07536D;
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -73,7 +73,6 @@
     flex: 1;
     text-align: center;
     align-items: center;
-    color: #07546E;
 }
 
 .showRecipe-contentfield-right {
@@ -95,13 +94,13 @@
 }
 
 .input-field-reqired-filled {
-    background-color: #65899c;
-    border-color: #07546E;
+    background-color: #07546E;
+    border-color: #65899c;
     border-radius: 10px;
 }
 
 .input-field-reqired-empty {
-    background-color: #65899c;
+    background-color: #07546E;
     border: solid 3px #5C0002;
     border-radius: 10px;
 }
@@ -122,13 +121,13 @@
 }
 
 .category-dropdown-filled {
-    background-color: #65899c;
-    border-color: #07546E;
+    background-color: #07546E;
+    border-color: #65899c;
     border-radius: 10px;
 }
 
 .category-dropdown-empty {
-    background-color: #65899c;
+    background-color: #07546E;
     border: solid 3px #5C0002;
     border-radius: 10px;
 }
