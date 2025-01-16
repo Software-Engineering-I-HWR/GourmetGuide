@@ -454,10 +454,9 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
 
     const fileBuffer = req.file.buffer;
     const mimeType = req.file.mimetype;
-    const blob = new Blob([fileBuffer], { type: mimeType });
 
     const formData = new FormData();
-    formData.append('file', blob, req.file.originalname);
+    formData.append('file', new Blob([fileBuffer], { type: mimeType }), req.file.originalname);
 
     try {
         const response = await fetch('http://' + host + ':30158/upload', {
@@ -465,11 +464,9 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
             body: formData,
         });
 
-        console.log('API Antwort:', response);
-
         if (response.ok) {
-            const data = await response.text();
-            res.status(200).send(data);
+            const data = await response.json();
+            res.status(200).json(data);
         } else {
             console.error('API 2 Error Status:', response.status);
             res.status(response.status).send('Error uploading image');
@@ -478,7 +475,8 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
         console.error("Fehler bei der Weiterleitung:", error);
         res.status(500).send("Fehler beim Weiterleiten der Anfrage.");
     }
-})
+});
+
 
 https.createServer(credentials, app).listen(3000, () => {
     console.log('HTTPS-Server läuft auf Port 3000');
