@@ -4,17 +4,15 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
-./config.json
 /Datenbank-API/.idea/
 .idea/
-/Datenbank-API/config.json
-/Backend/Login/config.json
 
+./config.json
+/config/
+
+/Backend/ImageUpload/node_modules/
 /Backend/Login/node_modules/
 /Backend/PDF-Share/node_modules/
 /Datenbank-API/node_modules/
 /Frontend/node_modules/
 /Global-API/node_modules/
-/config/
-/config/cert/
-/Backend/ImageUpload/node_modules/
