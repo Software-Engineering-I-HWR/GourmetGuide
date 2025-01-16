@@ -1,5 +1,3 @@
-/* PopupWindow.css */
-
 .popupWindow {
     position: fixed;
     top: 20px;
@@ -15,7 +13,6 @@
     animation: fadeInOut 10s ease forwards;
 }
 
-/* Animation: Einblenden und nach 5 Sekunden ausblenden */
 @keyframes fadeInOut {
     0% {
         opacity: 0;

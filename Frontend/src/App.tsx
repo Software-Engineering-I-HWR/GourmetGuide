@@ -41,12 +41,12 @@ const App: React.FC = () => {
             }
         };
         const token = localStorage.getItem('access token');
-        if (!token){
+        if (!token) {
             setIsLoggedIn(false);
         }
-        if (isTokenValid(token!)){
+        if (isTokenValid(token!)) {
             setIsLoggedIn(true);
-        }else{
+        } else {
             setIsLoggedIn(false);
         }
     }, []);
@@ -68,7 +68,9 @@ const App: React.FC = () => {
     return (
         <Router>
             <>
-                {shouldShowNavbarFooter && <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide" links={navLinks}/>}
+                {shouldShowNavbarFooter &&
+                    <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
+                            links={navLinks}/>}
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Rating?/:Allergien?"
@@ -84,7 +86,7 @@ const App: React.FC = () => {
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
-                {showPopup && localStorage.getItem('loginMessage')!=undefined && (
+                {showPopup && localStorage.getItem('loginMessage') != undefined && (
                     <PopupWindow message={localStorage.getItem('loginMessage')!}/>
                 )}
             </>

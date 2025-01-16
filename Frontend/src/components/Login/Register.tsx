@@ -32,7 +32,7 @@ const Register: React.FC = () => {
     }
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         if (password == passwordRepeat) {
             try {
                 const response = await fetch('https://' + hostData.host + ':30155/register', {
@@ -78,7 +78,7 @@ const Register: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setShowPopupMessage(true);
-                setRegisterMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.'); // Display error message
+                setRegisterMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
                 localStorage.setItem('loginMessage', JSON.stringify("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut!"));
             }
 
@@ -92,7 +92,6 @@ const Register: React.FC = () => {
         setTimeout(() => {
             setShowPopupMessage(false);
         }, 3000);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showPopupMessage]);
 
     return (
@@ -103,7 +102,6 @@ const Register: React.FC = () => {
             <div className="register-body">
                 <form className="register-left" onSubmit={handleRegister}>
                     <h1 className="register-title">Registrieren</h1>
-
                     <div className="register-email-field">
                         <input
                             type="text"
@@ -131,19 +129,14 @@ const Register: React.FC = () => {
                             className="register-password-repeat-field-input"
                         />
                     </div>
-
-                        <button type="submit" className="login-button">Registrieren</button>
-
+                    <button type="submit" className="login-button">Registrieren</button>
                     {/* Render the login message */}
                     {registerMessage && <p className="register-message">{registerMessage}</p>}
-
                     <p className="home-button" onClick={() => window.location.href = '/'}> Zurück zur Startseite </p>
                 </form>
-
                 <div className="register-right">
-                <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
+                    <img src="/images/Logo.jpg" alt="Logo" className="login-logo"/>
                 </div>
-
             </div>
         </div>
     )

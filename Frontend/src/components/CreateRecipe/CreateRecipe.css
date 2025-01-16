@@ -1,19 +1,23 @@
 .rfilled:hover {
     fill: #07536D;
 }
-.rfilled{
+
+.rfilled {
     fill: #ffffff;
 }
-.filled{
+
+.filled {
     fill: #07536D;
 }
+
 .rating-system-header {
     display: contents;
     padding: 1% 1%;
     align-items: center;
     width: 20%;
-    margin:auto;
+    margin: auto;
 }
+
 .body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -194,7 +198,7 @@
     margin-bottom: 10px;
 }
 
-.step-row{
+.step-row {
     width: 100%;
 }
 
@@ -225,8 +229,6 @@
     color: black;
 }
 
-
-
 .showRecipe-properties-ingredients-title {
     display: flex;
     flex-direction: column;
@@ -249,7 +251,7 @@
     margin: 5px 0;
 }
 
-.actions-field{
+.actions-field {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,25 +323,25 @@
     margin-left: 5%;
 }
 
-.allergen-symbol{
+.allergen-symbol {
     display: flex;
     width: 20%;
     margin: 1% 1%;
 }
 
-.allergen-symbol-grey{
+.allergen-symbol-grey {
     display: flex;
     width: 20%;
     margin: 1% 1%;
-    filter:grayscale(100%);
+    filter: grayscale(100%);
     color: grey;
 }
 
-.allergen-symbol-invert{
+.allergen-symbol-invert {
     display: flex;
     width: 20%;
     margin: 1% 1%;
-    filter:invert(1) brightness(0.5);
+    filter: invert(1) brightness(0.5);
     color: grey;
 }
 
@@ -368,7 +370,7 @@
     flex-direction: column;
 }
 
-.ingredient-input-filled{
+.ingredient-input-filled {
     background-color: #fafafa;
     border: solid 3px #fafafa;
     border-radius: 10px;
@@ -408,7 +410,7 @@
     cursor: pointer;
 }
 
-.ingredient-input-empty{
+.ingredient-input-empty {
     background-color: #fafafa;
     border: solid 3px #5C0002;
     border-radius: 10px;

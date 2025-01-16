@@ -32,11 +32,10 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     const handleLogout = () => {
-        // Lösche die Daten im Local Storage
         localStorage.removeItem('userEmail');
-        localStorage.removeItem('access token'); // Lösche gespeicherte E-Mail
+        localStorage.removeItem('access token');
         setIsUserLoggedIn(false);
-        setLoginMessage('Erfolgreich abgemeldet!'); // Logout-Nachricht anzeigen
+        setLoginMessage('Erfolgreich abgemeldet!');
         localStorage.setItem('loginMessage', JSON.stringify("Erfolgreich abgemeldet!"));
         setShowPopupMessage(true);
         window.location.href = '/';
@@ -72,8 +71,9 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                 <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link-mobile">Eigener
                     Bereich</a>
                 <a href='/categories' className="navbar__link-mobile">Kategorien</a>
-                <button onClick={() => isLoggedIn ? handleLogout : window.location.href = window.location.origin + '/log-in'}
-                        className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</button>
+                <button
+                    onClick={() => isLoggedIn ? handleLogout : window.location.href = window.location.origin + '/log-in'}
+                    className="navbar__link-mobile">{isLoggedIn ? "Abmelden" : "Login"}</button>
             </div>}
 
             <div className="navbar__Buttons">
@@ -91,7 +91,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                             if (/^[A-Za-z0-9ÄÖÜäöüß ]*$/.test(searchTerm)) {
                                 window.location.href = getLink(searchTerm);
                             } else {
-                                alert("Ungültiges Suchmuster!" + "\n"+
+                                alert("Ungültiges Suchmuster!" + "\n" +
                                     "Suche darf keine Sonderzeichen beinhalten!");
                             }
                         }}

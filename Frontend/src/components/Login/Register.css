@@ -43,7 +43,7 @@
 
 .register-email-field-input,
 .register-password-field-input,
-.register-password-repeat-field-input{
+.register-password-repeat-field-input {
     width: 100%;
     height: 100%;
     padding: 1%;
@@ -55,7 +55,7 @@
     background-color: #e5ebee;
 }
 
-.confirm-register-button{
+.confirm-register-button {
     text-align: center;
     display: inline-block;
     margin-top: 20px;
@@ -94,7 +94,7 @@
     color: #07546E;
 }
 
-.home-button:hover{
+.home-button:hover {
     cursor: pointer;
     text-decoration: underline;
 }
@@ -106,10 +106,12 @@
         width: 100%;
         padding: 0 0;
     }
+
     .register-left {
         width: 100%;
         height: 50vh;
     }
+
     .register-right {
         margin-top: 20px;
     }

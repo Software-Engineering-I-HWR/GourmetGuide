@@ -5,25 +5,22 @@ const {host} = require('../config/config.json');
 const cors = require('cors');
 const multer = require('multer');
 
-const app = express();
-
 const privateKey = fs.readFileSync('../config/cert/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('../config/cert/cert.pem', 'utf8');
 const ca = fs.readFileSync('../config/cert/chain.pem', 'utf8');
-
 const credentials = {key: privateKey, cert: certificate, ca: ca};
 
+const app = express();
+
 const upload = multer({
-    storage: multer.memoryStorage(),
-    fileFilter: (req, file, cb) => {
+    storage: multer.memoryStorage(), fileFilter: (req, file, cb) => {
         const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
             cb(new Error("Ungültiger Dateityp. Erlaubt sind nur JPEG, PNG oder WEBP."));
         }
-    },
-    limits: {fileSize: 5 * 1024 * 1024},
+    }, limits: {fileSize: 5 * 1024 * 1024},
 });
 
 app.use(express.json());
@@ -37,11 +34,9 @@ app.post('/saveRecipe', async (req, res) => {
 
     try {
         const response = await fetch('http://' + host + ':3007/saveRecipe', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            }, body: JSON.stringify(data),
         });
 
         console.log('API Antwort:', response);
@@ -130,12 +125,9 @@ app.post('/deleteRecipeByID', async (req, res) => {
     const id = req.query.id;
 
     try {
-        const response = await fetch(
-            `http://` + host + `:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`,
-            {
-                method: "POST",
-            }
-        );
+        const response = await fetch(`http://` + host + `:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`, {
+            method: "POST",
+        });
         if (response.ok) {
             const data = await response.text();
             res.status(200).send(data);
@@ -226,15 +218,7 @@ app.get('/getFilteredRecipes', async (req, res) => {
     const {name, difficulty, category, ingredients, vegetarian, vegan, allergens, rating} = req.query;
 
     try {
-        const response = await fetch(`http://` + host + `:3007/getFilteredRecipes` +
-            `?name=${encodeURIComponent(name)}&` +
-            `difficulty=${encodeURIComponent(difficulty)}&` +
-            `category=${encodeURIComponent(category)}&` +
-            `ingredients=${encodeURIComponent(ingredients)}&` +
-            `vegetarian=${encodeURIComponent(vegetarian)}&` +
-            `vegan=${encodeURIComponent(vegan)}&` +
-            `allergens=${encodeURIComponent(allergens)}&`+
-            `rating=${encodeURIComponent(rating)}&`)
+        const response = await fetch(`http://` + host + `:3007/getFilteredRecipes` + `?name=${encodeURIComponent(name)}&` + `difficulty=${encodeURIComponent(difficulty)}&` + `category=${encodeURIComponent(category)}&` + `ingredients=${encodeURIComponent(ingredients)}&` + `vegetarian=${encodeURIComponent(vegetarian)}&` + `vegan=${encodeURIComponent(vegan)}&` + `allergens=${encodeURIComponent(allergens)}&` + `rating=${encodeURIComponent(rating)}&`)
         if (response.ok) {
             const data = await response.text();
             res.status(200).send(data);
@@ -374,11 +358,9 @@ app.post('/login', async (req, res) => {
 
     try {
         const response = await fetch('http://' + host + ':30156/login', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            }, body: JSON.stringify(data),
         });
         if (response.ok) {
             const data = await response.json();
@@ -398,11 +380,9 @@ app.post('/register', async (req, res) => {
 
     try {
         const response = await fetch('http://' + host + ':30156/register', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            }, body: JSON.stringify(data),
         });
         if (response.ok) {
             const data = await response.json();
@@ -423,11 +403,9 @@ app.post('/generate-pdf', async (req, res) => {
 
     try {
         const response = await fetch('http://' + host + ':30157/generate-pdf', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
+            }, body: JSON.stringify(requestData),
         });
         if (response.ok) {
             const pdfBuffer = await response.arrayBuffer();
@@ -438,11 +416,11 @@ app.post('/generate-pdf', async (req, res) => {
             res.send(Buffer.from(pdfBuffer));
         } else {
             console.error('Fehler bei der PDF-API:', response.status);
-            res.status(response.status).json({ error: 'Fehler bei der PDF-Generierung' });
+            res.status(response.status).json({error: 'Fehler bei der PDF-Generierung'});
         }
     } catch (error) {
         console.error('Netzwerkfehler:', error.message);
-        res.status(500).json({ error: 'Interner Serverfehler' });
+        res.status(500).json({error: 'Interner Serverfehler'});
     }
 });
 
@@ -456,12 +434,11 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
     const mimeType = req.file.mimetype;
 
     const formData = new FormData();
-    formData.append('file', new Blob([fileBuffer], { type: mimeType }), req.file.originalname);
+    formData.append('file', new Blob([fileBuffer], {type: mimeType}), req.file.originalname);
 
     try {
         const response = await fetch('http://' + host + ':30158/upload', {
-            method: "POST",
-            body: formData,
+            method: "POST", body: formData,
         });
 
         if (response.ok) {

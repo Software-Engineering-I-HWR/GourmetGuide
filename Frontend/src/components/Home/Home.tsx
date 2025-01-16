@@ -60,8 +60,6 @@ const Home: React.FC = () => {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
-
-
         fetchRecipes();
     }, []);
 

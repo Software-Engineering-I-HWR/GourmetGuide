@@ -18,9 +18,8 @@ interface Category {
 
 const hostData: Config = configData;
 
-
 const CreateRecipe: React.FC = () => {
-        const allergerns = ["Glutenfrei", "Lactosefrei", "Eifrei", "Nussfrei"];
+        const allergens = ["Glutenfrei", "Lactosefrei", "Eifrei", "Nussfrei"];
 
         const [title, setTitle] = useState<string>('');
         const [description, setDescription] = useState<string>('');
@@ -288,7 +287,7 @@ const CreateRecipe: React.FC = () => {
                                     alt="vegan-symbol"
                                     title={"Vegan"}
                                     onClick={() => toggleTag('Vegan')}/>
-                                {allergerns.map((item) => (
+                                {allergens.map((item) => (
                                     <img
                                         className={selectedTags.includes(item) ? "allergen-symbol" : "allergen-symbol-invert"}
                                         src={`/images/${item.toLowerCase()}.png`}
