@@ -25,20 +25,22 @@ const CreateRecipe: React.FC = () => {
         const [title, setTitle] = useState<string>('');
         const [description, setDescription] = useState<string>('');
         const [imageUrl, setImageUrl] = useState<string>('');
-        const [ingredient, setIngredient] = useState<string>(''); // For individual ingredient input
-        const [ingredientsList, setIngredientsList] = useState<string[]>([]); // List of added ingredients
+        const [ingredient, setIngredient] = useState<string>('');
+        const [ingredientsList, setIngredientsList] = useState<string[]>([]);
         const [showPopupMessage, setShowPopupMessage] = useState(false);
         const [createRecipeMessage, setCreateRecipeMessage] = useState('');
         const selectedStringCategory = useParams<{ Category: string }>().Category || "none";
         const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory == "none" ? "" : selectedStringCategory));
         const [selectedTags, setSelectedTags] = useState<string[]>([]);
-        const [difficulty, setDifficulty] = useState(3); // Initial difficulty value is 3
+        const [difficulty, setDifficulty] = useState(3);
         const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(false);
         const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
         const [isIngredientsEmpty, setIsIngredientsEmpty] = useState<boolean>(false);
         const [step, setStep] = useState<string>('');
         const [descriptionAsArray, setDescriptionAsArray] = useState<string[]>([]);
         const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
+        const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+        const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
         async function getAllCategories(): Promise<Category[] | null> {
             try {
@@ -67,19 +69,21 @@ const CreateRecipe: React.FC = () => {
             fetchCategories();
         }, []);
 
-        const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            setDifficulty(parseInt(event.target.value, 10)); // Update difficulty value
+        const toggleSaveButton = (isDisabled: boolean): void => {
+            setIsDisabled(isDisabled);
         };
 
-        // Add an ingredient to the list
+        const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setDifficulty(parseInt(event.target.value, 10));
+        };
+
         const handleAddIngredient = () => {
             if (ingredient.trim() !== '') {
                 setIngredientsList([...ingredientsList, ingredient]);
-                setIngredient(''); // Clear input after adding
+                setIngredient('');
             }
         };
 
-        // Remove an ingredient from the list
         const handleRemoveIngredient = (index: number) => {
             const updatedIngredients = ingredientsList.filter((_, i) => i !== index);
             setIngredientsList(updatedIngredients);
@@ -88,14 +92,24 @@ const CreateRecipe: React.FC = () => {
         const handleAddStep = () => {
             if (step.trim() !== '') {
                 setDescription(description + step + "|");
-                setStep(''); // Clear input after adding
+                setStep('');
             }
         };
 
-        useEffect(() => {
-            formatSteps(description);
-            description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
-        }, [description]);
+        const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files && event.target.files[0];
+            if (file && file.size > 5 * 1024 * 1024) {
+                alert('Die Datei überschreitet die maximale Größe von 5 MB.');
+                event.target.value = '';
+                return;
+            }
+            setUploadedImage(file);
+        };
+
+        const handleRemoveImage = () => {
+            setUploadedImage(null);
+            setImageUrl('');
+        };
 
         const toggleTag = (tag: string) => {
             if (selectedTags.includes(tag)) {
@@ -105,15 +119,45 @@ const CreateRecipe: React.FC = () => {
             }
         };
 
-        // Handle form submission (you can adapt this to save/submit the recipe data to a server)
         const handleSubmit = async (event: React.FormEvent) => {
-            console.log("hier")
             event.preventDefault();
+            toggleSaveButton(true);
+            setCreateRecipeMessage("Rezept wird gespeichert. Bitte warten...");
 
-            if (!isTitleEmpty && !isCategoryEmpty && !isIngredientsEmpty && !isDescriptionEmpty) {
-                setCreateRecipeMessage("Das Rezept konnte nicht gespeichert werden, da nicht alle Pflichtfelder (rot umrandet) ausgefüllt wurden!");
-                console.log("hier2")
+            let newImageUrl: string = imageUrl;
 
+            if (uploadedImage != null) {
+                const formData = new FormData();
+                formData.append('file', uploadedImage);
+
+                try {
+                    const response = await fetch('https://' + hostData.host + ':30155/upload-image', {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        newImageUrl = data.gitUrl;
+                    } else {
+                        console.error('API 2 Error Status:', response.status);
+                        alert('Fehler beim Hochladen des Bildes. Bitte versuche es erneut oder gib eine URL an.');
+                        toggleSaveButton(false);
+                        setCreateRecipeMessage("Es ist ein Fehler aufgetreten. Bitte versuche es erneut.");
+                        return;
+                    }
+                } catch (error) {
+                    console.error("Fehler bei der Weiterleitung:", error);
+                    toggleSaveButton(false);
+                    setCreateRecipeMessage("Es ist ein Fehler aufgetreten. Bitte versuche es erneut.");
+                    return;
+                }
+            }
+
+            if (title === "" || selectedCategory === "" || ingredientsList.length === 0 || isDescriptionEmpty || newImageUrl === "") {
+                alert("Das Rezept konnte nicht gespeichert werden, da nicht alle Pflichtfelder (rot umrandet) ausgefüllt wurden!");
+                toggleSaveButton(false);
+                setCreateRecipeMessage("Es ist ein Fehler aufgetreten. Bitte versuche es erneut.");
                 return;
             }
 
@@ -131,7 +175,7 @@ const CreateRecipe: React.FC = () => {
             const newRecipe = {
                 title: title,
                 steps: description,
-                image: imageUrl,
+                image: newImageUrl,
                 ingredients: ingredientsList.join("|"),
                 creator: localStorage.getItem('userEmail'),
                 difficulty: difficulty,
@@ -155,23 +199,23 @@ const CreateRecipe: React.FC = () => {
                 setCreateRecipeMessage("Rezept erstellt!")
             }
             if (response.status === 500) {
-                setCreateRecipeMessage("Ein Fehler ist aufgetreten...")
+                setCreateRecipeMessage("Es ist ein Fehler aufgetreten. Bitte versuche es erneut.");
+                toggleSaveButton(false);
+                return;
             }
-
         };
 
         const formatSteps = (stepsAsString: string) => {
-            const stepsArray: string[] = []; // Temporäres Array zur Speicherung der Zutaten
+            const stepsArray: string[] = [];
             let stepStartIndex = 0;
 
             for (let i = 0; i < stepsAsString.length; i++) {
                 if (stepsAsString[i] === "|") {
-                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i); // Trimmen, um Leerzeichen zu entfernen
-                    stepsArray.push(newStepToAdd); // Füge die neue Zutat zum temporären Array hinzu
+                    const newStepToAdd: string = stepsAsString.substring(stepStartIndex, i);
+                    stepsArray.push(newStepToAdd);
                     stepStartIndex = i + 1;
                 }
             }
-            // Aktualisiere den Zustand mit dem neuen Array
             setDescriptionAsArray(stepsArray);
         };
 
@@ -186,6 +230,11 @@ const CreateRecipe: React.FC = () => {
         useEffect(() => {
             ingredientsList.length > 0 ? setIsIngredientsEmpty(true) : setIsIngredientsEmpty(false);
         }, [ingredientsList]);
+
+        useEffect(() => {
+            formatSteps(description);
+            description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
+        }, [description]);
 
         return (
             <body className="showRecipe">
@@ -224,7 +273,8 @@ const CreateRecipe: React.FC = () => {
                             </div>
                         </div>
                         <div className="showRecipe-contentfield-right">
-                            <p className={"allergen-instructions-empty"}>Bitte klicke die dem Rezept entsprechenden Allergen-Symbole an!</p>
+                            <p className={"allergen-instructions-empty"}>Bitte klicke die dem Rezept entsprechenden
+                                Allergen-Symbole an!</p>
                             <div className="showRecipe-properties">
                                 <img
                                     className={selectedTags.includes('Vegetarisch') ? "allergen-symbol" : "allergen-symbol-grey"}
@@ -251,9 +301,40 @@ const CreateRecipe: React.FC = () => {
                 </header>
                 <div className="showRecipe-main">
                     <div className="showRecipe-main-head">
-                        <img className="hero__img"
-                             src={"https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuidePictures/refs/heads/main/2025-01-15-10-22-23.png"}
-                             alt={"Rezept Bild"}/>
+                        <div className="image-upload-container">
+                            {uploadedImage ? (
+                                <div className="image-preview">
+                                    <img
+                                        className="hero__img"
+                                        src={URL.createObjectURL(uploadedImage)}
+                                        alt="Hochgeladenes Bild"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="remove-image-button"
+                                        onClick={handleRemoveImage}
+                                    >
+                                        Entfernen
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="image-input-container">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                        className="image-upload-input"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={imageUrl}
+                                        onChange={(e) => setImageUrl(e.target.value)}
+                                        placeholder="Lade ein Bild (bis 5 MB) hoch oder gib hier eine Bild-URL an..."
+                                        className="image-url-input"
+                                    />
+                                </div>
+                            )}
+                        </div>
                         <div className="showRecipe-properties-ingredients">
                             <h1 className="showRecipe-properties-ingredients-title"> Zutaten: </h1>
                             <div className="showRecipe-properties-ingredients-map">
@@ -313,7 +394,8 @@ const CreateRecipe: React.FC = () => {
                     </div>
 
                     <div className="difficulty-slider-container">
-                        <p style={{marginBottom: "2%", marginTop: "2%"}} className={"allergen-instructions-empty"}>Bitte wähle die Schwierigkeit des Rezeptes aus!</p>
+                        <p style={{marginBottom: "2%", marginTop: "2%"}} className={"allergen-instructions-empty"}>Bitte
+                            wähle die Schwierigkeit des Rezeptes aus!</p>
                         {/* Label above the slider */}
                         <div className="difficulty-labels">
                             <span className="difficulty-label">Sehr einfach</span>
@@ -334,7 +416,7 @@ const CreateRecipe: React.FC = () => {
 
                     <div className="separator-line"></div>
                     <p>Ersteller: {localStorage.getItem('userEmail')}</p>
-                    <button type="submit" className="submit-recipe-button">
+                    <button type="submit" className="submit-recipe-button" disabled={isDisabled}>
                         Rezept speichern
                     </button>
                     {createRecipeMessage && <p className="create-recipe-message">{createRecipeMessage}</p>}
