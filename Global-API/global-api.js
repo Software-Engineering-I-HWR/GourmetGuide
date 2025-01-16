@@ -465,7 +465,8 @@ app.post('/upload-image', upload.single('file'), async (req, res) => {
             body: formData,
         });
 
-        console.log(response);
+        console.log("API Antwort:" + response);
+        console.log("JSON" + response.json());
 
         if (response.ok) {
             const data = await response.text();
