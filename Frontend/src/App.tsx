@@ -32,10 +32,9 @@ const App: React.FC = () => {
 
             try {
                 const decodedToken: any = jwtDecode(token);
-                const currentTime = Date.now() / 1000; // Aktuelle Zeit in Sekunden
+                const currentTime = Date.now() / 1000;
 
-                // Überprüfe das 'exp' Feld des Tokens
-                return decodedToken.exp > currentTime; // Gültig, wenn 'exp' größer ist als die aktuelle Zeit
+                return decodedToken.exp > currentTime;
             } catch (error) {
                 console.error("Token kann nicht dekodiert werden:", error);
                 return false;
@@ -54,14 +53,16 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (localStorage.getItem('loginMessage') != null) {
-            localStorage.removeItem('loginMessage');
             setShowPopup(true);
             setTimeout(() => {
-                setShowPopup(false);
                 localStorage.removeItem('loginMessage');
-            }, 3000);
+            }, 1000);
+
+            setTimeout(() => {
+                setShowPopup(false);
+            }, 2000);
         }
-    }, [localStorage.getItem('loginMessage')]);
+    }, []);
 
     const shouldShowNavbarFooter = !noNavbarFooterRoutes.includes(location.pathname);
     return (
