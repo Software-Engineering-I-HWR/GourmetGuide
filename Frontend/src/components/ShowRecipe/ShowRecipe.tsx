@@ -237,9 +237,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             id: sampleRecipe?.id,
         };
 
-        // 'https://' + hostData.host + ':30155/generate-pdf'
-        //'http://localhost:3000/generate-pdf'
-        const response = await fetch('\'https://\' + hostData.host + \':30155/generate-pdf', {
+        const response = await fetch('https://' + hostData.host + ':30155/generate-pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

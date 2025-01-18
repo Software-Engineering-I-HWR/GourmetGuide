@@ -82,7 +82,6 @@ function addLineBreaksToText(text: string, font: any, start_x: number, text_size
 }
 
 function getMaximumNumerationTextsize(font: any, top_y: number, bottom_y: number, max_text_size: number, elements: string[], start_x: number) {
-
     let num_of_elements = elements.length;
 
     for (let element of elements) {
@@ -109,9 +108,6 @@ const createRecipePDF = async (recipe: any) => {
     const normalFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    //await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/refs/heads/main/Frontend/public/images/Logo.jpg', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
-
-    /* Draw blue header */
     page.drawRectangle({
         x: 0,
         y: 800 - 150,
@@ -120,17 +116,15 @@ const createRecipePDF = async (recipe: any) => {
         color: rgb(0.027, 0.325, 0.427),
         borderColor: rgb(0.027, 0.325, 0.427),
     });
-    /* Draw blue header */
 
-
-    /* Draw Title */
+    //Title
     const title = recipe.name
 
     let tilteSize = 25
 
     let titleTextWidth = boldFont.widthOfTextAtSize(title, tilteSize);
 
-    while (titleTextWidth > 550){
+    while (titleTextWidth > 550) {
         tilteSize -= 1;
         titleTextWidth = boldFont.widthOfTextAtSize(title, tilteSize);
     }
@@ -144,17 +138,15 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
         color: rgb(1, 1, 1),
     },);
-    /* Draw Title */
 
-
-    /* Draw Category */
+    //Category
     const category = recipe.category
 
     let categorySize = 20
 
     let categoryTextWidth = boldFont.widthOfTextAtSize(category, categorySize);
 
-    while (titleTextWidth > 550){
+    while (titleTextWidth > 550) {
         categorySize -= 1;
         categoryTextWidth = boldFont.widthOfTextAtSize(category, categorySize);
     }
@@ -168,19 +160,15 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
         color: rgb(1, 1, 1),
     },);
-    /* Draw Category */
 
-
-    /* Draw Recipe Picture */
+    //Image
     await addImageToPage(page, recipe.image, 30, 450, 250, 250, "URL NOT FOUND");
-    /* Draw Recipe Picture */
 
-
-    /* Draw Allergen Pictures */
-    const tagLookupTable : { [key: string]: any } = {
+    //Allergen
+    const tagLookupTable: { [key: string]: any } = {
         "Vegan": "vegan.png",
         "Vegetarisch": "vegetarian.png",
-        "Glutenfrei" : "glutenfrei.png",
+        "Glutenfrei": "glutenfrei.png",
         "Eifrei": "eifrei.png",
         "Nussfrei": "nussfrei.png",
         "Lactosefrei": "lactosefrei.png"
@@ -190,16 +178,14 @@ const createRecipePDF = async (recipe: any) => {
 
     let x = 560
 
-    for (const tag of recipe.allergen){
-        if(tag && tag in tagLookupTable){
+    for (const tag of recipe.allergen) {
+        if (tag && tag in tagLookupTable) {
             await addImageToPage(page, baseLink + tagLookupTable[tag], x, 660, 35, 35, "INTERNAL ERROR")
             x -= 40
         }
     }
-    /* Draw Allergen Pictures */
 
-
-    /* Draw Zutaten */
+    //Ingredients
     page.drawText(`Zutaten:`, {
         x: 310,
         y: 605,
@@ -228,38 +214,29 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: font_size_for_enumeration * empty_line_width,
     });
 
-    /* Draw Zutaten */
-
-
-    /* Draw Zutaten Description Seperator Line */
-
-    let normalizedText = enumeration.replace(/\r\n/g, '\n');  // Normalize to single \n
+    let normalizedText = enumeration.replace(/\r\n/g, '\n');
     let newlineCount = normalizedText.split('\n').length - 1;
 
     let nextY = 575 - (newlineCount * font_size_for_enumeration * 1.45)
 
-    if (nextY > 400){
+    if (nextY > 400) {
         nextY = 400
     }
 
-    if (nextY < 310){
+    if (nextY < 310) {
         nextY = 310
     }
 
     page.drawLine({
-        start: { x: 50, y: nextY }, // starting point
-        end: { x: 550, y: nextY },   // ending point
+        start: {x: 50, y: nextY},
+        end: {x: 550, y: nextY},
         thickness: 0.5,
-        color : rgb(0.5, 0.5, 0.5),
+        color: rgb(0.5, 0.5, 0.5),
     });
 
     nextY -= 10
 
-    /* Draw Zutaten Description Seperator Line */
-
-
-    /* Draw Zubereitung*/
-
+    //Description
     page.drawText(`Zubereitung:`, {
         x: 75,
         y: nextY - 20,
@@ -269,18 +246,18 @@ const createRecipePDF = async (recipe: any) => {
         opacity: 0.75,
     },);
 
-    let zubereitung_enumeration : string[] = recipe.description.replace(/\n/g, "").split("|")
+    let zubereitung_enumeration: string[] = recipe.description.replace(/\n/g, "").split("|")
 
     let zubereitung = ""
 
     let zubereitung_font_size_for_enumeration = getMaximumNumerationTextsize(normalFont, nextY - 55, 50, 18, zubereitung_enumeration, 75);
 
-    let zubereitung_2_enumeration : string[] = []
+    let zubereitung_2_enumeration: string[] = []
 
     if (zubereitung_font_size_for_enumeration < 10) {
         zubereitung_font_size_for_enumeration = 10
         zubereitung_2_enumeration = zubereitung_enumeration.slice(20)
-        zubereitung_enumeration =  zubereitung_enumeration.slice(0, 20)
+        zubereitung_enumeration = zubereitung_enumeration.slice(0, 20)
     }
 
     for (let i = 0; i < zubereitung_enumeration.length; i++) {
@@ -288,8 +265,8 @@ const createRecipePDF = async (recipe: any) => {
 
         item = addLineBreaksToText(item, normalFont, 75, zubereitung_font_size_for_enumeration)
 
-        if (item && item != " "){
-            zubereitung += `${i+1}. ${item}\n`;
+        if (item && item != " ") {
+            zubereitung += `${i + 1}. ${item}\n`;
         }
     }
 
@@ -301,13 +278,7 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: zubereitung_font_size_for_enumeration * empty_line_width,
     });
 
-    /* Draw Zubereitung*/
-
-
-    /* Draw Zubereitung Page 2 */
-
-
-    if(zubereitung_2_enumeration.length >= 1){
+    if (zubereitung_2_enumeration.length >= 1) {
         page = pdfDoc.addPage([page_width, page_height]);
 
         nextY = 775
@@ -319,8 +290,8 @@ const createRecipePDF = async (recipe: any) => {
 
             item = addLineBreaksToText(item, normalFont, 75, zubereitung_font_size_for_enumeration)
 
-            if (item && item != " "){
-                zubereitung += `${i+21}. ${item}\n`;
+            if (item && item != " ") {
+                zubereitung += `${i + 21}. ${item}\n`;
             }
         }
 
@@ -332,37 +303,26 @@ const createRecipePDF = async (recipe: any) => {
             lineHeight: zubereitung_font_size_for_enumeration * empty_line_width,
         });
 
-        normalizedText = zubereitung.replace(/\r\n/g, '\n');  // Normalize to single \n
+        normalizedText = zubereitung.replace(/\r\n/g, '\n');
         newlineCount = normalizedText.split('\n').length - 1;
         nextY = 775 - (newlineCount * zubereitung_font_size_for_enumeration * 2)
 
-    }
-    else {
-        normalizedText = zubereitung.replace(/\r\n/g, '\n');  // Normalize to single \n
+    } else {
+        normalizedText = zubereitung.replace(/\r\n/g, '\n');
         newlineCount = normalizedText.split('\n').length - 1;
         nextY = nextY - (newlineCount * zubereitung_font_size_for_enumeration * 2)
     }
 
-
-    /* Draw Zubereitung Page 2 */
-
-
-    /* Draw Zutaten Description Seperator Line */
-
     page.drawLine({
-        start: { x: 50, y: nextY }, // starting point
-        end: { x: 550, y: nextY },   // ending point
+        start: {x: 50, y: nextY},
+        end: {x: 550, y: nextY},
         thickness: 0.5,
-        color : rgb(0.5, 0.5, 0.5),
+        color: rgb(0.5, 0.5, 0.5),
     });
 
     nextY -= 20
 
-    /* Draw Zutaten Description Seperator Line */
-
-
-    /* Draw Author */
-
+    //Author
     page.drawText(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}/`, {
         x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}`, 14)) / 2,
         y: nextY,
@@ -371,8 +331,6 @@ const createRecipePDF = async (recipe: any) => {
         lineHeight: 24,
         opacity: 0.75,
     },);
-
-    /* Draw Author */
 
     return await pdfDoc.save();
 };
@@ -383,7 +341,6 @@ function sanitizeText(text: string): string {
 
 app.post('/generate-pdf', async (req: Request, res: Response) => {
     try {
-
         const sanitizedRecipe: Recipe = {
             name: sanitizeText(req.body.name),
             image: req.body.image,
@@ -399,7 +356,6 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
 
         res.setHeader('Content-Type', 'application/pdf');
         res.send(Buffer.from(pdfBytes));
-
     } catch (error) {
         res.status(500).json({message: 'Error generating PDF'});
     }
