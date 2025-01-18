@@ -216,16 +216,30 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             steps = sampleRecipe.steps.replace(/\r/g, '');
         }
 
+        const allergenForShare = sampleRecipe?.allergen
+
+        if(sampleRecipe?.vegan && !allergenForShare?.includes("Vegan")){
+            allergenForShare?.push("Vegan")
+        }
+
+        if (sampleRecipe?.vegetarian && !allergenForShare?.includes("Vegetarisch")){
+            allergenForShare?.push("Vegetarisch")
+        }
+
         const requestData = {
             name: sampleRecipe?.title,
             image: sampleRecipe?.imageUrl,
+            category: sampleRecipe?.category,
+            allergen: allergenForShare,
             description: steps,
             ingredients: ingredientsArray,
             creator: validCreator,
             id: sampleRecipe?.id,
         };
 
-        const response = await fetch('https://' + hostData.host + ':30155/generate-pdf', {
+        // 'https://' + hostData.host + ':30155/generate-pdf'
+        //'http://localhost:3000/generate-pdf'
+        const response = await fetch('\'https://\' + hostData.host + \':30155/generate-pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -241,7 +255,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'recipe.pdf';
+        a.download = `${requestData.name}.pdf`;
         document.body.appendChild(a);
         a.click();
         a.remove();
