@@ -36,6 +36,8 @@ app.post('/saveRecipe', (req, res) => {
 app.get('/getRecipes', (req, res) => {
     const query = 'SELECT * FROM Rezept';
 
+    console.log(query);
+
     connection.query(query, (error, results) => {
         if (error) {
             console.error("Database Error:", error);
