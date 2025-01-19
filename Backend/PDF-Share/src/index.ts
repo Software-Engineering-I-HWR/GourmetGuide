@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import {PDFDocument, StandardFonts} from 'pdf-lib';
+import {PDFDocument, StandardFonts, rgb} from 'pdf-lib';
 import {Recipe} from './recipe';
 import cors from "cors";
 
@@ -7,7 +7,8 @@ const page_width = 600;
 const page_height = 800;
 const right_border_size = 25;
 const empty_line_width = 1.5;
-const min_font_size = 5;
+
+let finalImageHeight = 0;
 
 const app = express();
 const port = 3000;
@@ -15,7 +16,16 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-const addImageToPage = async (page: any, imageUrl: string, x: number, y: number, maxWidth: number, maxHeight: number, altText: string) => {
+const addImageToPage = async (
+    page: any,
+    imageUrl: string,
+    x: number,
+    y: number,
+    maxWidth: number,
+    maxHeight: number,
+    altText: string,
+    recipeImage: number
+) => {
     try {
         const isPng = imageUrl.toLowerCase().includes('.png');
         const isJpg = imageUrl.toLowerCase().includes('.jpg');
@@ -46,6 +56,10 @@ const addImageToPage = async (page: any, imageUrl: string, x: number, y: number,
             finalHeight *= scaleRatio;
         }
 
+        if (recipeImage == 1) {
+            finalImageHeight = finalHeight;
+        }
+
         page.drawImage(image, {
             x,
             y,
@@ -63,14 +77,25 @@ const addImageToPage = async (page: any, imageUrl: string, x: number, y: number,
     }
 };
 
-function addLineBreaksToText(text: string, font: any, start_x: number, text_size: number): string {
-    const words: string [] = text.replace(/\n/g, '').split(' ')
+const calculateNewY = (
+    currentY: number,
+    text: string,
+    font: any,
+    fontSize: number,
+    lineHeight: number
+): number => {
+    const lines = text.split('\n').length;
+    return currentY - lines * fontSize * lineHeight;
+};
+
+const addLineBreaksToText = (text: string, font: any, start_x: number, text_size: number): string => {
+    const words: string[] = text.replace(/\n/g, '').split(' ');
 
     let textWithNewLines = '';
     let currentRow = '';
 
     for (let word of words) {
-        if ((start_x + font.widthOfTextAtSize(currentRow + word, text_size)) > (page_width - right_border_size)) {
+        if (start_x + font.widthOfTextAtSize(currentRow + word, text_size) > page_width - right_border_size) {
             currentRow += '\n';
             textWithNewLines += currentRow;
             currentRow = '';
@@ -79,40 +104,7 @@ function addLineBreaksToText(text: string, font: any, start_x: number, text_size
     }
 
     return textWithNewLines + currentRow;
-}
-
-function getMaximumTextSize(text: string, font: any, top_y: number, bottom_y: number, max_text_size: number): number {
-    for (let i = max_text_size; i > min_font_size; i--) {
-        const lineHeight = font.heightAtSize(i) * 1.5;
-        const totalHeight = lineHeight * text.split('\n').length;
-
-        if ((top_y - totalHeight) > bottom_y) {
-            return i;
-        }
-    }
-    return min_font_size;
-}
-
-function getMaximumNumerationTextsize(font: any, top_y: number, bottom_y: number, max_text_size: number, elements: string[], start_x: number) {
-
-    let num_of_elements = elements.length;
-
-    for (let element of elements) {
-        if ((addLineBreaksToText(element, font, start_x, max_text_size).split("\n").length - 1) >= 1) {
-            num_of_elements += 1;
-        }
-    }
-
-    num_of_elements += 1;
-
-    for (let i = max_text_size; i > min_font_size; i--) {
-        if ((top_y - (font.heightAtSize(i) * empty_line_width * num_of_elements)) > bottom_y) {
-            return i;
-        }
-    }
-
-    return min_font_size;
-}
+};
 
 const createRecipePDF = async (recipe: any) => {
     let pdfDoc = await PDFDocument.create();
@@ -121,96 +113,211 @@ const createRecipePDF = async (recipe: any) => {
     const normalFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    await addImageToPage(page, 'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/refs/heads/main/Frontend/public/images/Logo.jpg', 50, 650, 100, 100, "LOGO.PNG NOT FOUND ON GITHUB MAIN BRANCH");
+    page.drawRectangle({
+        x: 0,
+        y: 800 - 150,
+        width: 600,
+        height: 150,
+        color: rgb(0.027, 0.325, 0.427),
+        borderColor: rgb(0.027, 0.325, 0.427),
+    });
 
-    const title = addLineBreaksToText(recipe.name, boldFont, 250, 25)
+    //Title
+    const title = recipe.name;
+    let titleSize = 25;
+    let titleTextWidth = boldFont.widthOfTextAtSize(title, titleSize);
 
-    page.drawText(`Rezept: ${title}`, {
-        x: 215,
-        y: 725,
-        size: 25,
+    while (titleTextWidth > 550) {
+        titleSize -= 1;
+        titleTextWidth = boldFont.widthOfTextAtSize(title, titleSize);
+    }
+
+    page.drawText(`${title}`, {
+        x: (600 - titleTextWidth) / 2,
+        y: 750,
+        size: titleSize,
         font: boldFont,
-        lineHeight: 24,
         opacity: 0.75,
-    },);
+        color: rgb(1, 1, 1),
+    });
 
-    await addImageToPage(page, recipe.image, 45, 425, 200, 200, "URL NOT FOUND");
+    //Category
+    const category = recipe.category;
+    let categorySize = 20;
+    let categoryTextWidth = boldFont.widthOfTextAtSize(category, categorySize);
 
+    while (categoryTextWidth > 550) {
+        categorySize -= 1;
+        categoryTextWidth = boldFont.widthOfTextAtSize(category, categorySize);
+    }
+
+    page.drawText(`${category}`, {
+        x: (600 - categoryTextWidth) / 2,
+        y: 700,
+        size: categorySize,
+        font: boldFont,
+        opacity: 0.75,
+        color: rgb(1, 1, 1),
+    });
+
+    //Image
+    await addImageToPage(page, recipe.image, 30, 450, 250, 250, 'URL NOT FOUND', 1);
+
+    //Allergen
+    const tagLookupTable: { [key: string]: any } = {
+        Vegan: 'vegan.png',
+        Vegetarisch: 'vegetarian.png',
+        Glutenfrei: 'glutenfrei.png',
+        Eifrei: 'eifrei.png',
+        Nussfrei: 'nussfrei.png',
+        Lactosefrei: 'lactosefrei.png',
+    };
+
+    const baseLink =
+        'https://raw.githubusercontent.com/Software-Engineering-I-HWR/GourmetGuide/refs/heads/main/Frontend/public/images/';
+
+    let x = 560;
+
+    for (const tag of recipe.allergen) {
+        if (tag && tag in tagLookupTable) {
+            await addImageToPage(page, baseLink + tagLookupTable[tag], x, 660, 35, 35, 'INTERNAL ERROR', 0);
+            x -= 40;
+        }
+    }
+
+    //Ingredients
     page.drawText(`Zutaten:`, {
-        x: 275,
-        y: 640,
+        x: 310,
+        y: 605,
         size: 25,
         font: boldFont,
-        lineHeight: 24,
         opacity: 0.75,
-    },);
+    });
 
-    let enumeration = ''
-    let font_size_for_enumeration = getMaximumNumerationTextsize(normalFont, 610, 370, 18, recipe.ingredients, 275);
+    let nextY = 575;
+    let enumeration = '';
+    const font_size_for_enumeration = 12;
 
     for (let i = 0; i < recipe.ingredients.length; i++) {
         let item = recipe.ingredients[i];
-        const dot = '•';
-
-        item = addLineBreaksToText(item, normalFont, 275, font_size_for_enumeration)
-
-        enumeration += `${dot} ${item}\n`;
+        item = addLineBreaksToText(item, normalFont, 310, font_size_for_enumeration);
+        enumeration += `${item}\n`;
     }
 
     page.drawText(enumeration, {
-        x: 275,
-        y: 620,
+        x: 310,
+        y: nextY,
         size: font_size_for_enumeration,
         font: normalFont,
         lineHeight: font_size_for_enumeration * empty_line_width,
     });
 
-    let description_with_new_lines = addLineBreaksToText(recipe.description, normalFont, 50, 18);
-    let description_max_size: number = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18);
+    const newY = calculateNewY(nextY, enumeration, normalFont, font_size_for_enumeration, empty_line_width);
 
-    for (let i = 18; i > 5; i--) {
-        description_max_size = getMaximumTextSize(description_with_new_lines, normalFont, 350, 50, 18)
-        description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, i);
-
-        if (i < description_max_size) break;
+    if (nextY - newY < finalImageHeight) {
+        nextY -= Math.round(finalImageHeight);
+    } else {
+        nextY = newY;
     }
 
-    description_with_new_lines = addLineBreaksToText(description_with_new_lines, normalFont, 50, description_max_size);
-
-    page.drawText(description_with_new_lines, {
-        x: 50,
-        y: 350,
-        size: description_max_size,
-        font: normalFont,
-        lineHeight: description_max_size * empty_line_width,
+    page.drawLine({
+        start: {x: 50, y: nextY},
+        end: {x: 550, y: nextY},
+        thickness: 0.5,
+        color: rgb(0.5, 0.5, 0.5),
     });
 
-    page.drawText(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}/`, {
-        x: (page_width - normalFont.widthOfTextAtSize(`Von ${recipe.creator} erstellt auf https://canoob.de:4000/recipe/${recipe.id}`, 17)) / 2,
-        y: 25,
-        size: 17,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
-        lineHeight: 24,
+    nextY -= 10;
+
+    //Description
+    page.drawText(`Zubereitung:`, {
+        x: 75,
+        y: nextY - 20,
+        size: 25,
+        font: boldFont,
         opacity: 0.75,
-    },);
+    });
+
+    nextY -= 20;
+    let newY2: number = nextY;
+    let zubereitung_enumeration: string[] = recipe.description.replace(/\n/g, '').split('|');
+    let zubereitung = '';
+    const zubereitung_font_size_for_enumeration = 12;
+
+    for (let i = 0; i < zubereitung_enumeration.length; i++) {
+        let item = zubereitung_enumeration[i];
+        item = addLineBreaksToText(item, normalFont, 75, zubereitung_font_size_for_enumeration)
+
+        if (item && item != " ") {
+            zubereitung += `${i + 1}. ${item}\n`;
+        }
+
+        newY2 = calculateNewY(newY2, item, normalFont, zubereitung_font_size_for_enumeration, empty_line_width);
+
+        if (newY2 - 35 < 20) {
+            page.drawText(zubereitung, {
+                x: 75,
+                y: nextY - 35,
+                size: zubereitung_font_size_for_enumeration,
+                font: normalFont,
+                lineHeight: zubereitung_font_size_for_enumeration * empty_line_width,
+            });
+
+            page = pdfDoc.addPage([page_width, page_height]);
+
+            nextY = 775;
+            newY2 = 775;
+            zubereitung = '';
+        }
+    }
+
+    page.drawText(zubereitung, {
+        x: 75,
+        y: nextY - 35,
+        size: zubereitung_font_size_for_enumeration,
+        font: normalFont,
+        lineHeight: zubereitung_font_size_for_enumeration * empty_line_width,
+    });
+
+    nextY = newY2 - 35;
+
+    page.drawLine({
+        start: {x: 50, y: nextY},
+        end: {x: 550, y: nextY},
+        thickness: 0.5,
+        color: rgb(0.5, 0.5, 0.5),
+    });
+
+    nextY -= 20;
+
+    // Author
+    page.drawText(
+        `Erstellt von ${recipe.creator} auf https://canoob.de:4000/recipe/${recipe.id}/`,
+        {
+            x: (page_width - normalFont.widthOfTextAtSize(`Erstellt von ${recipe.creator} auf https://canoob.de:4000/recipe/${recipe.id}/`, 12)) / 2,
+            y: nextY,
+            size: 12,
+            font: normalFont,
+            opacity: 0.75,
+        }
+    );
 
     return await pdfDoc.save();
 };
 
-function sanitizeText(text: string): string {
-    return text.replace(/�/g, '');
-}
+const sanitizeText = (text: string): string => {
+    return text.replace(/�/g, '').replace(/\t/g, ' ');
+};
 
 app.post('/generate-pdf', async (req: Request, res: Response) => {
     try {
-        console.log(req.body.id);
-        console.log(req.body.creator);
-
-        const sanitizedRecipe: Recipe = {
+        const sanitizedRecipe = {
             name: sanitizeText(req.body.name),
             image: req.body.image,
+            category: sanitizeText(req.body.category),
             description: sanitizeText(req.body.description),
             ingredients: req.body.ingredients.map((ingredient: string) => sanitizeText(ingredient)),
+            allergen: req.body.allergen.map((allergen: string) => sanitizeText(allergen)),
             creator: sanitizeText(req.body.creator),
             id: req.body.id,
         };
@@ -218,7 +325,6 @@ app.post('/generate-pdf', async (req: Request, res: Response) => {
         const pdfBytes = await createRecipePDF(sanitizedRecipe);
 
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=recipe.pdf');
         res.send(Buffer.from(pdfBytes));
     } catch (error) {
         res.status(500).json({message: 'Error generating PDF'});

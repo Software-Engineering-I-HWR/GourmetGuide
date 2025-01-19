@@ -64,7 +64,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const location = useLocation();
     const id = extractString(location.pathname, "recipe/", "/")
     const [ingredientsAsArray, setIngredientsAsArray] = useState<string[]>([]);
-    const [stepssAsArray, setStepsAsArray] = useState<string[]>([]);
+    const [stepsAsArray, setStepsAsArray] = useState<string[]>([]);
     const [activeStarOnHover, setActiveStarOnHover] = useState<number>(0);
     const [chosenStar, setChosenStar] = useState<number>(0);
     const [showMessage, setShowMessage] = useState<boolean>(false);
@@ -216,9 +216,21 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             steps = sampleRecipe.steps.replace(/\r/g, '');
         }
 
+        const allergenForShare = sampleRecipe?.allergen?.slice();
+
+        if(sampleRecipe?.vegan && !allergenForShare?.includes("Vegan")){
+            allergenForShare?.push("Vegan")
+        }
+
+        if (sampleRecipe?.vegetarian && !allergenForShare?.includes("Vegetarisch")){
+            allergenForShare?.push("Vegetarisch")
+        }
+
         const requestData = {
             name: sampleRecipe?.title,
             image: sampleRecipe?.imageUrl,
+            category: sampleRecipe?.category,
+            allergen: allergenForShare,
             description: steps,
             ingredients: ingredientsArray,
             creator: validCreator,
@@ -241,7 +253,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'recipe.pdf';
+        a.download = `${requestData.name}.pdf`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -397,7 +409,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 <div className="separator-line"></div>
                 <div className="showRecipe-properties-steps">
                     <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
-                    <div className="showRecipe-properties-step">{stepssAsArray.map((element, index) => (
+                    <div className="showRecipe-properties-step">{stepsAsArray.map((element, index) => (
                         <p key={index} className="recipes-step" style={{fontSize: "120%"}}>{element}</p>
                     ))}</div>
                 </div>
