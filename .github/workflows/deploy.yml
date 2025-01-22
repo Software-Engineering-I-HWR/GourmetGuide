@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Check if user is an admin
         run: |
-          ADMIN_USERS="canoobi blnpurple" # Admin-Benutzer hier auflisten
+          ADMIN_USERS="Canoobi blnpurple" # Admin-Benutzer hier auflisten
           if [[ ! " $ADMIN_USERS " =~ " ${{ github.actor }} " ]]; then
             echo "You are not authorized to run this workflow."
             exit 1
