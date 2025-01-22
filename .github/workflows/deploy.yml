@@ -24,6 +24,8 @@ jobs:
           username: ${{ secrets.NAS_USER }}
           password: ${{ secrets.NAS_SSH_KEY }}
           script: |
+            sudo -i
+            ${{ secrets.NAS_SSH_KEY }}
             docker start GourmetGuide-Pull-From-Git
 
   restart-containers:
