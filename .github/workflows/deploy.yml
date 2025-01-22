@@ -4,23 +4,18 @@ on: workflow_dispatch
 jobs:
   check-admin:
     runs-on: ubuntu-latest
-    outputs:
-      is-authorized: ${{ steps.check-auth.outputs.is-authorized }}
     steps:
       - id: check-auth
         run: |
           ADMIN_USERS="Canoobi blnpurple"
           if [[ ! " $ADMIN_USERS " =~ " ${{ github.actor }} " ]]; then
-            echo "::set-output name=is-authorized::false"
             echo "You are not authorized to run this workflow."
             exit 1
-          else
-            echo "::set-output name=is-authorized::true"
+          fi
 
   pull-repo:
     needs: check-admin
     runs-on: ubuntu-latest
-    if: ${{ needs.check-admin.outputs.is-authorized == 'true' }}
     steps:
       - name: Pull from Git
         uses: appleboy/ssh-action@v0.1.6
@@ -34,7 +29,6 @@ jobs:
   restart-containers:
     needs: pull-repo
     runs-on: ubuntu-latest
-    if: ${{ needs.check-admin.outputs.is-authorized == 'true' }}
     steps:
       - name: Restart containers
         uses: appleboy/ssh-action@v0.1.6
