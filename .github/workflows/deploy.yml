@@ -1,0 +1,46 @@
+name: deploy.yml
+on: workflow_dispatch
+
+jobs:
+  check-admin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if user is an admin
+        run: |
+          ADMIN_USERS="canoobi blnpurple" # Admin-Benutzer hier auflisten
+          if [[ ! " $ADMIN_USERS " =~ " ${{ github.actor }} " ]]; then
+            echo "You are not authorized to run this workflow."
+            exit 1
+          fi
+
+  pull-repo:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Pull from git
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.NAS_HOST }}
+          username: ${{ secrets.NAS_USER }}
+          key: ${{ secrets.NAS_SSH_KEY }}
+          script: |
+            docker start GourmetGuide-Pull-From-Git
+
+  restart-containers:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Restart containers
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.NAS_HOST }}
+          username: ${{ secrets.NAS_USER }}
+          key: ${{ secrets.NAS_SSH_KEY }}
+          script: |
+            docker restart GourmetGuide-DB-API
+            docker restart GourmetGuide-DB-API-Login
+            docker restart GourmetGuide-Login-API
+            docker restart GourmetGuide-PDF-API
+            docker restart GourmetGuide-ImageUpload-API
+            docker restart GourmetGuide-Global-API
+            docker restart GourmetGuide-UI
