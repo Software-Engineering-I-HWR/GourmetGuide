@@ -1,6 +1,6 @@
 name: deploy.yml
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   check-admin:
