@@ -35,12 +35,12 @@ jobs:
         with:
           host: ${{ secrets.NAS_HOST }}
           username: ${{ secrets.NAS_USER }}
-          key: ${{ secrets.NAS_SSH_KEY }}
+          password: ${{ secrets.NAS_SSH_KEY }}
           script: |
-            docker restart GourmetGuide-DB-API
-            docker restart GourmetGuide-DB-API-Login
-            docker restart GourmetGuide-Login-API
-            docker restart GourmetGuide-PDF-API
-            docker restart GourmetGuide-ImageUpload-API
-            docker restart GourmetGuide-Global-API
-            docker restart GourmetGuide-UI
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-DB-API
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-DB-API-Login
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-Login-API
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-PDF-API
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-ImageUpload-API
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-Global-API
+            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-UI
