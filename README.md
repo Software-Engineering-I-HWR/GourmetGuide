@@ -33,8 +33,8 @@ GourmetGuide ist eine Anwendung zur Verwaltung und Darstellung von Kochrezepten.
 
 ### ☁️ Hosting
 
-- Synology NAS: Hosting der API und Datenbank
-- Docker: Containerisierte Bereitstellung
+- **Synology NAS**: Hosting der API und Datenbank
+- **Docker**: Containerisierte Bereitstellung
 
 ## 🌐 Verwendung
 
