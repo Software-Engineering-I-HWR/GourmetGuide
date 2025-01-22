@@ -1,23 +1,29 @@
-name: deploy.yml
+name: deploy to server
 on: workflow_dispatch
 
 jobs:
   check-admin:
     runs-on: ubuntu-latest
+    outputs:
+      is-authorized: ${{ steps.check-auth.outputs.is-authorized }}
     steps:
-      - name: Check if user is an admin
+      - id: check-auth
         run: |
           ADMIN_USERS="Canoobi blnpurple" # Admin-Benutzer hier auflisten
           if [[ ! " $ADMIN_USERS " =~ " ${{ github.actor }} " ]]; then
+            echo "is-authorized=false" >> $GITHUB_ENV
             echo "You are not authorized to run this workflow."
             exit 1
+          else
+            echo "is-authorized=true" >> $GITHUB_ENV
           fi
 
   pull-repo:
+    needs: check-admin
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: env.is-authorized == 'true'
     steps:
-      - name: Pull from git
+      - name: Pull from Git
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.NAS_HOST }}
@@ -27,8 +33,9 @@ jobs:
             docker start GourmetGuide-Pull-From-Git
 
   restart-containers:
+    needs: pull-repo
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: env.is-authorized == 'true'
     steps:
       - name: Restart containers
         uses: appleboy/ssh-action@v0.1.6
