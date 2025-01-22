@@ -1,1 +1,3 @@
-.github/* @Software-Engineering-I-HWR/admin
+/.github/ @Software-Engineering-I-HWR/admin
+/.github/CODEOWNERS @Software-Engineering-I-HWR/admin
+/.github/workflows/deploy.yml @Software-Engineering-I-HWR/admin
