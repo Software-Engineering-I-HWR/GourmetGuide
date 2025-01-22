@@ -3,25 +3,23 @@ on:
   push
 
 jobs:
-  cleanup-:
+  format-code:
     runs-on: ubuntu-latest
-    name: Cleanup Code
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          dotnet-version: 8.0.x
+          node-version: 18
 
-      - name: Restore Dependencies
-        run: dotnet restore ReSharperCleanupCodeDemo.sln
+      - name: Install dependencies
+        run: npm install
 
-      - name: Cleanup Code
-        id: cleanup
-        uses: ArturWincenciak/ReSharper_CleanupCode@v3.0
-        with:
-          solution: 'ReSharperCleanupCodeDemo.sln'
-          fail_on_reformat_needed: 'no'
+      - name: Run Prettier
+        run: npx prettier --write .
+
+      - name: Check for changes
+        run: git diff --exit-code || (echo "Code has been reformatted, pushing changes..." && git config --global user.name "github-actions[bot]" && git config --global user.email "github-actions[bot]@users.noreply.github.com" && git add . && git commit -m "Code refactored by Prettier" && git push)
