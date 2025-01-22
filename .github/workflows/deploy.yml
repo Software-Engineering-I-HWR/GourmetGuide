@@ -22,7 +22,7 @@ jobs:
         with:
           host: ${{ secrets.NAS_HOST }}
           username: ${{ secrets.NAS_USER }}
-          key: ${{ secrets.NAS_SSH_KEY }}
+          password: ${{ secrets.NAS_SSH_KEY }}
           script: |
             docker start GourmetGuide-Pull-From-Git
 
