@@ -304,7 +304,7 @@ const CreateRecipe: React.FC = () => {
                             {uploadedImage ? (
                                 <div className="image-preview">
                                     <img
-                                        className="hero__img"
+                                        className="hero__preimg"
                                         src={URL.createObjectURL(uploadedImage)}
                                         alt="Hochgeladenes Bild"
                                     />
