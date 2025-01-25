@@ -81,6 +81,7 @@ async function processImage(file: {
 }) {
     try {
         const jpegBuffer = await sharp(file.buffer)
+            .rotate()
             .toFormat("jpeg")
             .jpeg({quality: 80})
             .toBuffer();
@@ -91,6 +92,7 @@ async function processImage(file: {
         while (compressedBuffer.length > 2 * 1024 * 1024 && quality > 10) {
             quality -= 10;
             compressedBuffer = await sharp(file.buffer)
+                .rotate()
                 .jpeg({quality})
                 .toBuffer();
         }
