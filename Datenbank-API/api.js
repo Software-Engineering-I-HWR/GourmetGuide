@@ -197,6 +197,20 @@ app.get('/getRatedRecipesByUser', (req, res) => {
     });
 });
 
+app.get('/getHighRatedRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT ID FROM Bewertung WHERE Username = ? AND Bewertung >= 4 ORDER BY Bewertung DESC;';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getRecipesByCategory', (req, res) => {
     const category = req.query.category;
     const query = 'SELECT * FROM Rezept WHERE Category = ?';
@@ -406,6 +420,78 @@ app.post('/saveBookmark', (req, res) => {
             res.status(500).send('Fehler beim Speichern der Bewertung');
         } else {
             res.status(200).send('Bewertung erfolgreich gespeichert');
+        }
+    });
+});
+
+app.get('/getFollowByUsers', (req, res) => {
+    const user = req.query.user;
+    const follows = req.query.follows;
+    const query = 'SELECT Follow FROM UserFolgen WHERE UserFollowing = ? AND UserFollowed = ?';
+
+    connection.query(query, [user, follows], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen des Folge-Statuses');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getFollowedUsersByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT UserFollowed FROM UserFolgen WHERE UserFollowing = ? AND Follow = 1';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der gefolgten User');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.post('/saveFollow', (req, res) => {
+    const data = req.query;
+    console.log("Received data:", data);
+
+    const now = new Date();
+
+    const formattedDate = now.toLocaleString('de-DE', {
+        timeZone: 'Europe/Berlin',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(',', '').replace(/\./g, '-');
+
+    const [datePart, timePart] = formattedDate.split(' ');
+    const [day, month, year] = datePart.split('-');
+    const isoFormattedDate = `${year}-${month}-${day} ${timePart}`;
+
+    console.log("Formatted Date:", isoFormattedDate);
+
+    const query = `
+        INSERT INTO UserFolgen (UserFollowing, UserFollowed, Follow, Updatetime)
+        VALUES (?, ?, ?, ?) ON DUPLICATE KEY
+        UPDATE Follow =
+        VALUES (Follow), Updatetime =
+        VALUES (Updatetime);
+    `;
+
+    console.log(query);
+
+    connection.query(query, [data.user, data.follows, data.follow, isoFormattedDate], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Folgen');
+        } else {
+            res.status(200).send('User erfolgreich gefolgt');
         }
     });
 });

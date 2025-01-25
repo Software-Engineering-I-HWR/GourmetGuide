@@ -196,6 +196,25 @@ app.get('/getRatedRecipesByUser', async (req, res) => {
     }
 });
 
+app.get('/getHighRatedRecipesByUser', async (req, res) => {
+    const user = req.query.user;
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/getHighRatedRecipesByUser?user=${encodeURIComponent(user)}`);
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
 app.get('/getRecipesByCategory', async (req, res) => {
     const category = req.query.category;
 
@@ -337,6 +356,66 @@ app.post('/saveBookmark', async (req, res) => {
 
     try {
         const response = await fetch(`http://` + host + `:3007/saveBookmark?id=${encodeURIComponent(id)}&user=${encodeURIComponent(username)}&bookmark=${encodeURIComponent(newBookmarkState ? 1 : 0)}`, {
+            method: 'POST',
+        });
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/getFollowByUsers', async (req, res) => {
+    const user = req.query.user;
+    const follows = req.query.follows;
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/getFollowByUsers?user=${encodeURIComponent(user)}&follows=${encodeURIComponent(follows)}`);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/getFollowedUsersByUser', async (req, res) => {
+    const user = req.query.user;
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/getFollowedUsersByUser?user=${encodeURIComponent(user)}`);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.post('/saveFollow', async (req, res) => {
+    const user = req.query.user;
+    const follows = req.query.follows;
+    const newFollowState = req.query.follow;
+    console.log("Received data:", req.query);
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/saveFollow?user=${encodeURIComponent(user)}&follows=${encodeURIComponent(follows)}&follow=${encodeURIComponent(newFollowState ? 1 : 0)}`, {
             method: 'POST',
         });
         if (response.ok) {
