@@ -514,7 +514,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         </>}
         {showErrorPage == 1 && <ErrorPage/>}
 
-        {showUser && <ShowUser username={validCreator}/>}
+        {showUser && <ShowUser username={validCreator} closeModal={() => setShowUser(false)}/>}
         </body>
     );
 };
