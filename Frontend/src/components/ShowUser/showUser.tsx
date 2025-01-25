@@ -3,9 +3,6 @@ import './showUser.css';
 import configData from "../../../../config/frontend-config.json";
 import * as bootstrap from 'bootstrap';
 
-
-
-
 interface User {
     name: string;
     recentRecipes: Recipes[];
@@ -137,13 +134,13 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
             try {
                 if (username == "GourmetGuide Team") {
                     const response = await fetch(
-                        `https://` + hostData.host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent("1")}`,
+                        `https://` + hostData.host + `:30155/getHighRatedRecipesByUser?user=${encodeURIComponent("1")}`,
                         {
                             method: "GET",
                         }
                     );
                     const response2 = await fetch(
-                        `https://` + hostData.host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent("12345")}`,
+                        `https://` + hostData.host + `:30155/getHighRatedRecipesByUser?user=${encodeURIComponent("12345")}`,
                         {
                             method: "GET",
                         }
@@ -242,11 +239,33 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
             }
         }, [username]);
 
-        useEffect(() => {
-            if (username) {
-                getRatedRecipes();
+    useEffect(() => {
+        if (username) {
+            getRatedRecipes();
+        }
+    }, [username]);
+
+
+   /* useEffect(() => {
+        const fetchRecipes = async () => {
+            const recipes = await getBestRatedRecipes();
+            if (recipes && Array.isArray(recipes)) {
+                const lastFifteenRecipes: Recipes[] = recipes.slice(-15).map(recipe => ({
+                    id: recipe.ID,
+                    name: recipe.Title,
+                    category: recipe.Category,
+                    link: recipe.Image
+                }));
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    likedRecipes: lastFifteenRecipes,
+                }));
+            } else {
+                console.error('No valid recipes received or the data is not an array.');
             }
-        }, [username]);
+        };
+        fetchRecipes();
+    }, []);*/
 
 
     useEffect(() => {
