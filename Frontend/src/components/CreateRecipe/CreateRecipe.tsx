@@ -317,21 +317,35 @@ const CreateRecipe: React.FC = () => {
                                     </button>
                                 </div>
                             ) : (
-                                <div className="image-input-container">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageUpload}
-                                        className="image-upload-input"
-                                    />
-                                    <input
-                                        type="text"
-                                        value={imageUrl}
-                                        onChange={(e) => setImageUrl(e.target.value)}
-                                        placeholder="Lade ein Bild (bis 5 MB) hoch oder gib hier eine Bild-URL an..."
-                                        className="image-url-input"
-                                    />
+                                <div className="image-input-container d-flex flex-column align-items-center">
+                                    <div className="image-upload-wrapper position-relative">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            id="imageUpload"
+                                            onChange={handleImageUpload}
+                                            className="image-upload-input"
+                                        />
+                                        <label style={{width: "100%"}} className="image-upload-label">
+                                            <img
+                                                src="/../../public/images/fileUpload.png"
+                                                alt="File Upload"
+                                                className="img-fluid placeholder-image"
+                                            />
+                                        </label>
+                                    </div>
+                                    <div className="mt-3 w-100">
+                                        <input
+                                            type="text"
+                                            value={imageUrl}
+                                            onChange={(e) => setImageUrl(e.target.value)}
+                                            placeholder="Lade ein Bild hoch oder gib eine Bild-URL ein..."
+                                            className="form-control"
+                                            style={{border: "3px solid #c53b31",borderRadius: "8px"}}
+                                        />
+                                    </div>
                                 </div>
+
                             )}
                         </div>
                         <div className="showRecipe-properties-ingredients">
@@ -393,7 +407,7 @@ const CreateRecipe: React.FC = () => {
                     </div>
 
                     <div className="difficulty-slider-container">
-                        <p style={{marginBottom: "2%", marginTop: "2%"}} className={"allergen-instructions-empty"}>Bitte
+                        <p style={{marginBottom: "2%", marginTop: "2%", color: "black"}} className={"allergen-instructions-empty"}>Bitte
                             wähle die Schwierigkeit des Rezeptes aus!</p>
                         {/* Label above the slider */}
                         <div className="difficulty-labels">

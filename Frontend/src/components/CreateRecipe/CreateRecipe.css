@@ -99,13 +99,12 @@
 
 .input-field-reqired-filled {
     background-color: #07546E;
-    border-color: #65899c;
-    border-radius: 10px;
+    border: none;
 }
 
 .input-field-reqired-empty {
     background-color: #07546E;
-    border: solid 3px #5C0002;
+    border: solid 3px #c53b31;
     border-radius: 10px;
 }
 
@@ -126,13 +125,12 @@
 
 .category-dropdown-filled {
     background-color: #07546E;
-    border-color: #65899c;
-    border-radius: 10px;
+    border:none
 }
 
 .category-dropdown-empty {
     background-color: #07546E;
-    border: solid 3px #5C0002;
+    border: solid 3px #c53b31;
     border-radius: 10px;
 }
 
@@ -215,7 +213,7 @@
 
 .step-input-field-empty {
     background-color: #fafafa;
-    border: solid 3px #5C0002;
+    border: solid 3px #c53b31;
     border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
@@ -360,7 +358,7 @@
     text-align: center;
     width: 120%;
     padding: 0 10%;
-    color: #5C0002;
+    color: #aebec5;
 }
 
 .not-visable {
@@ -414,7 +412,7 @@
 
 .ingredient-input-empty {
     background-color: #fafafa;
-    border: solid 3px #5C0002;
+    border: solid 3px #c53b31;
     border-radius: 10px;
     width: 75%;
     padding: 0.5% 0.5%;
@@ -585,7 +583,7 @@
     background-color: #f4f4f4;
     border-radius: 10px;
     box-shadow: none;
-    width: 50%;
+    width: 35%;
     margin: auto;
 }
 
@@ -624,18 +622,82 @@
 }
 
 .image-upload-input, .image-url-input {
-    width: 100%;
     padding: 12px;
     font-size: 1rem;
-    border: solid 2px #5C0002;
+    border: solid 5px #c53b31;
     border-radius: 10px;
     background-color: #ffffff;
     color: #333;
     transition: border-color 0.3s ease;
 }
 
+.image-url-input {
+    width: 150%;
+}
+
+.image-upload-input {
+    width: 75%;
+    height: auto;
+}
+
 .image-upload-input:focus, .image-url-input:focus {
     border-color: #07546E;
     outline: none;
     box-shadow: none;
+}
+
+.image-input-container {
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+.image-upload-wrapper {
+    width: 65%;
+    height: 65%;
+    position: relative;
+    background-color: #c53b31;
+    border: 3px solid #c53b31;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 75%;
+    height: 75%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.image-upload-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    height: 75%;
+    cursor: pointer;
+    z-index: 1;
+    background-color: #f4f4f4;
+}
+
+.placeholder-image {
+    max-width: 50%;
+    max-height: 50%;
+    padding: 25% 15%;
+    object-fit: cover;
+}
+
+.img-fluid{
+    width: 65%;
+}
+
+.form-control {
+    border: 3px solid #c53b31;
+    border-radius: 8px;
 }
