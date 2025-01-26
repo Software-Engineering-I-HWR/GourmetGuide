@@ -27,8 +27,17 @@
 - **POST `/login`**: Authentifiziert einen Benutzer.
 - **POST `/register`**: Registriert einen neuen Benutzer.
 
+### User-API
+- **POST `/updatePasswordByUsername`**: Aktualisiert das Passwort eines Benutzers basierend auf dem Benutzernamen.
+- **POST `/deleteUserByUsername`**: Löscht einen Benutzer basierend auf dem Benutzernamen.
+- **GET `/getUsers`**: Ruft alle Benutzer ab.
+- **GET `/getUserInfo`**: Ruft Informationen zu einem Benutzer ab.
+
 ### PDF-API
 - **POST `/generate-pdf`**: Generiert ein PDF basierend auf bereitgestellten Rezeptdaten.
 
 ### Upload-API
 - **POST `/upload-image`**: Lädt ein Bild hoch. Unterstützt die Dateitypen JPEG, PNG und WEBP.
+
+### Admin-API
+- **POST `/checkAdmin`**: Überprüft, ob ein Benutzer Adminrechte hat.

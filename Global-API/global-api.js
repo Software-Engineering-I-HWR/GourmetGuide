@@ -477,7 +477,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/checkAdmin', async (req, res) => {
-    const data = req.body;
+    const data = req.query;
 
     try {
         const response = await fetch('http://' + host + ':30156/checkAdmin', {
@@ -522,7 +522,7 @@ app.post('/updatePasswordByUsername', async (req, res) => {
 
 app.get('/getUsers', async (req, res) => {
     try {
-        const response = await fetch('http://' + host + ':3006/getRecipes');
+        const response = await fetch('http://' + host + ':3006/getUsers');
         console.log(response);
         if (response.ok) {
             const data = await response.text();
