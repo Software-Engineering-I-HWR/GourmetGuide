@@ -539,12 +539,13 @@ app.get('/getUsers', async (req, res) => {
 
 app.get('/getUserInfo', async (req, res) => {
     const data = req.query;
+    console.log(data);
 
     try {
         const response = await fetch('http://' + host + ':3006/getUserInfo', {
-            method: 'POST', headers: {
+            method: 'GET', headers: {
                 'Content-Type': 'application/json',
-            }, body: JSON.stringify(data),
+            }, query: JSON.stringify(data),
         });
         console.log(response);
         if (response.ok) {
