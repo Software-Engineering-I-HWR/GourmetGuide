@@ -16,3 +16,196 @@
     display: flex;
     justify-content: space-between;
 }
+
+.admin-home-recipes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    font-size: 1.25rem;
+}
+
+.admin-recipes-table thead th {
+    background-color: #4c778c;
+    color: white;
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-recipes-table tbody tr {
+    background-color: white;
+}
+
+.admin-recipes-table tbody tr:hover {
+    background-color: #e5ebee;
+    cursor: pointer;
+}
+
+.admin-recipes-table td, .admin-recipes-table th {
+    padding: 12px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.admin-recipes-table img {
+    max-height: 100px;
+    object-fit: cover;
+}
+
+.admin-recipes-table th[scope="row"] {
+    background-color: #f8f9fa;
+}
+
+.admin-recipes-table th:nth-child(1),
+.admin-recipes-table td:nth-child(1) {
+    width: 3%;
+}
+
+.admin-recipes-table th:nth-child(2),
+.admin-recipes-table td:nth-child(2) {
+    width: 20%;
+}
+
+.admin-recipes-table th:nth-child(3),
+.admin-recipes-table td:nth-child(3) {
+    width: 7%;
+}
+
+.admin-recipes-table th:nth-child(4),
+.admin-recipes-table td:nth-child(4) {
+    width: 30%;
+}
+
+.admin-recipes-table th:nth-child(5),
+.admin-recipes-table td:nth-child(5) {
+    width: 10%;
+}
+
+.admin-recipes-table th:nth-child(6),
+.admin-recipes-table td:nth-child(6) {
+    width: 10%;
+}
+
+.admin-recipes-table th:nth-child(7),
+.admin-recipes-table td:nth-child(7) {
+    width: 5%;
+}
+
+.admin-home-recipes-table {
+    margin: 0 2%;
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+}
+
+
+.admin-home-user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    font-size: 1.25rem;
+}
+
+.admin-user-table thead th {
+    background-color: #4c778c;
+    color: white;
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-user-table tbody tr {
+    background-color: white;
+}
+
+.admin-user-table tbody tr:hover {
+    background-color: #e5ebee;
+    cursor: pointer;
+}
+
+.admin-user-table td, .admin-user-table th {
+    padding: 12px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.admin-user-table th[scope="row"] {
+    background-color: #f8f9fa;
+}
+
+.admin-user-table th:nth-child(1),
+.admin-user-table td:nth-child(1) {
+    width: 15%;
+}
+
+.admin-user-table th:nth-child(2),
+.admin-user-table td:nth-child(2) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(3),
+.admin-user-table td:nth-child(3) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(4),
+.admin-user-table td:nth-child(4) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(5),
+.admin-user-table td:nth-child(5) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(6),
+.admin-user-table td:nth-child(6) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(7),
+.admin-user-table td:nth-child(7) {
+    width: 20%;
+}
+
+.admin-user-table th:nth-child(8),
+.admin-user-table td:nth-child(8) {
+    width: 5%;
+}
+
+.admin-user-table th:nth-child(9),
+.admin-user-table td:nth-child(9) {
+    width: 5%;
+}
+
+.admin-home-user-table {
+    margin: 0 2%;
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+}
+
+.password-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.admin-delete-button {
+    display: flex;
+    background-color: transparent;
+    border: none;
+    justify-content: center;
+    margin: 10% 10%;
+}
+
+.admin-delete-icon {
+    display: flex;
+    width: 50%;
+}
