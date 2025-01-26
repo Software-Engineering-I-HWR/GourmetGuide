@@ -67,7 +67,7 @@ const AdminSuperView: React.FC<AdminSuperViewProps> = ({token}) => {
 
             try {
                 const response = await fetch(
-                    `https:` + hostData.host + `:30155/checkAdmin?token=${encodeURIComponent(token)}`,
+                    `https://` + hostData.host + `:30155/checkAdmin?token=${encodeURIComponent(token)}`,
                     {
                         method: 'POST',
                     }
