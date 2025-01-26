@@ -119,7 +119,7 @@ app.post('/updatePasswordByUsername', (req, res) => {
 });
 
 app.get('/getUserInfo', (req, res) => {
-    const { user } = req.body;
+    const {user} = req.body;
 
     const query1 = 'SELECT COUNT(*) AS bewertungen FROM Bewertung WHERE Username = ?';
     const query2 = 'SELECT COUNT(*) AS lesezeichen FROM Lesezeichen WHERE Username = ?';
@@ -128,14 +128,14 @@ app.get('/getUserInfo', (req, res) => {
     const query5 = 'SELECT COUNT(*) AS follower FROM UserFolgen WHERE UserFollowed = ?';
 
     const queries = [
-        { query: query1, params: [user] },
-        { query: query2, params: [user] },
-        { query: query3, params: [user] },
-        { query: query4, params: [user] },
-        { query: query5, params: [user] },
+        {query: query1, params: [user]},
+        {query: query2, params: [user]},
+        {query: query3, params: [user]},
+        {query: query4, params: [user]},
+        {query: query5, params: [user]},
     ];
 
-    const promises = queries.map(({ query, params }) =>
+    const promises = queries.map(({query, params}) =>
         new Promise((resolve, reject) => {
             connection.query(query, params, (error, results) => {
                 if (error) {
@@ -162,7 +162,7 @@ app.get('/getUserInfo', (req, res) => {
         })
         .catch((error) => {
             console.error('Database Error:', error);
-            res.status(500).json({ error: 'Fehler beim Abrufen der Daten' });
+            res.status(500).json({error: 'Fehler beim Abrufen der Daten'});
         });
 });
 

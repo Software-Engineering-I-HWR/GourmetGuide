@@ -490,7 +490,7 @@ app.post('/checkAdmin', async (req, res) => {
             res.status(200).json(data);
         } else {
             console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error while registering'});
+            res.status(response.status).json({error: 'Error while admin check'});
         }
     } catch (error) {
         console.error('Network error:', error.message);
@@ -512,7 +512,7 @@ app.post('/updatePasswordByUsername', async (req, res) => {
             res.status(200).json(data);
         } else {
             console.error('API request error:', response.status);
-            res.status(response.status).json({error: 'Error while registering'});
+            res.status(response.status).json({error: 'Error while changing password'});
         }
     } catch (error) {
         console.error('Network error:', error.message);
@@ -538,8 +538,14 @@ app.get('/getUsers', async (req, res) => {
 });
 
 app.get('/getUserInfo', async (req, res) => {
+    const data = req.query;
+
     try {
-        const response = await fetch('http://' + host + ':3006/getUserInfo');
+        const response = await fetch('http://' + host + ':3006/getUserInfo', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(data),
+        });
         console.log(response);
         if (response.ok) {
             const data = await response.text();
@@ -555,7 +561,7 @@ app.get('/getUserInfo', async (req, res) => {
 });
 
 app.post('/deleteUserByUsername', async (req, res) => {
-    const data = req.body;
+    const data = req.query;
 
     try {
         const response = await fetch('http://' + host + ':3006/deleteUserByUsername', {
