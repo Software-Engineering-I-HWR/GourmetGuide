@@ -119,7 +119,7 @@ app.post('/updatePasswordByUsername', (req, res) => {
 });
 
 app.get('/getUserInfo', (req, res) => {
-    const {user} = req.body;
+    const {user} = req.query;
 
     const query1 = 'SELECT COUNT(*) AS bewertungen FROM Bewertung WHERE Username = ?';
     const query2 = 'SELECT COUNT(*) AS lesezeichen FROM Lesezeichen WHERE Username = ?';
