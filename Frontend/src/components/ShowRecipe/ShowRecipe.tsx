@@ -417,7 +417,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
                 <div className="separator-line"></div>
                 <p>Ersteller: {validCreator}
-                <button className="btn m-2 text-white" style={{background: "#07546e"}} onClick={() => setShowUser(!showUser)}> View User</button>
+                <button className="btn m-2 text-white" style={{background: "#07546e"}} onClick={() => setShowUser(!showUser)}> User anzeigen</button>
                 </p>
                 <div className="actions-field">
                     <div className="bookmark">

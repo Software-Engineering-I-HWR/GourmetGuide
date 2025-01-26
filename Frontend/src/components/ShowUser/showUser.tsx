@@ -36,18 +36,20 @@ const hostData: Config = configData;
 const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usernameToShow, closeModal}) => {
         const carouselRef = useRef<HTMLDivElement>(null);
         const [isFollowed, setIsFollowed] = useState<boolean>(false);
+        const [showMessage, setShowMessage] = useState<boolean>(false);
+
 
         const handlePrev = () => {
             if (carouselRef.current) {
                 const carousel = new bootstrap.Carousel(carouselRef.current);
-                carousel.prev();
+                carousel.prev();  // Wechsel zum vorherigen Slide
             }
         };
 
         const handleNext = () => {
             if (carouselRef.current) {
                 const carousel = new bootstrap.Carousel(carouselRef.current);
-                carousel.next();
+                carousel.next();  // Wechsel zum nächsten Slide
             }
         };
 
@@ -58,8 +60,10 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
                 });
                 const isFollowedResponse = await respone.json();
+                console.log(isFollowedResponse)
                 return isFollowedResponse[0].Follow === 1
             } catch (error) {
+                console.error('Error getting follow status:', error);
                 return false
             }
         }
@@ -119,6 +123,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
+                        console.log("rated", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -133,6 +138,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
+                        console.log("own", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -166,6 +172,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
+                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -180,6 +187,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
+                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -214,6 +222,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
             if (ownIds.length > 0) {
                 fetchRecipes();
+                console.log(user)
             }
         }, [ownIds]);
 
@@ -276,19 +285,50 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
+                console.log(user)
             }
         }, [ratedIds]);
 
         useEffect(() => {
             if (usernameToShow) {
                 getOwnRecipes();
-                getRatedRecipes();
-
             }
         }, [usernameToShow]);
 
         useEffect(() => {
+            if (usernameToShow) {
+                getRatedRecipes();
+            }
+        }, [usernameToShow]);
+
+
+        /* useEffect(() => {
+             const fetchRecipes = async () => {
+                 const recipes = await getBestRatedRecipes();
+                 if (recipes && Array.isArray(recipes)) {
+                     const lastFifteenRecipes: Recipes[] = recipes.slice(-15).map(recipe => ({
+                         id: recipe.ID,
+                         name: recipe.Title,
+                         category: recipe.Category,
+                         link: recipe.Image
+                     }));
+                     setUser((prevUser) => ({
+                         ...prevUser,
+                         likedRecipes: lastFifteenRecipes,
+                     }));
+                 } else {
+                     console.error('No valid recipes received or the data is not an array.');
+                 }
+             };
+             fetchRecipes();
+         }, []);*/
+
+
+        useEffect(() => {
+            // Verhindere das Scrollen auf der Hintergrundseite
             document.body.style.overflow = "hidden";
+
+            // Setze das Scrollen zurück, wenn das Modal geschlossen wird
             return () => {
                 document.body.style.overflow = "auto";
             };
@@ -302,11 +342,22 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             <button
                                 type="button"
                                 className="btn"
-                                style={isFollowed ? {backgroundColor: "#98afbc", color: "#07546E", padding: "1% 2%", marginLeft: "5%", border: "2px solid #07546E", borderRadius: "8px"} : {backgroundColor: "#07546E", color: "white", padding: "1% 2%", marginLeft: "5%"}}
+                                style={isLoggedIn ? isFollowed ? {backgroundColor: "#98afbc", color: "#07546e", border:"3px solid #07546e", padding: "1% 2%", marginLeft: "5%"} : {backgroundColor: "#07546E", color: "white", padding: "1% 2%", marginLeft: "5%"} : {backgroundColor: "#cbd6dd", color: "#b1c3cd", padding: "1% 2%", marginLeft: "5%"}}
                                 onClick={toggleFollow}
+                                onMouseOver={() => !isLoggedIn && setShowMessage(true)}
+                                onMouseLeave={() => setShowMessage(false)}
                             >
                                 {isFollowed ? "Gefolgt" : "Folgen"}
+                                {showMessage && <div className="message">
+                                    Du musst dich anmelden, um das Rezept zu bewerten!
+                                </div>}
                             </button>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                onClick={onClose}
+                                aria-label="Close"
+                            ></button>
                         </div>
                         <div className="modal-body">
                             <h6 className="mb-3 fs-4">Letzte Rezepte:</h6>
@@ -318,7 +369,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                 <div className="carousel-inner">
                                     {user.recentRecipes
                                         .reduce((slides, recipe, index) => {
-                                            const slideIndex = Math.floor(index / 4);
+                                            const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
                                             slides[slideIndex].push(recipe);
                                             return slides;
@@ -395,7 +446,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                 <div className="carousel-inner">
                                     {user.likedRecipes
                                         .reduce((slides, recipe, index) => {
-                                            const slideIndex = Math.floor(index / 4);
+                                            const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
                                             slides[slideIndex].push(recipe);
                                             return slides;
