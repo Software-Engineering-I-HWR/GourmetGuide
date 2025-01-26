@@ -10,8 +10,13 @@ interface Config {
     database: string;
 }
 
-interface User {
+interface UserOld {
     email: string;
+    password: string;
+}
+
+interface User {
+    user: string;
     password: string;
 }
 
@@ -36,7 +41,7 @@ const encryptPassword = (password: string): string => {
 export const addUser = async (email: string, password: string) => {
     try {
         const encryptedPassword = encryptPassword(password);
-        const postData: User = { email, password: encryptedPassword };
+        const postData: UserOld = { email, password: encryptedPassword };
         const response: Response = await fetch('http://' + hostData.host + ':3006/createUser', {
             method: 'POST',
             headers: {
@@ -59,7 +64,33 @@ export const addUser = async (email: string, password: string) => {
     }
 };
 
-export const findUserByEmail = async (email: string): Promise<User | undefined> => {
+export const changePassword = async (user: string, password: string) => {
+    try {
+        const encryptedPassword = encryptPassword(password);
+        const postData: User = { user, password: encryptedPassword };
+        const response: Response = await fetch('http://' + hostData.host + ':3006/updatePasswordByUsername', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        });
+
+        if (response.ok) {
+            const result: string = await response.text();
+            console.log('API Antwort:', result);
+            return 200;
+        } else {
+            console.error('Fehler bei der API-Anfrage:', response.status);
+            return response.status;
+        }
+    } catch (error) {
+        console.error('Netzwerkfehler:', error);
+        return 401;
+    }
+};
+
+export const findUserByEmail = async (email: string): Promise<UserOld | undefined> => {
     try {
         const response: Response = await fetch(`http://` + hostData.host + `:3006/getUserByEmail?email=${encodeURIComponent(email)}`, {
             method: 'GET'
@@ -69,12 +100,10 @@ export const findUserByEmail = async (email: string): Promise<User | undefined> 
             const result = await response.json();
             console.log('API Antwort:', result);
 
-            const user: User = {
+            return {
                 email: result.Username,
                 password: result.Password
             };
-
-            return user;
         } else {
             console.error('Fehler bei der API-Anfrage:', response.status);
             return undefined;
