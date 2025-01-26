@@ -75,6 +75,10 @@ export const updatePassword = async (req: Request, res: Response) => {
 export const adminCheck = async (req: Request, res: Response) => {
     const {token} = req.body;
 
+    if (!token || typeof token !== "string") {
+        return res.status(400).json({ message: "Invalid or missing token" });
+    }
+
     try {
         const decoded: any = jwtDecode(token);
 
