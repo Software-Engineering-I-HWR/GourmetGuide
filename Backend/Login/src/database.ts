@@ -1,4 +1,7 @@
+import crypto from 'crypto';
 import configData from '../../../config/config.json';
+
+const {encryption_key} = require('../../../config/encryption-secret.json')
 
 interface Config {
     host: string;
@@ -13,10 +16,27 @@ interface User {
 }
 
 const hostData: Config = configData;
+const algorithm = 'aes-256-cbc';
+const ivLength = 16;
+
+const encryptPassword = (password: string): string => {
+    if (!encryption_key || encryption_key.length !== 32) {
+        throw new Error('Encryption key must be 32 characters long');
+    }
+
+    const iv = crypto.createHash('sha256').update(password).digest().slice(0, ivLength);
+    const cipher = crypto.createCipheriv(algorithm, Buffer.from(encryption_key), iv);
+
+    let encrypted = cipher.update(password, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+
+    return `${iv.toString('hex')}:${encrypted}`;
+};
 
 export const addUser = async (email: string, password: string) => {
     try {
-        const postData: User = {email, password};
+        const encryptedPassword = encryptPassword(password);
+        const postData: User = { email, password: encryptedPassword };
         const response: Response = await fetch('http://' + hostData.host + ':3006/createUser', {
             method: 'POST',
             headers: {
