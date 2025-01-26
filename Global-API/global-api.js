@@ -24,6 +24,7 @@ const upload = multer({
 });
 
 app.use((req, res, next) => {
+    console.log(req.headers);
     const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log(`[INFO] ${new Date().toISOString()} - Zugriff auf Route: ${req.method} ${req.originalUrl} von IP: ${clientIp}`);
     next();
@@ -59,11 +60,7 @@ app.post('/saveRecipe', async (req, res) => {
     }
 });
 
-app.get('/getRecipes', (req, res, next) => {
-    const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log(`[INFO] Zugriff auf /getRecipes von IP: ${clientIp}`);
-    next();
-}, async (req, res) => {
+app.get('/getRecipes', async (req, res) => {
     try {
         const response = await fetch('http://' + host + ':3007/getRecipes');
         console.log(response);
