@@ -538,18 +538,14 @@ app.get('/getUsers', async (req, res) => {
 });
 
 app.get('/getUserInfo', async (req, res) => {
-    const data = req.query;
-    console.log(data);
+    const user = req.query.user;
 
     try {
-        const response = await fetch('http://' + host + ':3006/getUserInfo', {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json',
-            }, query: JSON.stringify(data),
-        });
+        const response = await fetch(`http://localhost:3006/getUserInfo?user=${user}`);
         console.log(response);
         if (response.ok) {
             const data = await response.text();
+            console.log(data);
             res.status(200).send(data);
         } else {
             console.error('API 2 Error Status:', response.status);
