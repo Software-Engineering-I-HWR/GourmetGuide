@@ -1,0 +1,18 @@
+.admin-super-view {
+    padding: 2rem;
+}
+
+.admin-super-view h1 {
+    text-align: center;
+}
+
+.admin-super-view ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.admin-super-view li {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+}

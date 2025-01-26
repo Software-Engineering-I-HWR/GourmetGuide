@@ -13,6 +13,7 @@ import "./PopupWindow.css";
 import PopupWindow from "./PopupWindow.tsx";
 import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
+import AdminSuperView from './components/AdminSuperView/AdminSuperView';
 import {jwtDecode} from "jwt-decode";
 
 const App: React.FC = () => {
@@ -84,6 +85,7 @@ const App: React.FC = () => {
                                                                  username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
+                    <Route path="/superview" element={<AdminSuperView username={localStorage.getItem('userEmail')!}/>}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
                 {showPopup && localStorage.getItem('loginMessage') != undefined && (
