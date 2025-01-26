@@ -476,6 +476,106 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.post('/checkAdmin', async (req, res) => {
+    const data = req.body;
+
+    try {
+        const response = await fetch('http://' + host + ':30156/checkAdmin', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            res.status(200).json(data);
+        } else {
+            console.error('API request error:', response.status);
+            res.status(response.status).json({error: 'Error while registering'});
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).json({error: 'Internal server error'});
+    }
+});
+
+app.post('/updatePasswordByUsername', async (req, res) => {
+    const data = req.body;
+
+    try {
+        const response = await fetch('http://' + host + ':30156/updatePasswordByUsername', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            res.status(200).json(data);
+        } else {
+            console.error('API request error:', response.status);
+            res.status(response.status).json({error: 'Error while registering'});
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).json({error: 'Internal server error'});
+    }
+});
+
+app.get('/getUsers', async (req, res) => {
+    try {
+        const response = await fetch('http://' + host + ':3006/getRecipes');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/getUserInfo', async (req, res) => {
+    try {
+        const response = await fetch('http://' + host + ':3006/getUserInfo');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.post('/deleteUserByUsername', async (req, res) => {
+    const data = req.body;
+
+    try {
+        const response = await fetch('http://' + host + ':3006/deleteUserByUsername', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(data),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            res.status(200).json(data);
+        } else {
+            console.error('API request error:', response.status);
+            res.status(response.status).json({error: 'Error while deleting the user'});
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).json({error: 'Internal server error'});
+    }
+});
+
 //PDF-API
 app.post('/generate-pdf', async (req, res) => {
     const requestData = req.body;

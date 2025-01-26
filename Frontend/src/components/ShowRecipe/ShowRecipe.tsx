@@ -5,6 +5,7 @@ import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
 import ErrorPage from "../errorPage.tsx";
 import configData from '../../../../config/frontend-config.json';
+import ShowUser from "../ShowUser/showUser.tsx";
 
 interface Config {
     host: string;
@@ -77,6 +78,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [showPopup, setShowPopup] = useState(false);
     const [showErrorPage, setShowErrorPage] = useState(0);
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+    const [showUser, setShowUser] = useState<boolean>(false);
 
     const getBookmark = async () => {
         try {
@@ -414,7 +416,9 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     ))}</div>
                 </div>
                 <div className="separator-line"></div>
-                <p>Ersteller: {validCreator}</p>
+                <p>Ersteller: {validCreator}
+                <button className="btn m-2 text-white" style={{background: "#07546e"}} onClick={() => setShowUser(!showUser)}> User anzeigen</button>
+                </p>
                 <div className="actions-field">
                     <div className="bookmark">
                         {isLoggedIn &&
@@ -509,6 +513,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             </div>
         </>}
         {showErrorPage == 1 && <ErrorPage/>}
+        {showUser && <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={validCreator} closeModal={() => setShowUser(false)}/>}
         </body>
     );
 };

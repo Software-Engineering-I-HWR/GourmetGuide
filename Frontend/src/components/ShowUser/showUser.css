@@ -1,0 +1,61 @@
+.modal-dialog {
+    max-width: 90%;
+}
+
+.modal-content {
+    border-radius: 12px;
+}
+
+.recipe-card-showUser {
+    max-width: 14rem;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.recipe-card-showUser:hover {
+    cursor: pointer;
+}
+
+.recipe-card-img-showUser {
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    min-height: 2.1rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.8rem;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: #07546E;
+}
+
+.carousel-control-prev{
+    transform: translateX(-65%);
+}
+
+.carousel-control-next {
+    transform: translateX(65%);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #07546E;
+    border-radius: 50%;
+}
+
+.card-body {
+    max-height: 20% !important;
+}
