@@ -1,4 +1,3 @@
-/* Stile für die Modal-Dialoge */
 .modal-dialog {
     max-width: 90%;
 }
@@ -7,15 +6,14 @@
     border-radius: 12px;
 }
 
-/* Stile für die Rezept-Karten */
-.recipe-card {
+.recipe-card-showUser {
     max-width: 14rem;
     margin: 0 auto;
     border: 1px solid #ddd;
     border-radius: 8px;
 }
 
-.recipe-card-img {
+.recipe-card-img-showUser {
     height: 8rem;
     object-fit: cover;
     border-radius: 8px 8px 0 0;
@@ -50,8 +48,8 @@
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: #07546E; /* Deine gewünschte Farbe hier */
-    border-radius: 50%; /* Falls du das runde Design beibehalten möchtest */
+    background-color: #07546E;
+    border-radius: 50%;
 }
 
 .card-body {

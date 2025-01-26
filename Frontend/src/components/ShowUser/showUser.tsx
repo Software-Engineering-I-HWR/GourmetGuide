@@ -10,7 +10,9 @@ interface User {
 }
 
 interface UserModalProps {
-    username: string;
+    isLoggedIn: boolean;
+    usernameLoggedIn: string;
+    usernameToShow: string;
     closeModal: () => void;
 }
 
@@ -31,25 +33,39 @@ interface Recipes {
 const hostData: Config = configData;
 
 
-const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
-    const carouselRef = useRef<HTMLDivElement>(null);
+const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usernameToShow, closeModal}) => {
+        const carouselRef = useRef<HTMLDivElement>(null);
+        const [isFollowed, setIsFollowed] = useState<boolean>(false);
 
-    const handlePrev = () => {
-        if (carouselRef.current) {
-            const carousel = new bootstrap.Carousel(carouselRef.current);
-            carousel.prev();  // Wechsel zum vorherigen Slide
-        }
-    };
+        const handlePrev = () => {
+            if (carouselRef.current) {
+                const carousel = new bootstrap.Carousel(carouselRef.current);
+                carousel.prev();
+            }
+        };
 
-    const handleNext = () => {
-        if (carouselRef.current) {
-            const carousel = new bootstrap.Carousel(carouselRef.current);
-            carousel.next();  // Wechsel zum nächsten Slide
+        const handleNext = () => {
+            if (carouselRef.current) {
+                const carousel = new bootstrap.Carousel(carouselRef.current);
+                carousel.next();
+            }
+        };
+
+        const getIfFollow = async () => {
+            try {
+                const respone = await fetch(`https://` + hostData.host + `:30155/getFollowByUsers?user=${encodeURIComponent(usernameLoggedIn)}&follows=${encodeURIComponent(usernameToShow)}`, {
+                    method: 'GET'
+
+                });
+                const isFollowedResponse = await respone.json();
+                return isFollowedResponse[0].Follow === 1
+            } catch (error) {
+                return false
+            }
         }
-    };
 
         const [user, setUser] = useState<User>({
-            name: username,
+            name: usernameToShow,
             recentRecipes: [],
             likedRecipes: [],
         });
@@ -83,7 +99,7 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
 
         async function getOwnRecipes(): Promise<void> {
             try {
-                if (username == "GourmetGuide Team") {
+                if (usernameToShow == "GourmetGuide Team") {
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getRecipesByUser?user=${encodeURIComponent("1")}`,
                         {
@@ -103,14 +119,13 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
                     }
                 } else {
                     const response = await fetch(
-                        `https://` + hostData.host + `:30155/getRecipesByUser?user=${encodeURIComponent(username!)}`,
+                        `https://` + hostData.host + `:30155/getRecipesByUser?user=${encodeURIComponent(usernameToShow!)}`,
                         {
                             method: "GET",
                         }
@@ -118,7 +133,6 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("own", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -132,7 +146,7 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
 
         async function getRatedRecipes(): Promise<void> {
             try {
-                if (username == "GourmetGuide Team") {
+                if (usernameToShow == "GourmetGuide Team") {
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getHighRatedRecipesByUser?user=${encodeURIComponent("1")}`,
                         {
@@ -152,14 +166,13 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
                     }
                 } else {
                     const response = await fetch(
-                        `https://` + hostData.host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(username!)}`,
+                        `https://` + hostData.host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(usernameToShow!)}`,
                         {
                             method: "GET",
                         }
@@ -167,7 +180,6 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -202,9 +214,44 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
 
             if (ownIds.length > 0) {
                 fetchRecipes();
-                console.log(user)
             }
         }, [ownIds]);
+
+        useEffect(() => {
+
+            const checkFollow = async () => {
+                try {
+                    const isUserFollowed = await getIfFollow();
+                    setIsFollowed(isUserFollowed);
+                } catch (error) {
+                    console.error("Error checking follow status:", error);
+                }
+            };
+
+            checkFollow();
+        }, []);
+
+        const toggleFollow = async () => {
+            if (!isLoggedIn) {
+                return;
+            }
+
+            try {
+                const newFollowState = !isFollowed;
+                setIsFollowed(newFollowState);
+
+                const response = await fetch(`https://` + hostData.host + `:30155/saveFollow?user=${encodeURIComponent(usernameLoggedIn)}&follows=${encodeURIComponent(usernameToShow)}&follow=${encodeURIComponent(newFollowState ? 1 : 0)}`, {
+                    method: 'POST',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update follow');
+                }
+            } catch (error) {
+                console.error('Error saving follow:', error);
+                setIsFollowed(!isFollowed);
+            }
+        };
 
         useEffect(() => {
             const fetchRecipes2 = async () => {
@@ -229,54 +276,23 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
-                console.log(user)
             }
         }, [ratedIds]);
 
         useEffect(() => {
-            if (username) {
+            if (usernameToShow) {
                 getOwnRecipes();
+                getRatedRecipes();
+
             }
-        }, [username]);
+        }, [usernameToShow]);
 
-    useEffect(() => {
-        if (username) {
-            getRatedRecipes();
-        }
-    }, [username]);
-
-
-   /* useEffect(() => {
-        const fetchRecipes = async () => {
-            const recipes = await getBestRatedRecipes();
-            if (recipes && Array.isArray(recipes)) {
-                const lastFifteenRecipes: Recipes[] = recipes.slice(-15).map(recipe => ({
-                    id: recipe.ID,
-                    name: recipe.Title,
-                    category: recipe.Category,
-                    link: recipe.Image
-                }));
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    likedRecipes: lastFifteenRecipes,
-                }));
-            } else {
-                console.error('No valid recipes received or the data is not an array.');
-            }
-        };
-        fetchRecipes();
-    }, []);*/
-
-
-    useEffect(() => {
-        // Verhindere das Scrollen auf der Hintergrundseite
-        document.body.style.overflow = "hidden";
-
-        // Setze das Scrollen zurück, wenn das Modal geschlossen wird
-        return () => {
-            document.body.style.overflow = "auto";
-        };
-    }, []);
+        useEffect(() => {
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = "auto";
+            };
+        }, []);
 
         return (<div className="modal show d-block" tabIndex={-1}>
                 <div className="modal-dialog modal-xl">
@@ -286,16 +302,11 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                             <button
                                 type="button"
                                 className="btn"
-                                style={{backgroundColor: "#07546E", color: "white", padding: "1% 2%", marginLeft: "5%"}}
+                                style={isFollowed ? {backgroundColor: "#98afbc", color: "#07546E", padding: "1% 2%", marginLeft: "5%", border: "2px solid #07546E", borderRadius: "8px"} : {backgroundColor: "#07546E", color: "white", padding: "1% 2%", marginLeft: "5%"}}
+                                onClick={toggleFollow}
                             >
-                                Folgen
+                                {isFollowed ? "Gefolgt" : "Folgen"}
                             </button>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                onClick={onClose}
-                                aria-label="Close"
-                            ></button>
                         </div>
                         <div className="modal-body">
                             <h6 className="mb-3 fs-4">Letzte Rezepte:</h6>
@@ -307,7 +318,7 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                                 <div className="carousel-inner">
                                     {user.recentRecipes
                                         .reduce((slides, recipe, index) => {
-                                            const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
+                                            const slideIndex = Math.floor(index / 4);
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
                                             slides[slideIndex].push(recipe);
                                             return slides;
@@ -325,10 +336,10 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card">
+                                                            <div className="card recipe-card-showUser">
                                                                 <img
                                                                     src={recipe.link}
-                                                                    className="card-img-top recipe-card-img"
+                                                                    className="card-img-top recipe-card-img-showUser"
                                                                     alt={recipe.name}
                                                                 />
                                                                 <div className="card-body">
@@ -384,7 +395,7 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                                 <div className="carousel-inner">
                                     {user.likedRecipes
                                         .reduce((slides, recipe, index) => {
-                                            const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
+                                            const slideIndex = Math.floor(index / 4);
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
                                             slides[slideIndex].push(recipe);
                                             return slides;
@@ -402,10 +413,10 @@ const ShowUser: React.FC<UserModalProps> = ({username, closeModal}) => {
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card">
+                                                            <div className="card recipe-card-showUser">
                                                                 <img
                                                                     src={recipe.link}
-                                                                    className="card-img-top recipe-card-img"
+                                                                    className="card-img-top recipe-card-img-showUser"
                                                                     alt={recipe.name}
                                                                 />
                                                                 <div className="card-body">
