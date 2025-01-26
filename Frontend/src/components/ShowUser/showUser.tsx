@@ -42,14 +42,14 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
         const handlePrev = () => {
             if (carouselRef.current) {
                 const carousel = new bootstrap.Carousel(carouselRef.current);
-                carousel.prev();  // Wechsel zum vorherigen Slide
+                carousel.prev();
             }
         };
 
         const handleNext = () => {
             if (carouselRef.current) {
                 const carousel = new bootstrap.Carousel(carouselRef.current);
-                carousel.next();  // Wechsel zum nächsten Slide
+                carousel.next();
             }
         };
 
@@ -301,34 +301,9 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
             }
         }, [usernameToShow]);
 
-
-        /* useEffect(() => {
-             const fetchRecipes = async () => {
-                 const recipes = await getBestRatedRecipes();
-                 if (recipes && Array.isArray(recipes)) {
-                     const lastFifteenRecipes: Recipes[] = recipes.slice(-15).map(recipe => ({
-                         id: recipe.ID,
-                         name: recipe.Title,
-                         category: recipe.Category,
-                         link: recipe.Image
-                     }));
-                     setUser((prevUser) => ({
-                         ...prevUser,
-                         likedRecipes: lastFifteenRecipes,
-                     }));
-                 } else {
-                     console.error('No valid recipes received or the data is not an array.');
-                 }
-             };
-             fetchRecipes();
-         }, []);*/
-
-
         useEffect(() => {
-            // Verhindere das Scrollen auf der Hintergrundseite
             document.body.style.overflow = "hidden";
 
-            // Setze das Scrollen zurück, wenn das Modal geschlossen wird
             return () => {
                 document.body.style.overflow = "auto";
             };
