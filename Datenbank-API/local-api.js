@@ -67,6 +67,7 @@ app.get('/getUsers', (req, res) => {
 
 app.post('/deleteUserByUsername', (req, res) => {
     const user = req.query.user;
+    console.log("User to delete:", user);
 
     const query1 = 'DELETE FROM Account WHERE Username = ?';
     const query2 = 'DELETE FROM Bewertung WHERE Username = ?';
@@ -91,7 +92,7 @@ app.post('/deleteUserByUsername', (req, res) => {
 
     Promise.all(promises)
         .then(() => {
-            res.status(200).send('User und zugehörige Daten erfolgreich gelöscht');
+            res.status(200).json('User und zugehörige Daten erfolgreich gelöscht');
         })
         .catch((error) => {
             console.error("Database Error:", error);

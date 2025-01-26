@@ -85,7 +85,7 @@ const App: React.FC = () => {
                                                                  username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
-                    <Route path="/superview" element={<AdminSuperView username={localStorage.getItem('userEmail')!}/>}/>
+                    <Route path="/superview" element={<AdminSuperView token={localStorage.getItem('access token')!}/>}/>
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
                 {showPopup && localStorage.getItem('loginMessage') != undefined && (

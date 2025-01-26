@@ -499,7 +499,8 @@ app.post('/checkAdmin', async (req, res) => {
 });
 
 app.post('/updatePasswordByUsername', async (req, res) => {
-    const data = req.body;
+    const data = req.query;
+    console.log('Received data: ', data);
 
     try {
         const response = await fetch('http://' + host + ':30156/updatePasswordByUsername', {
@@ -558,13 +559,48 @@ app.get('/getUserInfo', async (req, res) => {
 });
 
 app.post('/deleteUserByUsername', async (req, res) => {
-    const data = req.query;
+    const user = req.query.user;
 
     try {
-        const response = await fetch('http://' + host + ':3006/deleteUserByUsername', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-            }, body: JSON.stringify(data),
+        const response = await fetch(`http://` + host + `:3007/getRecipesByUser?user=${encodeURIComponent(user)}`);
+        if (response.ok) {
+            const data = await response.text();
+            console.log(data);
+            const recipes = JSON.parse(data);
+
+            for (const recipe of recipes) {
+                const id = recipe.ID;
+                console.log(id);
+
+                try {
+                    const response = await fetch(`http://` + host + `:3007/deleteRecipeByID?id=${encodeURIComponent(id)}`, {
+                        method: "POST",
+                    });
+                    if (response.ok) {
+                        const data = await response.text();
+                        res.status(200).send(data);
+                    } else {
+                        console.error('API 2 Error Status:', response.status);
+                        res.status(response.status).send('Error while request');
+                    }
+                } catch (error) {
+                    console.error('Network error:', error.message);
+                    res.status(500).send('Internal server error');
+                }
+            }
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+
+    try {
+        console.log("User to delete:", user);
+        const response = await fetch(`http://` + host + `:3006/deleteUserByUsername?user=${encodeURIComponent(user)}`, {
+            method: "POST",
         });
         if (response.ok) {
             const data = await response.json();
