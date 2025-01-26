@@ -541,7 +541,7 @@ app.get('/getUserInfo', async (req, res) => {
     const user = req.query.user;
 
     try {
-        const response = await fetch(`http://localhost:3006/getUserInfo?user=${user}`);
+        const response = await fetch(`http://` + host + `:3006/getUserInfo?user=${user}`);
         console.log(response);
         if (response.ok) {
             const data = await response.text();
