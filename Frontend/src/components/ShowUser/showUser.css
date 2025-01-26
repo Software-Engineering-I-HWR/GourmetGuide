@@ -13,6 +13,10 @@
     border-radius: 8px;
 }
 
+.recipe-card-showUser:hover {
+    cursor: pointer;
+}
+
 .recipe-card-img-showUser {
     height: 8rem;
     object-fit: cover;

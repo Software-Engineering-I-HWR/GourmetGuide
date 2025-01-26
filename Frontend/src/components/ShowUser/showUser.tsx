@@ -348,16 +348,10 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                 onMouseLeave={() => setShowMessage(false)}
                             >
                                 {isFollowed ? "Gefolgt" : "Folgen"}
-                                {showMessage && <div className="message">
+                                {showMessage && <div className="message" style={{left: "75%"}}>
                                     Du musst dich anmelden, um das Rezept zu bewerten!
                                 </div>}
                             </button>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                onClick={onClose}
-                                aria-label="Close"
-                            ></button>
                         </div>
                         <div className="modal-body">
                             <h6 className="mb-3 fs-4">Letzte Rezepte:</h6>
@@ -387,7 +381,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card-showUser">
+                                                            <div className="card recipe-card-showUser" onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                                                 <img
                                                                     src={recipe.link}
                                                                     className="card-img-top recipe-card-img-showUser"
@@ -464,7 +458,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card-showUser">
+                                                            <div className="card recipe-card-showUser" onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                                                 <img
                                                                     src={recipe.link}
                                                                     className="card-img-top recipe-card-img-showUser"
