@@ -94,6 +94,7 @@
 .showRecipe-title {
     font-size: 3rem;
     margin-bottom: 10px;
+    max-width: 50%;
 }
 
 .showRecipe-category {

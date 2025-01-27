@@ -55,7 +55,7 @@ const Home: React.FC = () => {
                     imageUrl: recipe.Image,
                     id: recipe.ID
                 }));
-                setSampleRecipes(lastFifteenRecipes);
+                setSampleRecipes(lastFifteenRecipes.reverse());
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }

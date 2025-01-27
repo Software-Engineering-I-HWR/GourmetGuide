@@ -352,7 +352,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
             <header className="showRecipe-hero">
                 <div className="showRecipe-contentfield">
                     <div className="showRecipe-contentfield-left">
-                        <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
+                        <h1 className="showRecipe-title" style={{maxWidth: "0.002%"}}>{sampleRecipe?.title}</h1>
                         <p className="showRecipe-category">{sampleRecipe?.category}</p>
                         {avRating != 0 && <div className="rating-system-header">
                             <img className="first-star"
