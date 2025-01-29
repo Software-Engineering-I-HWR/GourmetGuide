@@ -406,7 +406,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                     <span className="visually-hidden">Nächstes</span>
                                 </button>
                             </div>
-                            <h6 className="mb-3 mt-5 fs-4">Rezepte, die ihm gefallen:</h6>
+                            <h6 className="mb-3 mt-5 fs-4">Rezepte, die {user.name} gefallen:</h6>
                             <div
                                 id="likedRecipesCarousel"
                                 className="carousel slide"
