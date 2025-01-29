@@ -4,11 +4,11 @@ GourmetGuide ist eine Anwendung zur Verwaltung und Darstellung von Kochrezepten.
 
 ## 📋 Inhaltsübersicht
 
-- [✨ Funktionen](#-funktionen)
-- [🛠️ Technologien](#-technologien)
-- [🌐 Verwendung](#-verwendung)
-- [🤝 Beitragen](#-beitragen)
-- [📜 Lizenz](#-lizenz)
+- [✨ Funktionen](#funktionen)
+- [🛠️ Technologien](#technologien)
+- [🌐 Verwendung](#verwendung)
+- [🤝 Beitragen](#beitragen)
+- [📜 Lizenz](#lizenz)
 
 ## ✨ Funktionen
 
