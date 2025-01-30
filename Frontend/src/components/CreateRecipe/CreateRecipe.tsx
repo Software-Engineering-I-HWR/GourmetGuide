@@ -396,11 +396,10 @@ const CreateRecipe: React.FC = () => {
                             <div className="showRecipe-properties-ingredients-map">
                                 <input
                                     type="text"
-                                    className={isIngredientsEmpty ? "ingredient-input-filled" : "ingredient-input-empty"}
+                                    className={"ingredient-input-empty"}
                                     value={ingredient}
                                     onChange={(e) => {handleInputUberprufungZutaten(e);
                                         setIngredient(e.target.value)}}
-                                    onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Jedes Wort darf maximal 25 zeichen lang sein und muss durch ein Leherzeichen oder Minuz getrennt sein.")}
                                     placeholder="Gib eine Zutat ein und füge Sie sie mit '+' hinzu..."
                                      required={!isIngredientsEmpty}
 
@@ -440,7 +439,7 @@ const CreateRecipe: React.FC = () => {
                             <input
                                 type="text"
                                 value={step}
-                                className={isDescriptionEmpty ? "step-input-field-empty" : "step-input-field-filled"}
+                                className={"step-input-field-filled"}
                                 onChange={(e) => {handleInputUberprufungZubereitung(e);
                                     setStep(e.target.value)}}
                                 placeholder={isDescriptionEmpty ? "Gib den ersten Schritt des Rezepts ein und füge ihn mit '+' hinzu..." : "Gib den nächsten Schritt des Rezepts ein und füge ihn mit '+' hinzu..."}
@@ -450,6 +449,7 @@ const CreateRecipe: React.FC = () => {
                                 type="button"
                                 className="add-ingredient-button"
                                 onClick={handleAddStep}
+                                disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
                             >
                                 +
                             </button>
