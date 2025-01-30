@@ -81,6 +81,8 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                     <input
                         type="text"
                         pattern="[A-Za-z0-9ÄÖÜäöüß ]*"
+                        onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Es dürfen keine sonderzeichen enthalten sein.")}
+                        onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                         placeholder="Suche..."
                         value={searchTerm}
                         onChange={handleSearchChange}

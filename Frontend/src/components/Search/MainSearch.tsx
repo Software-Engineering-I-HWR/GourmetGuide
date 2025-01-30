@@ -75,8 +75,10 @@ const MainSearch: React.FC = () => {
     }
 
     const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
+
     const addVeg = () => {
-        if (!selectedIngredients.includes(selectedIngr)) {
+        if (!selectedIngredients.includes(selectedIngr)&&ingredients.includes(selectedIngr)) {
+            console.log(selectedIngr);
             setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
         }
     };
@@ -95,7 +97,9 @@ const MainSearch: React.FC = () => {
 
     function handleSelectIngr(ingredient: string) {
         setSearchTerm(ingredient);
-        setSelectedIngr(ingredient);
+        if(ingredients.includes(ingredient)){
+            setSelectedIngr(ingredient);
+        }
     }
 
     interface Recipe {
@@ -125,10 +129,13 @@ const MainSearch: React.FC = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             const allIngredientsJson = await getAllIngredients();
-            allIngredientsJson?.forEach((item) => {
-                setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
-            })
-            setSelectedIngr(allIngredientsJson![0] as unknown as string);
+            if (allIngredientsJson) {
+                setIngredients(allIngredientsJson.map(item => item as unknown as string));
+            }
+            //allIngredientsJson?.forEach((item) => {
+            //    setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
+            //})
+            //setSelectedIngr(allIngredientsJson![0] as unknown as string);
         };
         fetchRecipes();
     }, []);
@@ -188,6 +195,8 @@ const MainSearch: React.FC = () => {
                             <input
                                 type="text"
                                 pattern="[A-Za-z0-9ÄÖÜäöüß ]{0,}"
+                                onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Es dürfen keine sonderzeichen enthalten sein.")}
+                                onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                                 placeholder="Suche..."
                                 value={receptName}
                                 onChange={handleSearchChange}

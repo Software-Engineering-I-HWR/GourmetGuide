@@ -32,7 +32,7 @@ const CreateRecipe: React.FC = () => {
         const [selectedCategory, setSelectedCategory] = useState<string>((selectedStringCategory == "none" ? "" : selectedStringCategory));
         const [selectedTags, setSelectedTags] = useState<string[]>([]);
         const [difficulty, setDifficulty] = useState(3);
-        const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(false);
+        //const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(false);
         const [isCategoryEmpty, setIsCategoryEmpty] = useState<boolean>(false);
         const [isIngredientsEmpty, setIsIngredientsEmpty] = useState<boolean>(false);
         const [step, setStep] = useState<string>('');
@@ -219,10 +219,6 @@ const CreateRecipe: React.FC = () => {
         };
 
         useEffect(() => {
-            title.length > 0 ? setIsTitleEmpty(true) : setIsTitleEmpty(false);
-        }, [title]);
-
-        useEffect(() => {
             selectedCategory == "" ? setIsCategoryEmpty(true) : setIsCategoryEmpty(false);
         }, [selectedCategory]);
 
@@ -234,6 +230,52 @@ const CreateRecipe: React.FC = () => {
             formatSteps(description);
             description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
         }, [description]);
+
+
+    const handleInputUberprufungTitel = (e) => {
+        const value = e.target.value;
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        if (pattern.test(value)) {
+            e.target.setCustomValidity('');
+            e.target.className = "input-field-reqired-filled";
+        } else {
+            e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein und muss durch ein Leherzeichen oder Minuß getrennt sein.');
+            e.target.className = "input-field-reqired-empty";
+        }
+    };
+    const handleInputUberprufungZutaten = (e) => {
+        const value = e.target.value;
+        if(ingredientsList.length>0&&value==""){
+            e.target.setCustomValidity('');
+            e.target.className = "ingredient-input-filled";
+            return
+        }
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        if (pattern.test(value)) {
+            e.target.setCustomValidity('');
+            e.target.className = "ingredient-input-filled";
+        } else {
+            e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein und muss durch ein Leherzeichen oder Minuß getrennt sein.');
+            e.target.className = "ingredient-input-empty";
+        }
+    };
+    const handleInputUberprufungZubereitung = (e) => {
+        const value = e.target.value;
+        if(descriptionAsArray.length>0&&value==""){
+            e.target.setCustomValidity('');
+            e.target.className = "step-input-field-filled";
+            return
+        }
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        if (pattern.test(value)) {
+            e.target.setCustomValidity('');
+            e.target.className = "step-input-field-filled";
+        } else {
+            e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein und muss durch ein Leherzeichen oder Minuß getrennt sein.');
+            e.target.className = "step-input-field-empty";
+        }
+    };
+
 
         return (
             <body className="showRecipe">
@@ -249,10 +291,11 @@ const CreateRecipe: React.FC = () => {
                                 <input
                                     type="text"
                                     value={title}
-                                    className={isTitleEmpty ? "input-field-reqired-filled" : "input-field-reqired-empty"}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    className="input-field-reqired-empty"
+                                    onChange={(e) => {handleInputUberprufungTitel(e);
+                                        setTitle(e.target.value)}}
                                     placeholder="Rezepttitel"
-                                    required
+
                                 />
                             </div>
                             <div className="showRecipe-category">
@@ -355,14 +398,20 @@ const CreateRecipe: React.FC = () => {
                                     type="text"
                                     className={isIngredientsEmpty ? "ingredient-input-filled" : "ingredient-input-empty"}
                                     value={ingredient}
-                                    onChange={(e) => setIngredient(e.target.value)}
+                                    onChange={(e) => {handleInputUberprufungZutaten(e);
+                                        setIngredient(e.target.value)}}
+                                    onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Jedes Wort darf maximal 25 zeichen lang sein und muss durch ein Leherzeichen oder Minuz getrennt sein.")}
                                     placeholder="Gib eine Zutat ein und füge Sie sie mit '+' hinzu..."
-                                    required={!isIngredientsEmpty}
+                                     required={!isIngredientsEmpty}
+
                                 />
                                 <button
                                     type="button"
                                     className="add-ingredient-button"
                                     onClick={handleAddIngredient}
+
+                                    disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
+
                                 >
                                     +
                                 </button>
@@ -392,9 +441,10 @@ const CreateRecipe: React.FC = () => {
                                 type="text"
                                 value={step}
                                 className={isDescriptionEmpty ? "step-input-field-empty" : "step-input-field-filled"}
-                                onChange={(e) => setStep(e.target.value)}
+                                onChange={(e) => {handleInputUberprufungZubereitung(e);
+                                    setStep(e.target.value)}}
                                 placeholder={isDescriptionEmpty ? "Gib den ersten Schritt des Rezepts ein und füge ihn mit '+' hinzu..." : "Gib den nächsten Schritt des Rezepts ein und füge ihn mit '+' hinzu..."}
-                                required={isDescriptionEmpty}
+                                 required={isDescriptionEmpty}
                             ></input>
                             <button
                                 type="button"
