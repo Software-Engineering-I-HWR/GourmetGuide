@@ -439,7 +439,7 @@ const CreateRecipe: React.FC = () => {
                             <input
                                 type="text"
                                 value={step}
-                                className={"step-input-field-filled"}
+                                className={"step-input-field-empty"}
                                 onChange={(e) => {handleInputUberprufungZubereitung(e);
                                     setStep(e.target.value)}}
                                 placeholder={isDescriptionEmpty ? "Gib den ersten Schritt des Rezepts ein und füge ihn mit '+' hinzu..." : "Gib den nächsten Schritt des Rezepts ein und füge ihn mit '+' hinzu..."}
@@ -449,7 +449,7 @@ const CreateRecipe: React.FC = () => {
                                 type="button"
                                 className="add-ingredient-button"
                                 onClick={handleAddStep}
-                                disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
+                                disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)}
                             >
                                 +
                             </button>
