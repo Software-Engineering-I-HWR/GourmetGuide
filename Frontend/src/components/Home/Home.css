@@ -7,3 +7,16 @@
         width: 100%;
     }
 }
+
+.recipes__container {
+    transition: opacity 0.5s ease;
+    will-change: opacity;
+}
+
+.recipes__container.fade-out {
+    opacity: 0;  /* Inhalte ausblenden */
+}
+
+.recipes__container.fade-in {
+    opacity: 1;  /* Inhalte einblenden */
+}
