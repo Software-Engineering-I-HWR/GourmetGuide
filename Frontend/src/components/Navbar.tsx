@@ -97,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                         }}
                         className="navbar__link"
                     >
-                        Suche
+                        Suchen
                     </a>
                 </form>
                 <div className="navbar-actions">
