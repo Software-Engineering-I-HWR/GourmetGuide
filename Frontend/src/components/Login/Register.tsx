@@ -124,8 +124,8 @@ const Register: React.FC = () => {
                         <input
                             type="password"
                             placeholder="Passwort wiederholen..."
-                            pattern =".{4,}"
-                            onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Passwort muss mindestens 4 Zeichen lang sein")}
+                            pattern=".{4,}"
+                            onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Passwort muss mindestens 4 Zeichen enthalten")}
                             onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                             value={passwordRepeat}
                             onChange={enterPasswordRepeat}

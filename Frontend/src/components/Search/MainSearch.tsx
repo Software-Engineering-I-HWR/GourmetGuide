@@ -37,6 +37,11 @@ const MainSearch: React.FC = () => {
     const selectedStringArrayAllergien = selectedStringAllergien == "none" ? [] : selectedStringAllergien.split(",");
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
+    const [ingredients, setIngredients] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [isVisible, setIsVisible] = useState(true);
+
     const elementRef = useRef<HTMLUListElement>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,11 +79,8 @@ const MainSearch: React.FC = () => {
         return temp
     }
 
-    const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
-
     const addVeg = () => {
-        if (!selectedIngredients.includes(selectedIngr)&&ingredients.includes(selectedIngr)) {
-            console.log(selectedIngr);
+        if (!selectedIngredients.includes(selectedIngr) && ingredients.includes(selectedIngr)) {
             setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
         }
     };
@@ -97,7 +99,7 @@ const MainSearch: React.FC = () => {
 
     function handleSelectIngr(ingredient: string) {
         setSearchTerm(ingredient);
-        if(ingredients.includes(ingredient)){
+        if (ingredients.includes(ingredient)) {
             setSelectedIngr(ingredient);
         }
     }
@@ -125,17 +127,12 @@ const MainSearch: React.FC = () => {
         }
     }
 
-    const [ingredients, setIngredients] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {
             const allIngredientsJson = await getAllIngredients();
             if (allIngredientsJson) {
                 setIngredients(allIngredientsJson.map(item => item as unknown as string));
             }
-            //allIngredientsJson?.forEach((item) => {
-            //    setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
-            //})
-            //setSelectedIngr(allIngredientsJson![0] as unknown as string);
         };
         fetchRecipes();
     }, []);
@@ -155,7 +152,6 @@ const MainSearch: React.FC = () => {
         }
     }
 
-    const [categories, setCategories] = useState<string[]>([]);
     useEffect(() => {
         const fetchCategories = async () => {
             const allCategoriesJson = await getAllCategories();
@@ -183,7 +179,6 @@ const MainSearch: React.FC = () => {
     const filteredIngredients = ingredients.filter((ingredient) =>
         ingredient.toLowerCase().includes(searchTerm.toLowerCase()) // Filter nach Suchbegriff
     );
-    const [isVisible, setIsVisible] = useState(true);
     return (
         <div>
             <main className="main-content">
@@ -195,7 +190,7 @@ const MainSearch: React.FC = () => {
                             <input
                                 type="text"
                                 pattern="[A-Za-z0-9ÄÖÜäöüß ]{0,}"
-                                onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Es dürfen keine sonderzeichen enthalten sein.")}
+                                onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Es dürfen keine Sonderzeichen enthalten sein!")}
                                 onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                                 placeholder="Suche..."
                                 value={receptName}
@@ -282,7 +277,8 @@ const MainSearch: React.FC = () => {
                         <hr/>
                         <label className="select-ingredients-label">
                             <text style={{fontSize: "1.25rem"}}>Zutaten auswählen:</text>
-                            <div className="select-multiple-add-container" onFocus={() => setShowIngredientsTable(true)}>
+                            <div className="select-multiple-add-container"
+                                 onFocus={() => setShowIngredientsTable(true)}>
                                 <input
                                     className="select-mehre-add-container-text"
                                     type="text"
