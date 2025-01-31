@@ -306,10 +306,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
                 setSampleRecipe(newRecipe);
+                setShowLoading(0)
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
+        setShowLoading(1);
         fetchRecipe();
     }, []);
 
@@ -338,21 +340,13 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         }
     }, [showPopup]);
 
-    useEffect(() => {
-        if (sampleRecipe == undefined) {
-            setShowLoading(1);
-        } else {
-            setShowLoading(0)
-        }
-    }, [sampleRecipe]);
-
     return (
         <body className="showRecipe">
         {showLoading == 0 && <>
             <header className="showRecipe-hero">
                 <div className="showRecipe-contentfield">
                     <div className="showRecipe-contentfield-left">
-                        <h1 className="showRecipe-title" style={{maxWidth: "0.002%"}}>{sampleRecipe?.title}</h1>
+                        <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
                         <p className="showRecipe-category">{sampleRecipe?.category}</p>
                         {avRating != 0 && <div className="rating-system-header">
                             <img className="first-star"

@@ -105,7 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                         <img src="../../public/images/Navbar/own-page.png" alt="Eigener Bereich"
                              className="navbar__icons_to_navigate"/>
                     </a>
-                    <a href='/user' className="navbar__link" data-toggle="tooltip" data-placement="bottom" title="User">
+                    <a href='/users' className="navbar__link" data-toggle="tooltip" data-placement="bottom" title="User">
                         <img src="../../public/images/Navbar/Users.png" alt="User"
                              className="navbar__icons_to_navigate"/>
                     </a>
