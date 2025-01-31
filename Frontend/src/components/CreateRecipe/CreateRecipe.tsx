@@ -119,6 +119,23 @@ const CreateRecipe: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        const elements = document.querySelectorAll('[data-notwendigEinzhinzu="true"]');
+        for (const temp of elements) {
+            const e = temp as HTMLInputElement;
+            if(e.className.startsWith('ingredient')){
+            if(isIngredientsEmpty){
+                    e.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
+                    e.reportValidity();
+                    e.className = "ingredient-input-empty";
+            }
+            }else {
+                if(isDescriptionEmpty){
+                    e.setCustomValidity('Es muss mindestens ein Zubereitungsschritt hinzugefügt werden!');
+                    e.reportValidity();
+                    e.className = "step-input-field-empty";
+                }
+            }
+        }
         toggleSaveButton(true);
         setCreateRecipeMessage("Rezept wird gespeichert. Bitte warten...");
 
@@ -231,47 +248,29 @@ const CreateRecipe: React.FC = () => {
     }, [description]);
 
 
-    const handleInputUberprufungTitel = (e) => {
+    const handleInputUberprufung = (e,darfleersein: boolean,nichtakzeptierRot:string,aktzeptiertWeis:string) => {
         const value = e.target.value;
-        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        if(value===""&&!darfleersein){
+            if(nichtakzeptierRot.startsWith("input")){
+                e.target.setCustomValidity('Der Titel darf nicht lehr sein!');
+            }else if(nichtakzeptierRot.startsWith("ingredient")){
+                e.target.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
+            }else if(nichtakzeptierRot.startsWith("step")){
+                e.target.setCustomValidity('Es muss mindestens ein Zubereitungsschritt hinzugefügt werden!');
+            }
+
+            e.target.reportValidity();
+            e.target.className = nichtakzeptierRot;
+            return;
+        }
         if (pattern.test(value)) {
             e.target.setCustomValidity('');
-            e.target.className = "input-field-reqired-filled";
+            e.target.className = aktzeptiertWeis;
         } else {
             e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
-            e.target.className = "input-field-reqired-empty";
-        }
-    };
-    const handleInputUberprufungZutaten = (e) => {
-        const value = e.target.value;
-        if (ingredientsList.length > 0 && value == "") {
-            e.target.setCustomValidity('');
-            e.target.className = "ingredient-input-filled";
-            return
-        }
-        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
-        if (pattern.test(value)) {
-            e.target.setCustomValidity('');
-            e.target.className = "ingredient-input-filled";
-        } else {
-            e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
-            e.target.className = "ingredient-input-empty";
-        }
-    };
-    const handleInputUberprufungZubereitung = (e) => {
-        const value = e.target.value;
-        if (descriptionAsArray.length > 0 && value == "") {
-            e.target.setCustomValidity('');
-            e.target.className = "step-input-field-filled";
-            return
-        }
-        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
-        if (pattern.test(value)) {
-            e.target.setCustomValidity('');
-            e.target.className = "step-input-field-filled";
-        } else {
-            e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
-            e.target.className = "step-input-field-empty";
+            e.target.reportValidity();
+            e.target.className = nichtakzeptierRot;
         }
     };
 
@@ -291,10 +290,11 @@ const CreateRecipe: React.FC = () => {
                                 value={title}
                                 className="input-field-reqired-empty"
                                 onChange={(e) => {
-                                    handleInputUberprufungTitel(e);
+                                    handleInputUberprufung(e,false,"input-field-reqired-empty","input-field-reqired-filled");
                                     setTitle(e.target.value)
                                 }}
                                 placeholder="Rezepttitel"
+                                required
 
                             />
                         </div>
@@ -396,19 +396,23 @@ const CreateRecipe: React.FC = () => {
                             <input
                                 type="text"
                                 className={"ingredient-input-empty"}
+                                data-notwendigEinzhinzu ="true"
                                 value={ingredient}
                                 onChange={(e) => {
-                                    handleInputUberprufungZutaten(e);
+                                    handleInputUberprufung(e,isIngredientsEmpty,"ingredient-input-empty","ingredient-input-filled");
                                     setIngredient(e.target.value)
                                 }}
+                                onSubmit={(e)=> {if(!isIngredientsEmpty){ e.currentTarget.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
+                                    e.currentTarget.reportValidity();}}}
+
                                 placeholder="Gib eine Zutat ein und füge Sie sie mit '+' hinzu..."
                                 required={!isIngredientsEmpty}
                             />
                             <button
                                 type="button"
                                 className="add-ingredient-button"
-                                onClick={(e)=> {e.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
-                                    handleAddIngredient()}}
+                                onClick={
+                                    handleAddIngredient}
                                 disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
                             >
                                 +
@@ -439,8 +443,9 @@ const CreateRecipe: React.FC = () => {
                             type="text"
                             value={step}
                             className={"step-input-field-empty"}
+                            data-notwendigEinzhinzu ="true"
                             onChange={(e) => {
-                                handleInputUberprufungZubereitung(e);
+                                handleInputUberprufung(e,!isDescriptionEmpty,"step-input-field-empty","step-input-field-filled");
                                 setStep(e.target.value)
                             }}
                             placeholder={isDescriptionEmpty ? "Gib den ersten Schritt des Rezepts ein und füge ihn mit '+' hinzu..." : "Gib den nächsten Schritt des Rezepts ein und füge ihn mit '+' hinzu..."}
