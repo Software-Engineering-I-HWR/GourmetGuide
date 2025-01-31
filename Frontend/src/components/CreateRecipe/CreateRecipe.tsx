@@ -407,7 +407,8 @@ const CreateRecipe: React.FC = () => {
                             <button
                                 type="button"
                                 className="add-ingredient-button"
-                                onClick={handleAddIngredient}
+                                onClick={(e)=> {e.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
+                                    handleAddIngredient()}}
                                 disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
                             >
                                 +
