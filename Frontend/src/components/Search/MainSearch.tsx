@@ -321,6 +321,8 @@ const MainSearch: React.FC = () => {
                                 <button className="add-button-ingredients" onClick={() => {
                                     addVeg();
                                     setShowIngredientsTable(false);
+                                    setSearchTerm("");
+                                    setSelectedIngr("");
                                 }}>Hinzufügen
                                 </button>
                             </div>
@@ -346,15 +348,6 @@ const MainSearch: React.FC = () => {
                             }
                         }}>Suchen
                         </button>
-                        <div style={{display: "none"}}>
-                            <hr/>
-                            <p>Such Name: {receptName}</p>
-                            <p>ausgewaehltes Rating: {selectedRating}</p>
-                            <p>ausgewaehlte Kategorie: {selectedCategory}</p>
-                            <p>ausgewaehlte Schwierigkeit: {selectedDifficulty}</p>
-                            <p>ausgewaehlte Zutaten: {selectedIngredients.join(', ')}</p>
-                            <p> Test: {selectedIngredients}</p>
-                        </div>
                     </div>
                 ) : ""
                 }
