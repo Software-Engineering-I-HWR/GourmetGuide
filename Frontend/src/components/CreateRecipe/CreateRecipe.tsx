@@ -340,7 +340,7 @@ const CreateRecipe: React.FC = () => {
                                             value={imageUrl}
                                             onChange={(e) => setImageUrl(e.target.value)}
                                             placeholder="Lade ein Bild hoch oder gib eine Bild-URL ein..."
-                                            className="form-control"
+                                            className={imageUrl == "" ? "form-control-red" : "form-control"}
                                             style={{border: "3px solid #c53b31",borderRadius: "8px"}}
                                         />
                                     </div>
