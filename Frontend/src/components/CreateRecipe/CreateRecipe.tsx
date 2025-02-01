@@ -40,6 +40,7 @@ const CreateRecipe: React.FC = () => {
         const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
         const [uploadedImage, setUploadedImage] = useState<File | null>(null);
         const [isDisabled, setIsDisabled] = useState<boolean>(false);
+        const [isValid, setIsValid] = useState<boolean | null>(null);
 
         async function getAllCategories(): Promise<Category[] | null> {
             try {
@@ -235,6 +236,25 @@ const CreateRecipe: React.FC = () => {
             description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
         }, [description]);
 
+        const checkImageURL = (url: string): Promise<boolean> => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);  // Bild geladen → gültig
+                img.onerror = () => resolve(false); // Fehler → ungültig
+                img.src = url;
+            });
+        };
+
+
+        useEffect(() => {
+            if (imageUrl.trim() === "") {
+                setIsValid(null); // Noch kein Input
+                return;
+            }
+
+            checkImageURL(imageUrl).then((isValid) => setIsValid(isValid));
+        }, [imageUrl]);
+
         return (
             <body className="showRecipe">
             {showPopupMessage && (
@@ -340,8 +360,7 @@ const CreateRecipe: React.FC = () => {
                                             value={imageUrl}
                                             onChange={(e) => setImageUrl(e.target.value)}
                                             placeholder="Lade ein Bild hoch oder gib eine Bild-URL ein..."
-                                            className={imageUrl == "" ? "form-control-red" : "form-control"}
-                                            style={{border: "3px solid #c53b31",borderRadius: "8px"}}
+                                            className={isValid ? "form-control-valid" : "form-control-red"}
                                         />
                                     </div>
                                 </div>
@@ -407,7 +426,8 @@ const CreateRecipe: React.FC = () => {
                     </div>
 
                     <div className="difficulty-slider-container">
-                        <p style={{marginBottom: "2%", marginTop: "2%", color: "black"}} className={"allergen-instructions-empty"}>Bitte
+                        <p style={{marginBottom: "2%", marginTop: "2%", color: "black"}}
+                           className={"allergen-instructions-empty"}>Bitte
                             wähle die Schwierigkeit des Rezeptes aus!</p>
                         {/* Label above the slider */}
                         <div className="difficulty-labels">

@@ -701,3 +701,8 @@
     border: 3px solid #c53b31;
     border-radius: 8px;
 }
+
+.form-control-valid {
+    border: none;
+    border-radius: 8px;
+}

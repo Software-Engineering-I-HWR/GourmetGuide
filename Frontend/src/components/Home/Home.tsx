@@ -153,7 +153,7 @@ const Home: React.FC = () => {
                                 background: 'none',
                                 border: "none",
                                 fontSize: '2rem',
-                                cursor: 'pointer',
+                                cursor: whichPage < 1 ? 'pointer' : 'not-allowed',
                             }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
