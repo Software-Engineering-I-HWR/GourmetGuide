@@ -119,11 +119,11 @@ const CreateRecipe: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        const elements = document.querySelectorAll('[data-notwendigEinzhinzu="true"]');
+        const elements = document.querySelectorAll('[data-notwendigEinzhinzu]');
         for (const temp of elements) {
             const e = temp as HTMLInputElement;
             if(e.className.startsWith('ingredient')){
-            if(isIngredientsEmpty){
+            if(!isIngredientsEmpty){
                     e.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
                     e.reportValidity();
                     e.className = "ingredient-input-empty";
@@ -135,6 +135,10 @@ const CreateRecipe: React.FC = () => {
                     e.className = "step-input-field-empty";
                 }
             }
+
+        }
+        if(!isIngredientsEmpty&&isDescriptionEmpty){
+            return;
         }
         toggleSaveButton(true);
         setCreateRecipeMessage("Rezept wird gespeichert. Bitte warten...");
@@ -248,9 +252,11 @@ const CreateRecipe: React.FC = () => {
     }, [description]);
 
 
-    const handleInputUberprufung = (e,darfleersein: boolean,nichtakzeptierRot:string,aktzeptiertWeis:string) => {
+    const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfleersein: boolean, nichtakzeptierRot: string, aktzeptiertWeis: string) => {
+        console.log(e,darfleersein,nichtakzeptierRot,e.target.value);
         const value = e.target.value;
         const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+
         if(value===""&&!darfleersein){
             if(nichtakzeptierRot.startsWith("input")){
                 e.target.setCustomValidity('Der Titel darf nicht lehr sein!');
@@ -396,24 +402,25 @@ const CreateRecipe: React.FC = () => {
                             <input
                                 type="text"
                                 className={"ingredient-input-empty"}
-                                data-notwendigEinzhinzu ="true"
+                                data-notwendigEinzhinzu ="ingredient"
                                 value={ingredient}
                                 onChange={(e) => {
-                                    handleInputUberprufung(e,isIngredientsEmpty,"ingredient-input-empty","ingredient-input-filled");
+                                    handleInputUberprufung(e, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
                                     setIngredient(e.target.value)
                                 }}
-                                onSubmit={(e)=> {if(!isIngredientsEmpty){ e.currentTarget.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
-                                    e.currentTarget.reportValidity();}}}
-
                                 placeholder="Gib eine Zutat ein und füge Sie sie mit '+' hinzu..."
                                 required={!isIngredientsEmpty}
                             />
                             <button
                                 type="button"
                                 className="add-ingredient-button"
-                                onClick={
-                                    handleAddIngredient}
-                                disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)}
+
+                            onClick={()=>{
+                                handleInputUberprufung({ target: (document.querySelectorAll('[data-notwendigEinzhinzu="ingredient"]').item(0)) } as React.ChangeEvent<HTMLInputElement>, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
+                                if(new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)){
+                                    handleAddIngredient()}}
+                                }
+
                             >
                                 +
                             </button>
@@ -443,9 +450,9 @@ const CreateRecipe: React.FC = () => {
                             type="text"
                             value={step}
                             className={"step-input-field-empty"}
-                            data-notwendigEinzhinzu ="true"
+                            data-notwendigEinzhinzu ="step"
                             onChange={(e) => {
-                                handleInputUberprufung(e,!isDescriptionEmpty,"step-input-field-empty","step-input-field-filled");
+                                handleInputUberprufung(e, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
                                 setStep(e.target.value)
                             }}
                             placeholder={isDescriptionEmpty ? "Gib den ersten Schritt des Rezepts ein und füge ihn mit '+' hinzu..." : "Gib den nächsten Schritt des Rezepts ein und füge ihn mit '+' hinzu..."}
@@ -454,8 +461,12 @@ const CreateRecipe: React.FC = () => {
                         <button
                             type="button"
                             className="add-ingredient-button"
-                            onClick={handleAddStep}
-                            disabled={!new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)}
+                            onClick={()=>{
+                                handleInputUberprufung({ target: document.querySelectorAll('[data-notwendigEinzhinzu="step"]').item(0) } as React.ChangeEvent<HTMLInputElement>, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
+                                if(new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)){
+                                    handleAddStep()
+                                }
+                                }}
                         >
                             +
                         </button>
