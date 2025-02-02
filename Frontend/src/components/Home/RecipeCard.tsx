@@ -12,7 +12,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({title, description, imageUrl}) =
         <div className="recipe-card">
             <img src={imageUrl} alt={title} className="recipe-card__image"/>
             <div className="recipe-card__info">
-                <h3 className="recipe-card__title">{title}</h3>
+                <h3 className="recipe-card__title">{title.length <= 45 ? title : title.slice(0,45)+"..."}</h3>
                 <p className="recipe-card__description">{description}</p>
             </div>
         </div>

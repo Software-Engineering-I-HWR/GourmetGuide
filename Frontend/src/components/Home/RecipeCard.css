@@ -18,7 +18,9 @@
 
 .recipe-card__title {
     font-size: 1.25rem;
+    min-height: 3rem;
     margin: 0;
+    overflow-wrap: break-word;
 }
 
 .recipe-card__description {

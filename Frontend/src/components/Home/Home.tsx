@@ -182,10 +182,8 @@ const Home: React.FC = () => {
                     </div>
                 </section>
             </main>
-
         </div>
-    )
-        ;
+    );
 };
 
 export default Home;

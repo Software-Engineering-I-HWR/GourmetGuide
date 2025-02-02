@@ -95,15 +95,24 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                                     "Suche darf keine Sonderzeichen beinhalten!");
                             }
                         }}
-                        className="navbar__link"
+                        className="navbar__link_search"
                     >
                         Suche
                     </a>
                 </form>
                 <div className="navbar-actions">
-                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Eigener
-                        Bereich</a>
-                    <a href='/categories' className="navbar__link">Kategorien</a>
+                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link" data-toggle="tooltip" data-placement="bottom" title="Eigener Bereich">
+                        <img src="../../public/images/Navbar/own-page.png" alt="Eigener Bereich"
+                             className="navbar__icons_to_navigate"/>
+                    </a>
+                    <a href='/users' className="navbar__link" data-toggle="tooltip" data-placement="bottom" title="User">
+                        <img src="../../public/images/Navbar/Users.png" alt="User"
+                             className="navbar__icons_to_navigate"/>
+                    </a>
+                    <a href='/categories' className="navbar__link" data-toggle="tooltip" data-placement="bottom" title="Kategorien">
+                        <img src="../../public/images/Navbar/category.png" alt="Kategorien"
+                             className="navbar__icons_to_navigate"/>
+                    </a>
                     <button onClick={() => {
                         if (isLoggedIn) {
                             handleLogout();
@@ -111,7 +120,12 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                             window.location.href = window.location.origin + '/log-in';
                         }
                     }}
-                            className="navbar__link">{isLoggedIn ? "Abmelden" : "Login"}</button>
+                            className="navbar__link"
+                            data-toggle="tooltip" data-placement="bottom" title={isLoggedIn ? "Log out" : "Log In"}
+                    >
+                        <img src={isLoggedIn ? "../../public/images/Navbar/log-out.png" : "../../public/images/Navbar/log-in.png"} alt="Log-In / Log-Out"
+                             className="navbar__icons_to_navigate"/>
+                    </button>
                 </div>
             </div>
         </nav>
