@@ -220,6 +220,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     recentRecipes: loadedRecipes,
                 }));
+                setShowLoading1(0)
             };
 
             if (ownIds.length > 0) {
@@ -284,6 +285,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     likedRecipes: loadedRecipes,
                 }));
+                setShowLoading2(0)
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
@@ -292,12 +294,14 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
         }, [ratedIds]);
 
         useEffect(() => {
+            setShowLoading1(1)
             if (usernameToShow) {
                 getOwnRecipes();
             }
         }, [usernameToShow]);
 
         useEffect(() => {
+            setShowLoading2(1)
             if (usernameToShow) {
                 getRatedRecipes();
             }
@@ -310,22 +314,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                 document.body.style.overflow = "auto";
             };
         }, []);
-
-        useEffect(() => {
-                if (user.likedRecipes == undefined) {
-                    setShowLoading1(1);
-                } else {
-                    setShowLoading1(0)
-                }
-        }, [user.likedRecipes]);
-
-        useEffect(() => {
-                if (user.recentRecipes == undefined) {
-                    setShowLoading2(1);
-                } else {
-                    setShowLoading2(0)
-                }
-        }, [user.recentRecipes]);
 
         return (<div className="modal show d-block" tabIndex={-1}>
                 <div className="modal-dialog modal-xl">

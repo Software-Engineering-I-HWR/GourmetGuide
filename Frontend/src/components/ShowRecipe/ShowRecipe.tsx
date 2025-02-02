@@ -306,10 +306,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
                 setSampleRecipe(newRecipe);
+                setShowLoading(0);
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
+        setShowLoading(1);
         fetchRecipe();
     }, []);
 

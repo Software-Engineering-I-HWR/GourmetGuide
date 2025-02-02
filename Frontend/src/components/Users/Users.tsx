@@ -199,7 +199,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                                     <a onClick={() => {
                                         setShowUserByName(user.user)
                                         setShowUser(!showUser)
-                                    }} className="btn text-white" style={{background: "rgb(7,84,110)"}} href="#"
+                                    }} className="btn text-white" style={{background: "rgb(7,84,110)"}}
                                        role="button">View</a>
                                 </td>
                                 <td>{user.rezepte} Rezepte</td>

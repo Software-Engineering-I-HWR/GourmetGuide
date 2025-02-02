@@ -33,6 +33,7 @@ const Home: React.FC = () => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
     const [whichPage, setWhichPage] = useState<number>(0)
     const [animationClass, setAnimationClass] = useState<string>('');
+    const [showLoading, setShowLoading] = useState(false);
 
     async function getHighRatedRecipes(): Promise<Recipe[] | null> {
         const promt = `https://` + hostData.host + `:30155/getFilteredRecipes` +
@@ -74,6 +75,10 @@ const Home: React.FC = () => {
     }
 
     useEffect(() => {
+        setShowLoading(true);
+    }, []);
+
+    useEffect(() => {
         const fetchRecipes = async () => {
             if (whichPage === 1) {
                 const recipes = await getRecipes();
@@ -98,6 +103,7 @@ const Home: React.FC = () => {
                     setSampleRecipes(lastFifteenRecipes);
                 }
             }
+            setShowLoading(false)
         };
 
         // Fade-Out (vor dem Fetch) und Fade-In (nach dem Fetch)
@@ -163,6 +169,12 @@ const Home: React.FC = () => {
                             </svg>
                         </button>
                     </div>
+                    {showLoading &&
+                        <div className="text-center" style={{minHeight: "100vh", marginTop: "-10%", paddingTop: "12%"}}>
+                            <div className="spinner-border" style={{color: "#07536D"}} role="status">
+                                <span className="sr-only"></span>
+                            </div>
+                        </div>}
                     <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center'}}
