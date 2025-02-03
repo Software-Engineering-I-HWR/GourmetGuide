@@ -484,20 +484,39 @@ app.post('/setLastLoginByUser', (req, res) => {
     connection.query(query, [data.user, isoFormattedDate, data.maxID], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Speichern der Bewertung');
+            res.status(500).send('Fehler beim Speichern des letzten Logins');
         } else {
-            res.status(200).send('Bewertung erfolgreich gespeichert');
+            res.status(200).send('Last Login erfolgreich gespeichert');
         }
     });
 });
 
 app.get('/getMaxID', (req, res) => {
-    const query = 'SELECT MAX(id) AS max_id FROM Rezepte;';
+    const query = 'SELECT MAX(ID) AS max_id FROM Rezept;';
 
     connection.query(query, [], (error, results) => {
         if (error) {
             console.error("Database Error:", error);
             res.status(500).send('Fehler beim Abrufen der maxID');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getNewRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const maxID = req.query.maxID;
+
+    const query = 'SELECT R.ID, R.Title, R.Category, R.Image, R.Creator FROM Rezept AS R, UserFolgen AS U WHERE U.UserFollowing = ? AND U.UserFollowed = R.Creator AND R.ID > ?;';
+
+    console.log(req.query);
+    console.log(query);
+
+    connection.query(query, [user, maxID], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
         } else {
             res.status(200).json(results);
         }

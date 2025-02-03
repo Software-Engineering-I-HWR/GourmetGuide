@@ -394,23 +394,6 @@ app.post('/saveBookmark', async (req, res) => {
     }
 });
 
-app.get('/getMaxID', async (req, res) => {
-    try {
-        const response = await fetch('http://' + host + ':3007/getMaxID');
-        console.log(response);
-        if (response.ok) {
-            const data = await response.text();
-            res.status(200).send(data);
-        } else {
-            console.error('API 2 Error Status:', response.status);
-            res.status(response.status).send('Error while request');
-        }
-    } catch (error) {
-        console.error('Network error:', error.message);
-        res.status(500).send('Internal server error');
-    }
-});
-
 app.get('/getFollowByUsers', async (req, res) => {
     const user = req.query.user;
     const follows = req.query.follows;
@@ -467,7 +450,7 @@ app.get('/getLastLoginByUser', async (req, res) => {
 });
 
 app.post('/setLastLoginByUser', async (req, res) => {
-    const username = req.query.user;
+    const user = req.query.user;
     console.log("Received data:", req.query);
 
     try {
@@ -479,7 +462,7 @@ app.post('/setLastLoginByUser', async (req, res) => {
             const maxID = id.max_id;
 
             try {
-                const response = await fetch(`http://` + host + `:3007/saveBookmark?user=${encodeURIComponent(username)}&maxID=${encodeURIComponent(maxID)}`, {
+                const response = await fetch(`http://` + host + `:3007/setLastLoginByUser?user=${encodeURIComponent(user)}&maxID=${encodeURIComponent(maxID)}`, {
                     method: 'POST',
                 });
                 if (response.ok) {
@@ -493,6 +476,23 @@ app.post('/setLastLoginByUser', async (req, res) => {
                 console.error('Network error:', error.message);
                 res.status(500).send('Internal server error');
             }
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/getMaxID', async (req, res) => {
+    try {
+        const response = await fetch('http://' + host + ':3007/getMaxID');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
         } else {
             console.error('API 2 Error Status:', response.status);
             res.status(response.status).send('Error while request');
@@ -710,50 +710,30 @@ app.post('/deleteUserByUsername', async (req, res) => {
     }
 });
 
-app.post('/getNewRecipesByUser', async (req, res) => {
+app.get('/getNewRecipesByUser', async (req, res) => {
     const user = req.query.user;
 
     try {
         const response = await fetch(`http://` + host + `:3007/getLastLoginByUser?user=${encodeURIComponent(user)}`);
         if (response.ok) {
             const data = await response.text();
-            const id = JSON.parse(data);
-            const maxID = id.maxID
-        } else {
-            console.error('API 2 Error Status:', response.status);
-            res.status(response.status).send('Error while request');
-        }
-    } catch (error) {
-        console.error('Network error:', error.message);
-        res.status(500).send('Internal server error');
-    }
+            const receivedData = JSON.parse(data);
+            const maxID = receivedData[0].maxID;
 
-    try {
-        const response = await fetch(`http://` + host + `:3007/getFollowedUsersByUser?user=${encodeURIComponent(user)}`);
-        if (response.ok) {
-            const data = await response.text();
-            console.log(data);
-            const users = JSON.parse(data);
-
-            for (const follow of users) {
-                const id = follow.UserFollowed;
-                console.log(id);
-
-                try {
-                    const response = await fetch(`http://` + host + `:3007/getRecipesByUser?user=${encodeURIComponent(id)}`);
-                    if (response.ok) {
-                        const data = await response.text();
-                        // Hier einfügen, dass nur Rezepte > maxID eingefügt werden
-                    } else {
-                        console.error('API 2 Error Status:', response.status);
-                        res.status(response.status).send('Error while request');
-                    }
-                } catch (error) {
-                    console.error('Network error:', error.message);
-                    res.status(500).send('Internal server error');
+            try {
+                const response = await fetch(`http://` + host + `:3007/getNewRecipesByUser?user=${encodeURIComponent(user)}&maxID=${encodeURIComponent(maxID)}`);
+                if (response.ok) {
+                    const data = await response.text();
+                    console.log(data);
+                    res.status(200).send(data);
+                } else {
+                    console.error('API 2 Error Status:', response.status);
+                    res.status(response.status).send('Error while request');
                 }
+            } catch (error) {
+                console.error('Network error:', error.message);
+                res.status(500).send('Internal server error');
             }
-            res.status(200).send(data);
         } else {
             console.error('API 2 Error Status:', response.status);
             res.status(response.status).send('Error while request');
@@ -762,7 +742,6 @@ app.post('/getNewRecipesByUser', async (req, res) => {
         console.error('Network error:', error.message);
         res.status(500).send('Internal server error');
     }
-    res.status(200).send('Internal server error');
 });
 
 //PDF-API
