@@ -1,6 +1,7 @@
 .navbar__Buttons {
     display: flex;
     width: calc(100% / 3 * 2);
+    align-items: center;
 }
 
 .recipes__list {
@@ -63,7 +64,7 @@
     border: 1px solid #cbd6dd;
     border-radius: 4px;
     outline: none;
-    margin: 2% 2%;
+    margin: 1% 1%;
     width: 100%;
     background-color: #cbd6dd;
 }
