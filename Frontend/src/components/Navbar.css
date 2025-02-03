@@ -49,6 +49,8 @@
 }
 
 .navbar__search {
+    border-radius: 4px;
+    background-color: #cbd6dd;
     display: flex;
     width: calc(100% / 3);
     flex: 1;
@@ -61,7 +63,7 @@
     border: 1px solid #ccc;
     border-radius: 10px;
     outline: none;
-    margin: 2% 2%;
+    margin: 1% 1%;
     width: 100%;
     background-color: #cbd6dd;
 }

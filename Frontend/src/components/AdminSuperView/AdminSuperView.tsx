@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './AdminSuperView.css';
 import {useNavigate} from 'react-router-dom';
 import configData from '../../../../config/frontend-config.json';
+import unlockedUsers from '../../../../config/unlocked-users.json';
 
 interface AdminSuperViewProps {
     token: string;
@@ -48,6 +49,8 @@ interface ListItem {
 const hostData: Config = configData;
 
 const AdminSuperView: React.FC<AdminSuperViewProps> = ({token}) => {
+    const ignoredUsers: string[] = unlockedUsers.unlocked_users.map(user => user.username);
+
     const navigate = useNavigate();
     const [recipes, setRecipes] = useState<ListItem[]>([]);
     const [recipeIds, setRecipeIds] = useState<number[]>([]);
@@ -393,42 +396,55 @@ const AdminSuperView: React.FC<AdminSuperViewProps> = ({token}) => {
                                 <td>{user.lesezeichen}</td>
                                 <td>{user.follower}</td>
                                 <td>{user.folgt}</td>
-                                <td>
-                                    {}
-                                    <input
-                                        type="password"
-                                        className="password-input"
-                                        value={passwordInputs[user.user] || ''}
-                                        onChange={(e) => handlePasswordChange(user.user, e.target.value)}
-                                        placeholder="Neues Passwort"
-                                    />
-                                </td>
-                                <td>
-                                    {}
-                                    <button className="admin-delete-button"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleChangePassword(user.user, passwordInputs[user.user] || '');
-                                            }}
-                                    >
-                                        <img src="/images/reload.png" alt="Delete recipe"
-                                             className="admin-delete-icon"/>
-                                    </button>
-                                </td>
-                                {}
-                                <td>
-                                    {}
-                                    <button className="admin-delete-button"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDeleteUser(user.user);
-                                            }}
-                                    >
-                                        <img src="/images/delete.png" alt="Delete recipe"
-                                             className="admin-delete-icon"/>
-                                    </button>
-                                </td>
-                                {}
+                                {!ignoredUsers.includes(user.user) && (
+                                    <>
+                                        <td>
+                                            {}
+                                            <input
+                                                type="password"
+                                                className="password-input"
+                                                value={passwordInputs[user.user] || ''}
+                                                onChange={(e) => handlePasswordChange(user.user, e.target.value)}
+                                                placeholder="Neues Passwort"
+                                            />
+                                        </td>
+                                        <td>
+                                            {}
+                                            <button className="admin-delete-button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleChangePassword(user.user, passwordInputs[user.user] || '');
+                                                    }}
+                                            >
+                                                <img src="/images/reload.png" alt="Delete recipe"
+                                                     className="admin-delete-icon"/>
+                                            </button>
+                                        </td>
+                                        {}
+                                        <td>
+                                            {}
+                                            <button className="admin-delete-button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteUser(user.user);
+                                                    }}
+                                            >
+                                                <img src="/images/delete.png" alt="Delete recipe"
+                                                     className="admin-delete-icon"/>
+                                            </button>
+                                        </td>
+                                        {}
+                                    </>
+                                )}
+                                {ignoredUsers.includes(user.user) && (
+                                    <>
+                                        <td>
+                                            Admin-User, keine Operationen möglich!
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </>
+                                )}
                             </tr>
                         ))}
                         </tbody>
