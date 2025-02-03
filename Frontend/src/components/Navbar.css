@@ -18,7 +18,7 @@
 
 .navbar__logo {
     display: flex;
-    width: 25%;
+    width: 20%;
     height: auto;
     margin: 0 2%;
 }
@@ -39,7 +39,7 @@
 
 .navbar__projectname {
     display: flex;
-    font-size: 2.5vw;
+    font-size: 2.25vw;
     font-weight: bold;
     margin: 0 2%;
     align-items: center;
@@ -57,7 +57,7 @@
 .navbar__search-input {
     display: flex;
     padding: 0.1% 1.1%;
-    font-size: 1.5vw;
+    font-size: 1.25vw;
     border: 1px solid #ccc;
     border-radius: 10px;
     outline: none;
@@ -78,7 +78,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 1.5vw;
+    font-size: 1.25vw;
     transition: background-color 0.3s;
 }
 
@@ -97,7 +97,7 @@
     display: flex;
     text-decoration: none;
     color: white;
-    font-size: 1.5vw;
+    font-size: 1.25vw;
     padding: 1% 1%;
     background-color: #07546e;
     border: none;
@@ -121,7 +121,7 @@
     display: flex;
     text-decoration: none;
     color: white;
-    font-size: 1.5vw;
+    font-size: 1.25vw;
     padding: 1% 1%;
     background-color: #07546e;
     border: none;
@@ -169,7 +169,7 @@
 
     .navbar__logo {
         display: flex;
-        width: 25%;
+        width: 20%;
         height: auto;
         margin: 0 2%;
     }
