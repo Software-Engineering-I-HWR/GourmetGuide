@@ -439,6 +439,71 @@ app.post('/saveBookmark', (req, res) => {
     });
 });
 
+app.get('/getLastLoginByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT * FROM LastLogin WHERE username = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen des letzten Logins');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.post('/setLastLoginByUser', (req, res) => {
+    const data = req.query;
+    console.log("Received data:", data);
+
+    const now = new Date();
+
+    const formattedDate = now.toLocaleString('de-DE', {
+        timeZone: 'Europe/Berlin',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(',', '').replace(/\./g, '-');
+
+    const [datePart, timePart] = formattedDate.split(' ');
+    const [day, month, year] = datePart.split('-');
+    const isoFormattedDate = `${year}-${month}-${day} ${timePart}`;
+
+    console.log("Formatted Date:", isoFormattedDate);
+
+    const query = `INSERT INTO LastLogin (username, time, maxID) VALUES (?, ?, ?) ON DUPLICATE KEY
+        UPDATE time = VALUES (time), maxID = VALUES (maxID);`;
+
+    console.log(query);
+
+    connection.query(query, [data.user, isoFormattedDate, data.maxID], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Speichern der Bewertung');
+        } else {
+            res.status(200).send('Bewertung erfolgreich gespeichert');
+        }
+    });
+});
+
+app.get('/getMaxID', (req, res) => {
+    const query = 'SELECT MAX(id) AS max_id FROM Rezepte;';
+
+    connection.query(query, [], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der maxID');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getFollowByUsers', (req, res) => {
     const user = req.query.user;
     const follows = req.query.follows;
