@@ -36,28 +36,19 @@ const Home: React.FC = () => {
     const [showLoading, setShowLoading] = useState(false);
 
     async function getHighRatedRecipes(): Promise<Recipe[] | null> {
-        const promt = `https://` + hostData.host + `:30155/getFilteredRecipes` +
-            `?name=` + `&` +
-            `difficulty=` + `&` +
-            `category=` + `&` +
-            `ingredients=` + `&` +
-            `vegetarian=` + `&` +
-            `vegan=` + `&` +
-            `allergens=` + `&` +
-            `rating=` + `4`
-        try {
-            const response = await fetch(promt);
-            if (response.ok) {
-                return await response.json();
-            } else {
-                console.error('API request error:', response.status);
+            try {
+                const response = await fetch('https://' + hostData.host + ':30155/getBestRecipes');
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    console.error('API request error:', response.status);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
                 return null;
             }
-        } catch (error) {
-            console.error('Network error:', error);
-            return null;
         }
-    }
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -94,7 +85,7 @@ const Home: React.FC = () => {
             } else if (whichPage === 0) {
                 const recipes = await getHighRatedRecipes();
                 if (recipes && Array.isArray(recipes)) {
-                    const lastFifteenRecipes = recipes.sort((a, b) => b.Rating - a.Rating).slice(-15).map(recipe => ({
+                    const lastFifteenRecipes = recipes.sort((a, b) => b.Rating - a.Rating).slice(0,15).map(recipe => ({
                         title: recipe.Title,
                         description: recipe.Category,
                         imageUrl: recipe.Image,
