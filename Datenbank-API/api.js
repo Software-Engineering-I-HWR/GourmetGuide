@@ -48,6 +48,21 @@ app.get('/getRecipes', (req, res) => {
     });
 });
 
+app.get('/getBestRecipes', (req, res) => {
+    const query = 'SELECT R.ID, R.Title, R.Category, R.Image, AVG(B.Bewertung) AS Average FROM Rezept AS R INNER JOIN Bewertung AS B ON R.ID = B.ID GROUP BY R.ID, R.Title, R.Category, R.Image ORDER BY Average DESC;';
+
+    console.log(query);
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getAllCategories', (req, res) => {
     const query = 'SELECT DISTINCT Category FROM Rezept';
 
