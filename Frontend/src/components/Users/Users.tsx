@@ -78,7 +78,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
         }
     }
 
-    const submitSearch =(event: React.FormEvent<HTMLFormElement>) => {
+    const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (searchUser == "") {
             setFilteredUsers(users);

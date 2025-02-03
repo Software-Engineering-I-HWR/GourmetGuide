@@ -62,7 +62,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
                 });
                 const isFollowedResponse = await respone.json();
-                console.log(isFollowedResponse)
                 return isFollowedResponse[0].Follow === 1
             } catch (error) {
                 console.error('Error getting follow status:', error);
@@ -125,7 +124,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -140,7 +138,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("own", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -174,7 +171,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -189,7 +185,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -225,7 +220,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
             if (ownIds.length > 0) {
                 fetchRecipes();
-                console.log(user)
             }
         }, [ownIds]);
 
@@ -289,7 +283,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
-                console.log(user)
             }
         }, [ratedIds]);
 

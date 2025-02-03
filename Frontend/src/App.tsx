@@ -81,7 +81,7 @@ const App: React.FC = () => {
                     <Route path="/log-in"
                            element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn}/>}/>
                     <Route path="/register" element={<Register/>}/>
-                    <Route path="/users" element={<Users/>}/>
+                    <Route path="/users" element={<Users  isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
                     <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn}
                                                                  username={localStorage.getItem('userEmail')!}/>}/>

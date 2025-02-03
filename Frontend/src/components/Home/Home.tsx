@@ -36,19 +36,19 @@ const Home: React.FC = () => {
     const [showLoading, setShowLoading] = useState(false);
 
     async function getHighRatedRecipes(): Promise<Recipe[] | null> {
-            try {
-                const response = await fetch('https://' + hostData.host + ':30155/getBestRecipes');
-                if (response.ok) {
-                    return await response.json();
-                } else {
-                    console.error('API request error:', response.status);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
+        try {
+            const response = await fetch('https://' + hostData.host + ':30155/getBestRecipes');
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error('API request error:', response.status);
                 return null;
             }
+        } catch (error) {
+            console.error('Network error:', error);
+            return null;
         }
+    }
 
     async function getRecipes(): Promise<Recipe[] | null> {
         try {
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
             } else if (whichPage === 0) {
                 const recipes = await getHighRatedRecipes();
                 if (recipes && Array.isArray(recipes)) {
-                    const lastFifteenRecipes = recipes.sort((a, b) => b.Rating - a.Rating).slice(0,15).map(recipe => ({
+                    const lastFifteenRecipes = recipes.sort((a, b) => b.Rating - a.Rating).slice(0, 15).map(recipe => ({
                         title: recipe.Title,
                         description: recipe.Category,
                         imageUrl: recipe.Image,
@@ -97,13 +97,12 @@ const Home: React.FC = () => {
             setShowLoading(false)
         };
 
-        // Fade-Out (vor dem Fetch) und Fade-In (nach dem Fetch)
         setAnimationClass('fade-out');
         setTimeout(() => {
             fetchRecipes().then(() => {
-                setAnimationClass('fade-in');  // Setze nach dem Laden der neuen Rezepte das Fade-In
+                setAnimationClass('fade-in');
             });
-        }, 500); // Zeit passend zur CSS-Animation (0.5s)
+        }, 500);
     }, [whichPage]);
 
     function nextPage() {
@@ -169,7 +168,7 @@ const Home: React.FC = () => {
                     <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center'}}
-                    >                        {/* Recipes List */}
+                    >
                         <div className="recipes__list" style={{flex: 1, display: 'flex', overflowX: 'auto'}}>
                             {sampleRecipes!.map((recipe, index) => (
                                 <a

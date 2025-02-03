@@ -1,6 +1,7 @@
 .navbar__Buttons {
     display: flex;
     width: calc(100% / 3 * 2);
+    align-items: center;
 }
 
 .recipes__list {
@@ -54,6 +55,7 @@
     display: flex;
     width: calc(100% / 3);
     flex: 1;
+    height: 99%;
 }
 
 .navbar__search-input {
@@ -109,6 +111,22 @@
     margin: 2% 2%;
     align-items: center;
     max-width: 11%;
+}
+
+.navbar__link-words {
+    display: flex;
+    text-decoration: none;
+    color: white;
+    font-size: 1.25vw;
+    padding: 1% 1%;
+    background-color: #07546e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 2% 2%;
+    align-items: center;
+    max-width: 30%;
 }
 
 .navbar__link:hover {
