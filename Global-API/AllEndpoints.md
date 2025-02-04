@@ -22,6 +22,9 @@
 - **GET `/getFollowByUsers`**: Ruft die Follower-Daten zwischen zwei Benutzern ab.
 - **GET `/getFollowedUsersByUser`**: Ruft die Benutzer ab, denen ein bestimmter Benutzer folgt.
 - **POST `/saveFollow`**: Speichert oder entfernt eine Follow-Beziehung zwischen Benutzern.
+- **GET `/getMaxID`**: Ruft die höchste Rezept-ID in der Datenbank ab.
+- **GET `/getNewRecipesByUser`**: Ruft neue Rezepte von Benutzern ab, denen ein Benutzer folgt.
+- **GET `/getBestRecipes`**: Ruft die besten Rezepte basierend auf durchschnittlichen Bewertungen ab.
 
 ### Login-API
 - **POST `/login`**: Authentifiziert einen Benutzer.
@@ -32,6 +35,8 @@
 - **POST `/deleteUserByUsername`**: Löscht einen Benutzer basierend auf dem Benutzernamen.
 - **GET `/getUsers`**: Ruft alle Benutzer ab.
 - **GET `/getUserInfo`**: Ruft Informationen zu einem Benutzer ab.
+- **GET `/getLastLoginByUser`**: Ruft den letzten Login eines Benutzers ab.
+- **POST `/setLastLoginByUser`**: Speichert den letzten Login eines Benutzers.
 
 ### PDF-API
 - **POST `/generate-pdf`**: Generiert ein PDF basierend auf bereitgestellten Rezeptdaten.

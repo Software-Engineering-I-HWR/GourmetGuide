@@ -15,7 +15,7 @@ GourmetGuide ist eine Anwendung zur Verwaltung und Darstellung von Kochrezepten.
 - **🍴 Rezeptverwaltung**: Erstellen, Bearbeiten und Löschen von Rezepten.
 - **👤 Benutzerregistrierung und -anmeldung**: Authentifizierung mit sicherer Passwortspeicherung.
 - **📄 PDF-Export**: Rezepte als PDF herunterladen.
-- **🗄️ Datenbankintegration**: Speicherung von Rezepten und Benutzerdaten in einer MySQL-Datenbank.
+- **🗄️ Datenbankintegration**: Speicherung von Rezepten und Benutzerdaten in einer MariaDB-Datenbank.
 - **📱 Responsive Design**: Optimiert für Desktop und mobile Geräte.
 
 ## 🛠️ Technologien
