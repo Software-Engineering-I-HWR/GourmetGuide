@@ -37,6 +37,11 @@ const MainSearch: React.FC = () => {
     const selectedStringArrayAllergien = selectedStringAllergien == "none" ? [] : selectedStringAllergien.split(",");
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
+    const [ingredients, setIngredients] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [isVisible, setIsVisible] = useState(true);
+
     const elementRef = useRef<HTMLUListElement>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,9 +79,8 @@ const MainSearch: React.FC = () => {
         return temp
     }
 
-    const [allergien, setAllergien] = useState<AllergienMitAuswahl[]>(getAllergien());
     const addVeg = () => {
-        if (!selectedIngredients.includes(selectedIngr)) {
+        if (!selectedIngredients.includes(selectedIngr) && ingredients.includes(selectedIngr)) {
             setSelectedIngredients(prevVegs => [...prevVegs, selectedIngr]);
         }
     };
@@ -95,7 +99,9 @@ const MainSearch: React.FC = () => {
 
     function handleSelectIngr(ingredient: string) {
         setSearchTerm(ingredient);
-        setSelectedIngr(ingredient);
+        if (ingredients.includes(ingredient)) {
+            setSelectedIngr(ingredient);
+        }
     }
 
     interface Recipe {
@@ -121,14 +127,12 @@ const MainSearch: React.FC = () => {
         }
     }
 
-    const [ingredients, setIngredients] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {
             const allIngredientsJson = await getAllIngredients();
-            allIngredientsJson?.forEach((item) => {
-                setIngredients((prevIngredients) => [...prevIngredients, item as unknown as string]);
-            })
-            setSelectedIngr(allIngredientsJson![0] as unknown as string);
+            if (allIngredientsJson) {
+                setIngredients(allIngredientsJson.map(item => item as unknown as string));
+            }
         };
         fetchRecipes();
     }, []);
@@ -148,7 +152,6 @@ const MainSearch: React.FC = () => {
         }
     }
 
-    const [categories, setCategories] = useState<string[]>([]);
     useEffect(() => {
         const fetchCategories = async () => {
             const allCategoriesJson = await getAllCategories();
@@ -176,7 +179,6 @@ const MainSearch: React.FC = () => {
     const filteredIngredients = ingredients.filter((ingredient) =>
         ingredient.toLowerCase().includes(searchTerm.toLowerCase()) // Filter nach Suchbegriff
     );
-    const [isVisible, setIsVisible] = useState(true);
     return (
         <div>
             <main className="main-content">
@@ -188,6 +190,8 @@ const MainSearch: React.FC = () => {
                             <input
                                 type="text"
                                 pattern="[A-Za-z0-9ÄÖÜäöüß ]{0,}"
+                                onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Es dürfen keine Sonderzeichen enthalten sein!")}
+                                onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                                 placeholder="Suche..."
                                 value={receptName}
                                 onChange={handleSearchChange}
@@ -273,7 +277,8 @@ const MainSearch: React.FC = () => {
                         <hr/>
                         <label className="select-ingredients-label">
                             <text style={{fontSize: "1.25rem"}}>Zutaten auswählen:</text>
-                            <div className="select-multiple-add-container" onFocus={() => setShowIngredientsTable(true)}>
+                            <div className="select-multiple-add-container"
+                                 onFocus={() => setShowIngredientsTable(true)}>
                                 <input
                                     className="select-mehre-add-container-text"
                                     type="text"
@@ -316,6 +321,8 @@ const MainSearch: React.FC = () => {
                                 <button className="add-button-ingredients" onClick={() => {
                                     addVeg();
                                     setShowIngredientsTable(false);
+                                    setSearchTerm("");
+                                    setSelectedIngr("");
                                 }}>Hinzufügen
                                 </button>
                             </div>
@@ -341,15 +348,6 @@ const MainSearch: React.FC = () => {
                             }
                         }}>Suchen
                         </button>
-                        <div style={{display: "none"}}>
-                            <hr/>
-                            <p>Such Name: {receptName}</p>
-                            <p>ausgewaehltes Rating: {selectedRating}</p>
-                            <p>ausgewaehlte Kategorie: {selectedCategory}</p>
-                            <p>ausgewaehlte Schwierigkeit: {selectedDifficulty}</p>
-                            <p>ausgewaehlte Zutaten: {selectedIngredients.join(', ')}</p>
-                            <p> Test: {selectedIngredients}</p>
-                        </div>
                     </div>
                 ) : ""
                 }
