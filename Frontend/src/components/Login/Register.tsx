@@ -108,6 +108,7 @@ const Register: React.FC = () => {
                             placeholder="Username..."
                             pattern=".{4,}"
                             onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Benutzer muss mindestens 4 Zeichen enthalten")}
+                            onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                             value={email}
                             onChange={enterEmailAdress}
                             className="register-email-field-input"
@@ -120,6 +121,7 @@ const Register: React.FC = () => {
                             placeholder="Passwort..."
                             pattern=".{4,}"
                             onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Passwort muss mindestens 4 Zeichen enthalten")}
+                            onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
                             value={password}
                             onChange={enterPassword}
                             className="register-password-field-input"
