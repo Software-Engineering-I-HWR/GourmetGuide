@@ -155,7 +155,7 @@ const Categories: React.FC = () => {
     );
 
     return (
-        <div className="main-content">
+        <div className="main-content" style={{width:'80%'}}>
             <div className="categories-main-content">
                 <div className="categories">
                     <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
@@ -191,7 +191,7 @@ const Categories: React.FC = () => {
                             {allRecipesCurrentCategory!.sort().map((recipe, index) => (
                                 <tr onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                     <th scope="row">{index + 1}</th>
-                                    <td>{recipe.title}</td>
+                                    <td style={{overflowWrap: "break-word"}}>{recipe.title.length <= 45 ? recipe.title : recipe.title.slice(0, 45)+"..."}</td>
                                     <td>{recipe.category}</td>
                                     <td>
                                         <img src={recipe.imageUrl}

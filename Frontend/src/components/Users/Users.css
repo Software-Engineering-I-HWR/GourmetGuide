@@ -1,0 +1,22 @@
+.body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.allUsersHome {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 100%;
+    background-color: white;
+    align-items: center;
+}
+
+.allUsersHome-main {
+    max-width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}

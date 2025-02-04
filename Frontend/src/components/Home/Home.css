@@ -7,3 +7,44 @@
         width: 100%;
     }
 }
+
+.recipes__container {
+    transition: opacity 0.5s ease;
+    will-change: opacity;
+}
+
+.recipes__container.fade-out {
+    opacity: 0;  /* Inhalte ausblenden */
+}
+
+.recipes__container.fade-in {
+    opacity: 1;  /* Inhalte einblenden */
+}
+
+/* Unauffällige Border mit Schatten für den Button */
+.navigation-button {
+    background: none;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    height: 2%;
+    width: 3rem; /* Feste Breite für eine bessere Ausrichtung */
+    display: flex;
+    align-items: center; /* Zentriert den Pfeil vertikal */
+    justify-content: center; /* Zentriert den Pfeil horizontal */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Etwas intensiverer Schatten bei Hover */
+}
+
+
+/* Optionale Hover- und Focus-Effekte */
+.navigation-button:hover {
+    border-color: rgba(0, 0, 0, 0.3); /* Dunklerer Rand bei Hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Etwas intensiverer Schatten bei Hover */
+}
+
+.navigation-button:focus {
+    outline: none; /* Entfernt den Standard-Fokus-Rand */
+    border-color: rgba(0, 0, 0, 0.4); /* Etwas kräftigerer Rand bei Fokus */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Hellerer Schatten bei Fokus */
+}

@@ -37,6 +37,8 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
         const carouselRef = useRef<HTMLDivElement>(null);
         const [isFollowed, setIsFollowed] = useState<boolean>(false);
         const [showMessage, setShowMessage] = useState<boolean>(false);
+        const [showLoading1, setShowLoading1] = useState(0);
+        const [showLoading2, setShowLoading2] = useState(0);
 
 
         const handlePrev = () => {
@@ -60,7 +62,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
                 });
                 const isFollowedResponse = await respone.json();
-                console.log(isFollowedResponse)
                 return isFollowedResponse[0].Follow === 1
             } catch (error) {
                 console.error('Error getting follow status:', error);
@@ -123,7 +124,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -138,7 +138,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("own", ids);
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -172,7 +171,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             ...indexes.map((item: { ID: number }) => item.ID),
                             ...indexes2.map((item: { ID: number }) => item.ID),
                         ];
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -187,7 +185,6 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
-                        console.log("rated", ids);
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -218,11 +215,11 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     recentRecipes: loadedRecipes,
                 }));
+                setShowLoading1(0)
             };
 
             if (ownIds.length > 0) {
                 fetchRecipes();
-                console.log(user)
             }
         }, [ownIds]);
 
@@ -282,20 +279,22 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     likedRecipes: loadedRecipes,
                 }));
+                setShowLoading2(0)
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
-                console.log(user)
             }
         }, [ratedIds]);
 
         useEffect(() => {
+            setShowLoading1(1)
             if (usernameToShow) {
                 getOwnRecipes();
             }
         }, [usernameToShow]);
 
         useEffect(() => {
+            setShowLoading2(1)
             if (usernameToShow) {
                 getRatedRecipes();
             }
@@ -317,7 +316,18 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                             <button
                                 type="button"
                                 className="btn"
-                                style={isLoggedIn ? isFollowed ? {backgroundColor: "#98afbc", color: "#07546e", border:"3px solid #07546e", padding: "1% 2%", marginLeft: "5%"} : {backgroundColor: "#07546E", color: "white", padding: "1% 2%", marginLeft: "5%"} : {backgroundColor: "#cbd6dd", color: "#b1c3cd", padding: "1% 2%", marginLeft: "5%"}}
+                                style={isLoggedIn ? isFollowed ? {
+                                    backgroundColor: "#98afbc",
+                                    color: "#07546e",
+                                    border: "3px solid #07546e",
+                                    padding: "1% 2%",
+                                    marginLeft: "5%"
+                                } : {
+                                    backgroundColor: "#07546E",
+                                    color: "white",
+                                    padding: "1% 2%",
+                                    marginLeft: "5%"
+                                } : {backgroundColor: "#cbd6dd", color: "#b1c3cd", padding: "1% 2%", marginLeft: "5%"}}
                                 onClick={toggleFollow}
                                 onMouseOver={() => !isLoggedIn && setShowMessage(true)}
                                 onMouseLeave={() => setShowMessage(false)}
@@ -336,7 +346,12 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                 data-bs-ride="carousel"
                             >
                                 <div className="carousel-inner">
-                                    {user.recentRecipes
+                                    {showLoading2 == 1 && <div className="text-center">
+                                        <div className="spinner-border" style={{color: "#07536D"}} role="status">
+                                            <span className="sr-only"></span>
+                                        </div>
+                                    </div>}
+                                    {showLoading2 == 0 && user.recentRecipes
                                         .reduce((slides, recipe, index) => {
                                             const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
@@ -356,7 +371,8 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card-showUser" onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
+                                                            <div className="card recipe-card-showUser"
+                                                                 onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                                                 <img
                                                                     src={recipe.link}
                                                                     className="card-img-top recipe-card-img-showUser"
@@ -413,7 +429,12 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                 data-bs-ride="carousel"
                             >
                                 <div className="carousel-inner">
-                                    {user.likedRecipes
+                                    {showLoading1 == 1 && <div className="text-center">
+                                        <div className="spinner-border" style={{color: "#07536D"}} role="status">
+                                            <span className="sr-only"></span>
+                                        </div>
+                                    </div>}
+                                    {showLoading1 == 0 && user.likedRecipes
                                         .reduce((slides, recipe, index) => {
                                             const slideIndex = Math.floor(index / 4); // Zeige 4 Karten pro Slide
                                             if (!slides[slideIndex]) slides[slideIndex] = [];
@@ -433,7 +454,8 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                             className="col-md-4 w-25"
                                                             key={recipe.id}
                                                         >
-                                                            <div className="card recipe-card-showUser" onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
+                                                            <div className="card recipe-card-showUser"
+                                                                 onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                                                 <img
                                                                     src={recipe.link}
                                                                     className="card-img-top recipe-card-img-showUser"

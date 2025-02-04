@@ -39,6 +39,7 @@ const CreateRecipe: React.FC = () => {
     const [isDescriptionEmpty, setIsDescriptionEmpty] = useState<boolean>(false);
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean | null>(null);
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -122,14 +123,14 @@ const CreateRecipe: React.FC = () => {
         const elements = document.querySelectorAll('[data-notwendigEinzhinzu]');
         for (const temp of elements) {
             const e = temp as HTMLInputElement;
-            if(e.className.startsWith('ingredient')){
-            if(!isIngredientsEmpty){
+            if (e.className.startsWith('ingredient')) {
+                if (!isIngredientsEmpty) {
                     e.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
                     e.reportValidity();
                     e.className = "ingredient-input-empty";
-            }
-            }else {
-                if(isDescriptionEmpty){
+                }
+            } else {
+                if (isDescriptionEmpty) {
                     e.setCustomValidity('Es muss mindestens ein Zubereitungsschritt hinzugefügt werden!');
                     e.reportValidity();
                     e.className = "step-input-field-empty";
@@ -137,7 +138,7 @@ const CreateRecipe: React.FC = () => {
             }
 
         }
-        if(!isIngredientsEmpty&&isDescriptionEmpty){
+        if (!isIngredientsEmpty && isDescriptionEmpty) {
             return;
         }
         toggleSaveButton(true);
@@ -251,18 +252,17 @@ const CreateRecipe: React.FC = () => {
         description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
     }, [description]);
 
-
     const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfleersein: boolean, nichtakzeptierRot: string, aktzeptiertWeis: string) => {
-        console.log(e,darfleersein,nichtakzeptierRot,e.target.value);
+        console.log(e, darfleersein, nichtakzeptierRot, e.target.value);
         const value = e.target.value;
         const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
 
-        if(value===""&&!darfleersein){
-            if(nichtakzeptierRot.startsWith("input")){
+        if (value === "" && !darfleersein) {
+            if (nichtakzeptierRot.startsWith("input")) {
                 e.target.setCustomValidity('Der Titel darf nicht lehr sein!');
-            }else if(nichtakzeptierRot.startsWith("ingredient")){
+            } else if (nichtakzeptierRot.startsWith("ingredient")) {
                 e.target.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
-            }else if(nichtakzeptierRot.startsWith("step")){
+            } else if (nichtakzeptierRot.startsWith("step")) {
                 e.target.setCustomValidity('Es muss mindestens ein Zubereitungsschritt hinzugefügt werden!');
             }
 
@@ -280,6 +280,24 @@ const CreateRecipe: React.FC = () => {
         }
     };
 
+    const checkImageURL = (url: string): Promise<boolean> => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+        });
+    };
+
+    useEffect(() => {
+        if (imageUrl.trim() === "") {
+            setIsValid(null);
+            return;
+        }
+
+        checkImageURL(imageUrl).then((isValid) => setIsValid(isValid));
+    }, [imageUrl]);
+
     return (
         <body className="showRecipe">
         {showPopupMessage && (
@@ -296,7 +314,7 @@ const CreateRecipe: React.FC = () => {
                                 value={title}
                                 className="input-field-reqired-empty"
                                 onChange={(e) => {
-                                    handleInputUberprufung(e,false,"input-field-reqired-empty","input-field-reqired-filled");
+                                    handleInputUberprufung(e, false, "input-field-reqired-empty", "input-field-reqired-filled");
                                     setTitle(e.target.value)
                                 }}
                                 placeholder="Rezepttitel"
@@ -377,7 +395,7 @@ const CreateRecipe: React.FC = () => {
                                     />
                                     <label style={{width: "100%"}} className="image-upload-label">
                                         <img
-                                            src="/../../public/images/fileUpload.png"
+                                            src="/images/fileUpload.png"
                                             alt="File Upload"
                                             className="img-fluid placeholder-image"
                                         />
@@ -389,8 +407,7 @@ const CreateRecipe: React.FC = () => {
                                         value={imageUrl}
                                         onChange={(e) => setImageUrl(e.target.value)}
                                         placeholder="Lade ein Bild hoch oder gib eine Bild-URL ein..."
-                                        className="form-control"
-                                        style={{border: "3px solid #c53b31", borderRadius: "8px"}}
+                                        className={isValid ? "form-control-valid" : "form-control-red"}
                                     />
                                 </div>
                             </div>
@@ -402,7 +419,7 @@ const CreateRecipe: React.FC = () => {
                             <input
                                 type="text"
                                 className={"ingredient-input-empty"}
-                                data-notwendigEinzhinzu ="ingredient"
+                                data-notwendigEinzhinzu="ingredient"
                                 value={ingredient}
                                 onChange={(e) => {
                                     handleInputUberprufung(e, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
@@ -415,10 +432,12 @@ const CreateRecipe: React.FC = () => {
                                 type="button"
                                 className="add-ingredient-button"
 
-                            onClick={()=>{
-                                handleInputUberprufung({ target: (document.querySelectorAll('[data-notwendigEinzhinzu="ingredient"]').item(0)) } as React.ChangeEvent<HTMLInputElement>, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
-                                if(new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)){
-                                    handleAddIngredient()}}
+                                onClick={() => {
+                                    handleInputUberprufung({target: (document.querySelectorAll('[data-notwendigEinzhinzu="ingredient"]').item(0))} as React.ChangeEvent<HTMLInputElement>, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
+                                    if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)) {
+                                        handleAddIngredient()
+                                    }
+                                }
                                 }
 
                             >
@@ -450,7 +469,7 @@ const CreateRecipe: React.FC = () => {
                             type="text"
                             value={step}
                             className={"step-input-field-empty"}
-                            data-notwendigEinzhinzu ="step"
+                            data-notwendigEinzhinzu="step"
                             onChange={(e) => {
                                 handleInputUberprufung(e, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
                                 setStep(e.target.value)
@@ -461,12 +480,12 @@ const CreateRecipe: React.FC = () => {
                         <button
                             type="button"
                             className="add-ingredient-button"
-                            onClick={()=>{
-                                handleInputUberprufung({ target: document.querySelectorAll('[data-notwendigEinzhinzu="step"]').item(0) } as React.ChangeEvent<HTMLInputElement>, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
-                                if(new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)){
+                            onClick={() => {
+                                handleInputUberprufung({target: document.querySelectorAll('[data-notwendigEinzhinzu="step"]').item(0)} as React.ChangeEvent<HTMLInputElement>, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
+                                if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)) {
                                     handleAddStep()
                                 }
-                                }}
+                            }}
                         >
                             +
                         </button>
