@@ -162,13 +162,13 @@ const Categories: React.FC = () => {
                          onClick={() => setShowMobileMenu(!showMobileMenu)}/>
                     <h1 className="categories__title">Kategorien</h1>
                     <div className="categories__list">
-                        {sampleCategories!.sort().map((recipe, index) => (
+                        {sampleCategories!.sort((a, b) => a.title.localeCompare(b.title)).map((recipe, index) => (
                             <CategoryCard key={index} {...recipe}/>
                         ))}
                     </div>
                 </div>
                 {showMobileMenu && <div className="categories-actions-mobile">
-                    {sampleCategories!.sort().map((item) => (
+                    {sampleCategories!.map((item) => (
                         <button className="categories-mobile-menu-buttons" disabled={!item.active} onClick={() => {
                             setShowMobileMenu(false);
                             setCurrentCategory(item.title)

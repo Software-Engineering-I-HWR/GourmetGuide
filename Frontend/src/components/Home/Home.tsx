@@ -74,7 +74,7 @@ const Home: React.FC = () => {
             if (whichPage === 1) {
                 const recipes = await getRecipes();
                 if (recipes && Array.isArray(recipes)) {
-                    const lastFifteenRecipes = recipes.slice(-15).map(recipe => ({
+                    const lastFifteenRecipes = recipes.slice(-15).reverse().map(recipe => ({
                         title: recipe.Title,
                         description: recipe.Category,
                         imageUrl: recipe.Image,
