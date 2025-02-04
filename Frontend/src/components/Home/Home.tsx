@@ -26,6 +26,16 @@ interface ListItem {
     id: number
 }
 
+interface User {
+    id: number;
+    user: string;
+    bewertungen: number;
+    lesezeichen: number;
+    rezepte: number;
+    folgt: number;
+    follower: number;
+}
+
 
 const hostData: Config = configData;
 
@@ -34,6 +44,28 @@ const Home: React.FC = () => {
     const [whichPage, setWhichPage] = useState<number>(0)
     const [animationClass, setAnimationClass] = useState<string>('');
     const [showLoading, setShowLoading] = useState(false);
+    const [usernames, setUsernames] = useState<string[]>([]);
+    const [bestUsers, setBestUsers] = useState<User[]>([])
+
+    async function getUsers(): Promise<void> {
+        try {
+            const response = await fetch(
+                `https://` + hostData.host + `:30155/getUsers`,
+                {
+                    method: "GET",
+                }
+            );
+            if (response.ok) {
+                const indexes = await response.json();
+                const users = indexes.map((item: { Username: string }) => item.Username);
+                setUsernames(users);
+            } else {
+                console.error("API request error:", response.status);
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+        }
+    }
 
     async function getHighRatedRecipes(): Promise<Recipe[] | null> {
         try {
@@ -46,6 +78,26 @@ const Home: React.FC = () => {
             }
         } catch (error) {
             console.error('Network error:', error);
+            return null;
+        }
+    }
+
+    async function getUserInfo(user: string): Promise<User | null> {
+        try {
+            const response = await fetch(
+                `https://` + hostData.host + `:30155/getUserInfo?user=${encodeURIComponent(user)}`,
+                {
+                    method: "GET",
+                }
+            );
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error("API request error:", response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error("Network error:", error);
             return null;
         }
     }
@@ -67,6 +119,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         setShowLoading(true);
+        getUsers();
     }, []);
 
     useEffect(() => {
@@ -93,6 +146,48 @@ const Home: React.FC = () => {
                     }));
                     setSampleRecipes(lastFifteenRecipes);
                 }
+            } else if (whichPage === 2) {
+                const loadedUsers: User[] = [];
+                let gourmetGuideTeamAlreadyDone: boolean = false;
+                let index = 1;
+
+                for (const user of usernames) {
+                    if ((user == "1" || user == "12345")) {
+                        if (!gourmetGuideTeamAlreadyDone) {
+                            const userInfo = await getUserInfo("1");
+                            const userInfo2 = await getUserInfo("12345");
+                            if (userInfo && userInfo2) {
+                                const newUser: User = {
+                                    id: index,
+                                    user: "GourmetGuide Team",
+                                    bewertungen: userInfo.bewertungen + userInfo2.bewertungen,
+                                    lesezeichen: userInfo.lesezeichen,
+                                    rezepte: userInfo.rezepte + userInfo2.rezepte,
+                                    folgt: userInfo.folgt,
+                                    follower: userInfo.follower + userInfo2.follower,
+                                };
+                                loadedUsers.push(newUser);
+                                gourmetGuideTeamAlreadyDone = true;
+                            }
+                        }
+                    } else {
+                        const userInfo = await getUserInfo(user);
+                        if (userInfo) {
+                            const newUser: User = {
+                                id: index,
+                                user: userInfo.user,
+                                bewertungen: userInfo.bewertungen,
+                                lesezeichen: userInfo.lesezeichen,
+                                rezepte: userInfo.rezepte,
+                                folgt: userInfo.folgt,
+                                follower: userInfo.follower,
+                            };
+                            loadedUsers.push(newUser);
+                        }
+                    }
+                    index++;
+                }
+                setBestUsers(loadedUsers.sort((a,b) => b.follower - a.follower).slice(0, 3))
             }
             setShowLoading(false)
         };
@@ -106,7 +201,7 @@ const Home: React.FC = () => {
     }, [whichPage]);
 
     function nextPage() {
-        if (whichPage < 1) {
+        if (whichPage < 2) {
             setWhichPage(whichPage + 1);
         }
     }
@@ -144,12 +239,12 @@ const Home: React.FC = () => {
                         <button
                             className="navigation-button w-auto h-auto"
                             onClick={nextPage}
-                            disabled={whichPage === 1}
+                            disabled={whichPage === 2}
                             style={{
                                 background: 'none',
                                 border: "none",
                                 fontSize: '2rem',
-                                cursor: whichPage < 1 ? 'pointer' : 'not-allowed',
+                                cursor: whichPage < 2 ? 'pointer' : 'not-allowed',
                             }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
