@@ -421,7 +421,7 @@ app.post('/saveFollow', async (req, res) => {
     console.log("Received data:", req.query);
 
     try {
-        const response = await fetch(`http://` + host + `:3007/saveFollow?user=${encodeURIComponent(user)}&follows=${encodeURIComponent(follows)}&follow=${encodeURIComponent(newFollowState ? 1 : 0)}`, {
+        const response = await fetch(`http://` + host + `:3007/saveFollow?user=${encodeURIComponent(user)}&follows=${encodeURIComponent(follows)}&follow=${encodeURIComponent(newFollowState)}`, {
             method: 'POST',
         });
         if (response.ok) {
