@@ -255,7 +255,7 @@ const CreateRecipe: React.FC = () => {
     const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfleersein: boolean, nichtakzeptierRot: string, aktzeptiertWeis: string) => {
         console.log(e, darfleersein, nichtakzeptierRot, e.target.value);
         const value = e.target.value;
-        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
 
         if (value === "" && !darfleersein) {
             if (nichtakzeptierRot.startsWith("input")) {
@@ -434,12 +434,11 @@ const CreateRecipe: React.FC = () => {
 
                                 onClick={() => {
                                     handleInputUberprufung({target: (document.querySelectorAll('[data-notwendigEinzhinzu="ingredient"]').item(0))} as React.ChangeEvent<HTMLInputElement>, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
-                                    if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)) {
+                                    if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)) {
                                         handleAddIngredient()
                                     }
                                 }
                                 }
-
                             >
                                 +
                             </button>
@@ -482,7 +481,7 @@ const CreateRecipe: React.FC = () => {
                             className="add-ingredient-button"
                             onClick={() => {
                                 handleInputUberprufung({target: document.querySelectorAll('[data-notwendigEinzhinzu="step"]').item(0)} as React.ChangeEvent<HTMLInputElement>, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
-                                if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s][A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)) {
+                                if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)) {
                                     handleAddStep()
                                 }
                             }}
