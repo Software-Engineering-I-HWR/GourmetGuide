@@ -146,70 +146,76 @@ const Home: React.FC = () => {
                     }));
                     setSampleRecipes(lastFifteenRecipes);
                 }
-            } else if (whichPage === 2) {
-                const loadedUsers: User[] = [];
-                let gourmetGuideTeamAlreadyDone: boolean = false;
-                let index = 1;
+            }
+            const loadedUsers: User[] = [];
+            let gourmetGuideTeamAlreadyDone: boolean = false;
+            let index = 1;
 
-                for (const user of usernames) {
-                    if ((user == "1" || user == "12345")) {
-                        if (!gourmetGuideTeamAlreadyDone) {
-                            const userInfo = await getUserInfo("1");
-                            const userInfo2 = await getUserInfo("12345");
-                            if (userInfo && userInfo2) {
-                                const newUser: User = {
-                                    id: index,
-                                    user: "GourmetGuide Team",
-                                    bewertungen: userInfo.bewertungen + userInfo2.bewertungen,
-                                    lesezeichen: userInfo.lesezeichen,
-                                    rezepte: userInfo.rezepte + userInfo2.rezepte,
-                                    folgt: userInfo.folgt,
-                                    follower: userInfo.follower + userInfo2.follower,
-                                };
-                                loadedUsers.push(newUser);
-                                gourmetGuideTeamAlreadyDone = true;
-                            }
-                        }
-                    } else {
-                        const userInfo = await getUserInfo(user);
-                        if (userInfo) {
+            for (const user of usernames) {
+                if ((user == "1" || user == "12345")) {
+                    if (!gourmetGuideTeamAlreadyDone) {
+                        const userInfo = await getUserInfo("1");
+                        const userInfo2 = await getUserInfo("12345");
+                        if (userInfo && userInfo2) {
                             const newUser: User = {
                                 id: index,
-                                user: userInfo.user,
-                                bewertungen: userInfo.bewertungen,
+                                user: "GourmetGuide Team",
+                                bewertungen: userInfo.bewertungen + userInfo2.bewertungen,
                                 lesezeichen: userInfo.lesezeichen,
-                                rezepte: userInfo.rezepte,
+                                rezepte: userInfo.rezepte + userInfo2.rezepte,
                                 folgt: userInfo.folgt,
-                                follower: userInfo.follower,
+                                follower: userInfo.follower + userInfo2.follower,
                             };
                             loadedUsers.push(newUser);
+                            gourmetGuideTeamAlreadyDone = true;
                         }
                     }
-                    index++;
+                } else {
+                    const userInfo = await getUserInfo(user);
+                    if (userInfo) {
+                        const newUser: User = {
+                            id: index,
+                            user: userInfo.user,
+                            bewertungen: userInfo.bewertungen,
+                            lesezeichen: userInfo.lesezeichen,
+                            rezepte: userInfo.rezepte,
+                            folgt: userInfo.folgt,
+                            follower: userInfo.follower,
+                        };
+                        loadedUsers.push(newUser);
+                    }
                 }
-                setBestUsers(loadedUsers.sort((a,b) => b.follower - a.follower).slice(0, 3))
+                index++;
             }
-            setShowLoading(false)
-        };
+            setBestUsers(loadedUsers.sort((a, b) => b.follower - a.follower).slice(0, 10))
+        }
+        setShowLoading(false)
 
-        setAnimationClass('fade-out');
-        setTimeout(() => {
-            fetchRecipes().then(() => {
-                setAnimationClass('fade-in');
-            });
-        }, 500);
+        fetchRecipes()
     }, [whichPage]);
 
     function nextPage() {
+        setAnimationClass('fade-out');
         if (whichPage < 2) {
-            setWhichPage(whichPage + 1);
+            setTimeout(() =>{
+                setWhichPage(whichPage + 1);
+                setAnimationClass('fade-in');
+            }, 500)
         }
     }
 
     function prevPage() {
+        setAnimationClass('fade-out');
+        console.log("1", animationClass)
         if (whichPage > 0) {
-            setWhichPage(whichPage - 1)
+            setTimeout(() =>{
+                console.log("2", animationClass)
+                setWhichPage(whichPage - 1);
+                setAnimationClass('fade-in');
+                console.log("3", animationClass)
+            }, 500)
         }
+
     }
 
     return (
@@ -235,7 +241,7 @@ const Home: React.FC = () => {
                                       d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
                             </svg>
                         </button>
-                        <h2 className="recipes__title m-5 w-50 text-center">{whichPage == 0 ? "Beliebteste Rezepte" : "Neuste Rezepte"}</h2>
+                        <h2 className="recipes__title m-5 w-50 text-center">{whichPage == 0 ? "Beliebteste Rezepte" : whichPage == 1 ? "Neuste Rezepte" : "Beliebteste User"}</h2>
                         <button
                             className="navigation-button w-auto h-auto"
                             onClick={nextPage}
@@ -260,7 +266,7 @@ const Home: React.FC = () => {
                                 <span className="sr-only"></span>
                             </div>
                         </div>}
-                    <div
+                    {whichPage < 2 && <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center'}}
                     >
@@ -276,7 +282,77 @@ const Home: React.FC = () => {
                                 </a>
                             ))}
                         </div>
-                    </div>
+                    </div>}
+
+                    {whichPage == 2 && <div
+                        className={`recipes__container ${animationClass}`}
+                        style={{display: 'flex', alignItems: 'center', marginBottom: "5%"}}
+                    >
+                        <div className="container text-center d-flex justify-content-center">
+                            <table className="d-flex w-100 justify-content-center podium mt-4">
+                                <tr className="w-75 d-flex justify-content-center">
+                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                        <p className="m-0">{bestUsers[1].user}</p>
+                                        <p className="m-1 fw-normal">{bestUsers[1].follower} Follower</p>
+                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                            <div className="podium-place second w-75"
+                                                 style={{backgroundColor: "#98afbc"}}>
+                                                <span className="position">🥈 2</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                        <p className="m-0">{bestUsers[0].user}</p>
+                                        <p className="m-1 fw-normal">{bestUsers[0].follower} Follower</p>
+                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                            <div className="podium-place first w-75"
+                                                 style={{backgroundColor: "#65899c"}}>
+                                                <span className="position">🥇 1</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                        <p className="m-0">{bestUsers[2].user}</p>
+                                        <p className="m-1 fw-normal">{bestUsers[2].follower} Follower</p>
+                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                            <div className="podium-place third w-75"
+                                                 style={{backgroundColor: "#cbd6dd"}}>
+                                                <span className="position">🥉 3</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>}
+
+                    {whichPage == 2 && <div
+                        className={`recipes__container ${animationClass}`}
+                    >
+                        <div className="w-100 d-flex flex-column align-items-center">
+                            <p className="fs-4 mt-5 align-self-center">Weitere beliebte User:</p>
+                            <table className="recipes-table mt-3 mb-5 w-50" style={{margin: "0"}}>
+                                <thead>
+                                <tr>
+                                    <th className="fs-6" scope="col1">Username</th>
+                                    <th className="fs-6" scope="col2">Anzahl Follower
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {bestUsers.slice(3, 10)/*.filter((a) => a.follower != 0)*/.map((user) => (
+                                    <tr>
+                                        <td className="fs-6 d-flex justify-content-between align-items-center w-100">
+                                            <span className="fs-6">{user.user}</span>
+                                        </td>
+                                        <td className="fs-6">{user.follower} Follower</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>}
                 </section>
             </main>
         </div>
