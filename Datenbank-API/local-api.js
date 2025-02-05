@@ -126,8 +126,8 @@ app.get('/getUserInfo', (req, res) => {
     const query1 = 'SELECT COUNT(*) AS bewertungen FROM Bewertung WHERE Username = ?';
     const query2 = 'SELECT COUNT(*) AS lesezeichen FROM Lesezeichen WHERE Username = ?';
     const query3 = 'SELECT COUNT(*) AS rezepte FROM Rezept WHERE Creator = ?';
-    const query4 = 'SELECT COUNT(*) AS folgt FROM UserFolgen WHERE UserFollowing = ?';
-    const query5 = 'SELECT COUNT(*) AS follower FROM UserFolgen WHERE UserFollowed = ?';
+    const query4 = 'SELECT COUNT(*) AS folgt FROM UserFolgen WHERE UserFollowing = ? AND Follow = 1';
+    const query5 = 'SELECT COUNT(*) AS follower FROM UserFolgen WHERE UserFollowed = ? AND Follow = 1';
 
     const queries = [
         {query: query1, params: [user]},
