@@ -3,6 +3,7 @@ import RecipeCard from './RecipeCard.tsx';
 import "./Home.css"
 import React, {useEffect, useState} from "react";
 import configData from '../../../../config/frontend-config.json';
+import ShowUser from "../ShowUser/showUser.tsx";
 
 interface Config {
     host: string;
@@ -36,16 +37,24 @@ interface User {
     follower: number;
 }
 
+interface HomeProps {
+    isLoggedIn: boolean;
+    username: string;
+}
+
 
 const hostData: Config = configData;
 
-const Home: React.FC = () => {
+const Home: React.FC <HomeProps> = ({isLoggedIn, username}) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
+    const [sampleRecipes2, setSampleRecipes2] = useState<ListItem[]>([]);
     const [whichPage, setWhichPage] = useState<number>(0)
     const [animationClass, setAnimationClass] = useState<string>('');
     const [showLoading, setShowLoading] = useState(false);
     const [usernames, setUsernames] = useState<string[]>([]);
     const [bestUsers, setBestUsers] = useState<User[]>([])
+    const [showUser, setShowUser] = useState<boolean>(false);
+    const [showUserByName, setShowUserByName] = useState<string>("");
 
     async function getUsers(): Promise<void> {
         try {
@@ -124,32 +133,30 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            if (whichPage === 1) {
-                const recipes = await getRecipes();
-                if (recipes && Array.isArray(recipes)) {
-                    const lastFifteenRecipes = recipes.slice(-15).reverse().map(recipe => ({
-                        title: recipe.Title,
-                        description: recipe.Category,
-                        imageUrl: recipe.Image,
-                        id: recipe.ID,
-                    }));
-                    setSampleRecipes(lastFifteenRecipes);
-                }
-            } else if (whichPage === 0) {
-                const recipes = await getHighRatedRecipes();
-                if (recipes && Array.isArray(recipes)) {
-                    const lastFifteenRecipes = recipes.sort((a, b) => b.Rating - a.Rating).slice(0, 15).map(recipe => ({
-                        title: recipe.Title,
-                        description: recipe.Category,
-                        imageUrl: recipe.Image,
-                        id: recipe.ID,
-                    }));
-                    setSampleRecipes(lastFifteenRecipes);
-                }
+            const recipes = await getRecipes();
+            if (recipes && Array.isArray(recipes)) {
+                const lastFifteenRecipes = recipes.slice(-15).reverse().map(recipe => ({
+                    title: recipe.Title,
+                    description: recipe.Category,
+                    imageUrl: recipe.Image,
+                    id: recipe.ID,
+                }));
+                setSampleRecipes(lastFifteenRecipes);
+            }
+            const recipes2 = await getHighRatedRecipes();
+            if (recipes2 && Array.isArray(recipes2)) {
+                const lastFifteenRecipes2 = recipes2.sort((a, b) => b.Rating - a.Rating).slice(0, 15).map(recipe => ({
+                    title: recipe.Title,
+                    description: recipe.Category,
+                    imageUrl: recipe.Image,
+                    id: recipe.ID,
+                }));
+                setSampleRecipes2(lastFifteenRecipes2);
             }
             const loadedUsers: User[] = [];
             let gourmetGuideTeamAlreadyDone: boolean = false;
             let index = 1;
+
 
             for (const user of usernames) {
                 if ((user == "1" || user == "12345")) {
@@ -188,6 +195,8 @@ const Home: React.FC = () => {
                 index++;
             }
             setBestUsers(loadedUsers.sort((a, b) => b.follower - a.follower).slice(0, 10))
+            console.log(loadedUsers.sort((a, b) => b.follower - a.follower).slice(0, 10));
+            console.log(bestUsers);
         }
         setShowLoading(false)
 
@@ -197,22 +206,19 @@ const Home: React.FC = () => {
     function nextPage() {
         setAnimationClass('fade-out');
         if (whichPage < 2) {
-            setTimeout(() =>{
-                setWhichPage(whichPage + 1);
+            setTimeout(() => {
                 setAnimationClass('fade-in');
+                setWhichPage(whichPage + 1);
             }, 500)
         }
     }
 
     function prevPage() {
         setAnimationClass('fade-out');
-        console.log("1", animationClass)
         if (whichPage > 0) {
-            setTimeout(() =>{
-                console.log("2", animationClass)
-                setWhichPage(whichPage - 1);
+            setTimeout(() => {
                 setAnimationClass('fade-in');
-                console.log("3", animationClass)
+                setWhichPage(whichPage - 1);
             }, 500)
         }
 
@@ -260,7 +266,7 @@ const Home: React.FC = () => {
                             </svg>
                         </button>
                     </div>
-                    {showLoading &&
+                    {showLoading || sampleRecipes[1] == undefined || sampleRecipes2[1] == undefined &&
                         <div className="text-center" style={{minHeight: "100vh", marginTop: "-10%", paddingTop: "12%"}}>
                             <div className="spinner-border" style={{color: "#07536D"}} role="status">
                                 <span className="sr-only"></span>
@@ -271,7 +277,16 @@ const Home: React.FC = () => {
                         style={{display: 'flex', alignItems: 'center'}}
                     >
                         <div className="recipes__list" style={{flex: 1, display: 'flex', overflowX: 'auto'}}>
-                            {sampleRecipes!.map((recipe, index) => (
+                            {whichPage == 0 ? sampleRecipes2!.map((recipe, index) => (
+                                <a
+                                    key={index}
+                                    className="recipes-link"
+                                    href={`/recipe/${recipe.id}/`}
+                                    style={{textDecoration: 'none'}}
+                                >
+                                    <RecipeCard key={index} {...recipe} />
+                                </a>
+                            )) : sampleRecipes!.map((recipe, index) => (
                                 <a
                                     key={index}
                                     className="recipes-link"
@@ -284,7 +299,7 @@ const Home: React.FC = () => {
                         </div>
                     </div>}
 
-                    {whichPage == 2 && <div
+                    {whichPage == 2 && bestUsers[1] != undefined && <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center', marginBottom: "5%"}}
                     >
@@ -292,7 +307,10 @@ const Home: React.FC = () => {
                             <table className="d-flex w-100 justify-content-center podium mt-4">
                                 <tr className="w-75 d-flex justify-content-center">
                                     <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0">{bestUsers[1].user}</p>
+                                        <p className="m-0" onClick={() => {
+                                            setShowUserByName(bestUsers[1].user)
+                                            setShowUser(!showUser)
+                                        }}>{bestUsers[1].user}</p>
                                         <p className="m-1 fw-normal">{bestUsers[1].follower} Follower</p>
                                         <div className="col-4 w-100 d-flex justify-content-center text-center">
                                             <div className="podium-place second w-75"
@@ -302,7 +320,10 @@ const Home: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0">{bestUsers[0].user}</p>
+                                        <p className="m-0" onClick={() => {
+                                            setShowUserByName(bestUsers[0].user)
+                                            setShowUser(!showUser)
+                                        }}>{bestUsers[0].user}</p>
                                         <p className="m-1 fw-normal">{bestUsers[0].follower} Follower</p>
                                         <div className="col-4 w-100 d-flex justify-content-center text-center">
                                             <div className="podium-place first w-75"
@@ -312,7 +333,10 @@ const Home: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0">{bestUsers[2].user}</p>
+                                        <p className="m-0" onClick={() => {
+                                            setShowUserByName(bestUsers[2].user)
+                                            setShowUser(!showUser)
+                                        }}>{bestUsers[2].user}</p>
                                         <p className="m-1 fw-normal">{bestUsers[2].follower} Follower</p>
                                         <div className="col-4 w-100 d-flex justify-content-center text-center">
                                             <div className="podium-place third w-75"
@@ -326,7 +350,7 @@ const Home: React.FC = () => {
                         </div>
                     </div>}
 
-                    {whichPage == 2 && <div
+                    {whichPage == 2 && bestUsers[1] != undefined && <div
                         className={`recipes__container ${animationClass}`}
                     >
                         <div className="w-100 d-flex flex-column align-items-center">
@@ -341,8 +365,11 @@ const Home: React.FC = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {bestUsers.slice(3, 10)/*.filter((a) => a.follower != 0)*/.map((user) => (
-                                    <tr>
+                                {bestUsers.slice(3, 10).filter((a) => a.follower != 0).map((user) => (
+                                    <tr onClick={() => {
+                                        setShowUserByName(user.user)
+                                        setShowUser(!showUser)
+                                    }}>
                                         <td className="fs-6 d-flex justify-content-between align-items-center w-100">
                                             <span className="fs-6">{user.user}</span>
                                         </td>
@@ -353,7 +380,20 @@ const Home: React.FC = () => {
                             </table>
                         </div>
                     </div>}
+
+                    {whichPage == 2 && bestUsers[1] == undefined &&
+                        <div className="text-center" style={{minHeight: "100vh", marginTop: "-10%", paddingTop: "12%"}}>
+                            <div className="spinner-border" style={{color: "#07536D"}} role="status">
+                                <span className="sr-only"></span>
+                            </div>
+                        </div>}
                 </section>
+                {showUser &&
+                    <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={showUserByName}
+                              closeModal={() => {
+                                  setShowUser(false)
+                                  setShowUserByName("")
+                              }}/>}
             </main>
         </div>
     );
