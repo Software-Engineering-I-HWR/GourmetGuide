@@ -104,10 +104,14 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                     </a>
                 </form>
                 <div className="navbar-actions">
-                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link"
+                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link position-relative"
                        data-toggle="tooltip" data-placement="bottom" title="Eigener Bereich">
                         <img src="/images/Navbar/own-page.png" alt="Eigener Bereich"
                              className="navbar__icons_to_navigate"/>
+                        <span
+                            className="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                    <span className="visually-hidden">ungelesene Nachrichten</span>
+                                </span>
                     </a>
                     <a href='/users' className="navbar__link" data-toggle="tooltip" data-placement="bottom"
                        title="User">

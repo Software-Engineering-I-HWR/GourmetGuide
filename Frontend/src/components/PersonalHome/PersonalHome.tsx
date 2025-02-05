@@ -292,28 +292,41 @@ const PersonalHome: React.FC = () => {
                 <div className="personalHome-main-div">
                     <div className="personalHome-choose-buttons">
                         <button
-                            className="personalHome-ownRecipes"
+                            className="personalHome-ownRecipes position-relative"
                             onClick={() => setWhichIsDisable(0)}
                             value={whichIsDisable === 0 ? "enable" : "disable"}
+                        >
+                            Neue Rezepte
+                            {(
+                                <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                    <span className="visually-hidden">ungelesene Nachrichten</span>
+                                </span>
+                            )}
+                        </button>
+
+                        <button
+                            className="personalHome-ownRecipes"
+                            onClick={() => setWhichIsDisable(1)}
+                            value={whichIsDisable === 1 ? "enable" : "disable"}
                         >
                             Eigene Rezepte
                         </button>
                         <button
                             className="personalHome-ratedRecipes"
-                            onClick={() => setWhichIsDisable(1)}
-                            value={whichIsDisable === 1 ? "enable" : "disable"}
+                            onClick={() => setWhichIsDisable(2)}
+                            value={whichIsDisable === 2 ? "enable" : "disable"}
                         >
                             Bewertete Rezepte
                         </button>
                         <button
                             className="personalHome-ownRecipes"
-                            onClick={() => setWhichIsDisable(2)}
-                            value={whichIsDisable === 2 ? "enable" : "disable"}
+                            onClick={() => setWhichIsDisable(3)}
+                            value={whichIsDisable === 3 ? "enable" : "disable"}
                         >
                             Bookmarks
                         </button>
                     </div>
-                    {whichIsDisable === 0 && ownRecipes.length !== 0 && (
+                    {whichIsDisable === 1 && ownRecipes.length !== 0 && (
                         <div className="home-recipes-table"
                              style={ownRecipes.length == 1 ? {marginBottom: "30%"} : ownRecipes.length == 2 ? {marginBottom: "20%"} : ownRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
                             <table className="recipes-table">
@@ -362,13 +375,13 @@ const PersonalHome: React.FC = () => {
                             </table>
                         </div>
                     )}
-                    {whichIsDisable === 0 && ownRecipes.length === 0 && (
+                    {whichIsDisable === 1 && ownRecipes.length === 0 && (
                         <div className="home-recipes-error">Du hast noch kein Rezept erstellt!</div>
                     )}
-                    {whichIsDisable === 2 && bookmarkRecipes.length === 0 && (
+                    {whichIsDisable === 3 && bookmarkRecipes.length === 0 && (
                         <div className="home-recipes-error">Du hast noch keine Bookmarks!</div>
                     )}
-                    {whichIsDisable === 2 && bookmarkRecipes.length !== 0 && (
+                    {whichIsDisable === 3 && bookmarkRecipes.length !== 0 && (
                         <div className="home-recipes-table"
                              style={bookmarkRecipes.length == 1 ? {marginBottom: "30%"} : bookmarkRecipes.length == 2 ? {marginBottom: "20%"} : bookmarkRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
                             <table className="recipes-table">
@@ -402,7 +415,7 @@ const PersonalHome: React.FC = () => {
                             </table>
                         </div>
                     )}
-                    {whichIsDisable === 1 && (ratedRecipes.length !== 0 ? (
+                    {whichIsDisable === 2 && (ratedRecipes.length !== 0 ? (
                         <div className="home-recipes-table"
                              style={ratedRecipes.length == 1 ? {marginBottom: "30%"} : ratedRecipes.length == 2 ? {marginBottom: "20%"} : ratedRecipes.length == 3 ? {marginBottom: "10%"} : {marginBottom: "0"}}>
                             <table className="recipes-table">
