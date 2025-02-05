@@ -45,7 +45,7 @@ interface HomeProps {
 
 const hostData: Config = configData;
 
-const Home: React.FC <HomeProps> = ({isLoggedIn, username}) => {
+const Home: React.FC<HomeProps> = ({isLoggedIn, username}) => {
     const [sampleRecipes, setSampleRecipes] = useState<ListItem[]>([]);
     const [sampleRecipes2, setSampleRecipes2] = useState<ListItem[]>([]);
     const [whichPage, setWhichPage] = useState<number>(0)
@@ -201,7 +201,7 @@ const Home: React.FC <HomeProps> = ({isLoggedIn, username}) => {
         setShowLoading(false)
 
         fetchRecipes()
-    }, [whichPage]);
+    }, [bestUsers, usernames, whichPage]);
 
     function nextPage() {
         setAnimationClass('fade-out');
@@ -272,114 +272,119 @@ const Home: React.FC <HomeProps> = ({isLoggedIn, username}) => {
                                 <span className="sr-only"></span>
                             </div>
                         </div>}
-                    {whichPage < 2 && <div
+                    <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center'}}
                     >
-                        <div className="recipes__list" style={{flex: 1, display: 'flex', overflowX: 'auto'}}>
-                            {whichPage == 0 ? sampleRecipes2!.map((recipe, index) => (
-                                <a
-                                    key={index}
-                                    className="recipes-link"
-                                    href={`/recipe/${recipe.id}/`}
-                                    style={{textDecoration: 'none'}}
-                                >
-                                    <RecipeCard key={index} {...recipe} />
-                                </a>
-                            )) : sampleRecipes!.map((recipe, index) => (
-                                <a
-                                    key={index}
-                                    className="recipes-link"
-                                    href={`/recipe/${recipe.id}/`}
-                                    style={{textDecoration: 'none'}}
-                                >
-                                    <RecipeCard key={index} {...recipe} />
-                                </a>
-                            ))}
-                        </div>
-                    </div>}
+                        {whichPage < 2 &&
+                            <div className="recipes__list" style={{flex: 1, display: 'flex', overflowX: 'auto'}}>
+                                {whichPage == 0 ? sampleRecipes2!.map((recipe, index) => (
+                                    <a
+                                        key={index}
+                                        className="recipes-link"
+                                        href={`/recipe/${recipe.id}/`}
+                                        style={{textDecoration: 'none'}}
+                                    >
+                                        <RecipeCard key={index} {...recipe} />
+                                    </a>
+                                )) : sampleRecipes!.map((recipe, index) => (
+                                    <a
+                                        key={index}
+                                        className="recipes-link"
+                                        href={`/recipe/${recipe.id}/`}
+                                        style={{textDecoration: 'none'}}
+                                    >
+                                        <RecipeCard key={index} {...recipe} />
+                                    </a>
+                                ))}
+                            </div>}
+                    </div>
 
-                    {whichPage == 2 && bestUsers[1] != undefined && <div
+                    <div
                         className={`recipes__container ${animationClass}`}
                         style={{display: 'flex', alignItems: 'center', marginBottom: "5%"}}
                     >
-                        <div className="container text-center d-flex justify-content-center">
-                            <table className="d-flex w-100 justify-content-center podium mt-4">
-                                <tr className="w-75 d-flex justify-content-center">
-                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0" onClick={() => {
-                                            setShowUserByName(bestUsers[1].user)
-                                            setShowUser(!showUser)
-                                        }}>{bestUsers[1].user}</p>
-                                        <p className="m-1 fw-normal">{bestUsers[1].follower} Follower</p>
-                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
-                                            <div className="podium-place second w-75"
-                                                 style={{backgroundColor: "#98afbc"}}>
-                                                <span className="position">🥈 2</span>
+                        {whichPage == 2 && bestUsers[1] != undefined &&
+                            <div className="container text-center d-flex justify-content-center">
+                                <table className="d-flex w-100 justify-content-center podium mt-2">
+                                    <tbody className="d-flex w-100 justify-content-center podium">
+                                    <tr className="w-75 d-flex justify-content-center">
+                                        <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                            <p className="m-0" onClick={() => {
+                                                setShowUserByName(bestUsers[1].user)
+                                                setShowUser(!showUser)
+                                            }}>{bestUsers[1].user}</p>
+                                            <p className="m-1 fw-normal">{bestUsers[1].follower} Follower</p>
+                                            <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                                <div className="podium-place second w-75"
+                                                     style={{backgroundColor: "#98afbc"}}>
+                                                    <span className="position">🥈 2</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0" onClick={() => {
-                                            setShowUserByName(bestUsers[0].user)
-                                            setShowUser(!showUser)
-                                        }}>{bestUsers[0].user}</p>
-                                        <p className="m-1 fw-normal">{bestUsers[0].follower} Follower</p>
-                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
-                                            <div className="podium-place first w-75"
-                                                 style={{backgroundColor: "#65899c"}}>
-                                                <span className="position">🥇 1</span>
+                                        </td>
+                                        <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                            <p className="m-0" onClick={() => {
+                                                setShowUserByName(bestUsers[0].user)
+                                                setShowUser(!showUser)
+                                            }}>{bestUsers[0].user}</p>
+                                            <p className="m-1 fw-normal">{bestUsers[0].follower} Follower</p>
+                                            <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                                <div className="podium-place first w-75"
+                                                     style={{backgroundColor: "#65899c"}}>
+                                                    <span className="position">🥇 1</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
-                                        <p className="m-0" onClick={() => {
-                                            setShowUserByName(bestUsers[2].user)
-                                            setShowUser(!showUser)
-                                        }}>{bestUsers[2].user}</p>
-                                        <p className="m-1 fw-normal">{bestUsers[2].follower} Follower</p>
-                                        <div className="col-4 w-100 d-flex justify-content-center text-center">
-                                            <div className="podium-place third w-75"
-                                                 style={{backgroundColor: "#cbd6dd"}}>
-                                                <span className="position">🥉 3</span>
+                                        </td>
+                                        <td className="best-user-column w-25 d-flex flex-column align-items-center justify-content-end">
+                                            <p className="m-0" onClick={() => {
+                                                setShowUserByName(bestUsers[2].user)
+                                                setShowUser(!showUser)
+                                            }}>{bestUsers[2].user}</p>
+                                            <p className="m-1 fw-normal">{bestUsers[2].follower} Follower</p>
+                                            <div className="col-4 w-100 d-flex justify-content-center text-center">
+                                                <div className="podium-place third w-75"
+                                                     style={{backgroundColor: "#cbd6dd"}}>
+                                                    <span className="position">🥉 3</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>}
+                    </div>
 
-                    {whichPage == 2 && bestUsers[1] != undefined && <div
+                    <div
                         className={`recipes__container ${animationClass}`}
                     >
-                        <div className="w-100 d-flex flex-column align-items-center">
-                            <p className="fs-4 mt-5 align-self-center">Weitere beliebte User:</p>
-                            <table className="recipes-table mt-3 mb-5 w-50" style={{margin: "0"}}>
-                                <thead>
-                                <tr>
-                                    <th className="fs-6" scope="col1">Username</th>
-                                    <th className="fs-6" scope="col2">Anzahl Follower
-                                    </th>
+                        {whichPage == 2 && bestUsers[1] != undefined &&
+                            <div className="w-100 d-flex flex-column align-items-center">
+                                <p className="fs-4 mt-5 align-self-center">Weitere beliebte User:</p>
+                                <table className="recipes-table mt-3 mb-5 w-50" style={{margin: "0"}}>
+                                    <thead>
+                                    <tr>
+                                        <th className="fs-6" scope="col1">Username</th>
+                                        <th className="fs-6" scope="col2">Anzahl Follower
+                                        </th>
 
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {bestUsers.slice(3, 10).filter((a) => a.follower != 0).map((user) => (
-                                    <tr onClick={() => {
-                                        setShowUserByName(user.user)
-                                        setShowUser(!showUser)
-                                    }}>
-                                        <td className="fs-6 d-flex justify-content-between align-items-center w-100">
-                                            <span className="fs-6">{user.user}</span>
-                                        </td>
-                                        <td className="fs-6">{user.follower} Follower</td>
                                     </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>}
+                                    </thead>
+                                    <tbody>
+                                    {bestUsers.slice(3, 10).filter((a) => a.follower != 0).map((user) => (
+                                        <tr onClick={() => {
+                                            setShowUserByName(user.user)
+                                            setShowUser(!showUser)
+                                        }}>
+                                            <td className="fs-6 d-flex justify-content-between align-items-center w-100">
+                                                <span className="fs-6">{user.user}</span>
+                                            </td>
+                                            <td className="fs-6">{user.follower} Follower</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>}
+                    </div>
 
                     {whichPage == 2 && bestUsers[1] == undefined &&
                         <div className="text-center" style={{minHeight: "100vh", marginTop: "-10%", paddingTop: "12%"}}>
