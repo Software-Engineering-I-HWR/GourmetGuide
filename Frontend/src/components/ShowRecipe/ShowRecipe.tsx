@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
-import ErrorPage from "../errorPage.tsx";
 import configData from '../../../../config/frontend-config.json';
 import ShowUser from "../ShowUser/showUser.tsx";
 
@@ -76,7 +75,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     };
     const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
     const [showPopup, setShowPopup] = useState(false);
-    const [showErrorPage, setShowErrorPage] = useState(0);
+    const [showLoading, setShowLoading] = useState(0);
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
     const [showUser, setShowUser] = useState<boolean>(false);
 
@@ -220,11 +219,11 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
 
         const allergenForShare = sampleRecipe?.allergen?.slice();
 
-        if(sampleRecipe?.vegan && !allergenForShare?.includes("Vegan")){
+        if (sampleRecipe?.vegan && !allergenForShare?.includes("Vegan")) {
             allergenForShare?.push("Vegan")
         }
 
-        if (sampleRecipe?.vegetarian && !allergenForShare?.includes("Vegetarisch")){
+        if (sampleRecipe?.vegetarian && !allergenForShare?.includes("Vegetarisch")) {
             allergenForShare?.push("Vegetarisch")
         }
 
@@ -307,10 +306,12 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
                 setSampleRecipe(newRecipe);
+                setShowLoading(0);
             } else {
                 console.error('No valid recipes received or the data is not an array.');
             }
         };
+        setShowLoading(1);
         fetchRecipe();
     }, []);
 
@@ -339,17 +340,9 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         }
     }, [showPopup]);
 
-    useEffect(() => {
-        if (sampleRecipe == undefined) {
-            setShowErrorPage(1);
-        } else {
-            setShowErrorPage(0)
-        }
-    }, [sampleRecipe]);
-
     return (
         <body className="showRecipe">
-        {showErrorPage == 0 && <>
+        {showLoading == 0 && <>
             <header className="showRecipe-hero">
                 <div className="showRecipe-contentfield">
                     <div className="showRecipe-contentfield-left">
@@ -417,7 +410,9 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
                 <div className="separator-line"></div>
                 <p>Ersteller: {validCreator}
-                <button className="btn m-2 text-white" style={{background: "#07546e"}} onClick={() => setShowUser(!showUser)}> User anzeigen</button>
+                    <button className="btn m-2 text-white" style={{background: "#07546e"}}
+                            onClick={() => setShowUser(!showUser)}> User anzeigen
+                    </button>
                 </p>
                 <div className="actions-field">
                     <div className="bookmark">
@@ -512,8 +507,15 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
             </div>
         </>}
-        {showErrorPage == 1 && <ErrorPage/>}
-        {showUser && <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={validCreator} closeModal={() => setShowUser(false)}/>}
+        {showLoading == 1 &&
+            <div className="text-center" style={{minHeight: "100vh", marginTop: "-10%", paddingTop: "12%"}}>
+                <div className="spinner-border" style={{color: "#07536D"}} role="status">
+                    <span className="sr-only"></span>
+                </div>
+            </div>}
+
+        {showUser && <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={validCreator}
+                               closeModal={() => setShowUser(false)}/>}
         </body>
     );
 };

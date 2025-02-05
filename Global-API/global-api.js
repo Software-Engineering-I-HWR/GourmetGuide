@@ -77,6 +77,23 @@ app.get('/getRecipes', async (req, res) => {
     }
 });
 
+app.get('/getBestRecipes', async (req, res) => {
+    try {
+        const response = await fetch('http://' + host + ':3007/getBestRecipes');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
 app.get('/getAllCategories', async (req, res) => {
     try {
         const response = await fetch('http://' + host + ':3007/getAllCategories');
@@ -414,6 +431,78 @@ app.get('/getFollowedUsersByUser', async (req, res) => {
     }
 });
 
+app.get('/getLastLoginByUser', async (req, res) => {
+    const user = req.query.user;
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/getLastLoginByUser?user=${encodeURIComponent(user)}`);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.post('/setLastLoginByUser', async (req, res) => {
+    const user = req.query.user;
+    console.log("Received data:", req.query);
+
+    try {
+        const response = await fetch('http://' + host + ':3007/getMaxID');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            const id = JSON.parse(data);
+            const maxID = id.max_id;
+
+            try {
+                const response = await fetch(`http://` + host + `:3007/setLastLoginByUser?user=${encodeURIComponent(user)}&maxID=${encodeURIComponent(maxID)}`, {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    const data = await response.text();
+                    res.status(200).send(data);
+                } else {
+                    console.error('API 2 Error Status:', response.status);
+                    res.status(response.status).send('Error while request');
+                }
+            } catch (error) {
+                console.error('Network error:', error.message);
+                res.status(500).send('Internal server error');
+            }
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/getMaxID', async (req, res) => {
+    try {
+        const response = await fetch('http://' + host + ':3007/getMaxID');
+        console.log(response);
+        if (response.ok) {
+            const data = await response.text();
+            res.status(200).send(data);
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
 app.post('/saveFollow', async (req, res) => {
     const user = req.query.user;
     const follows = req.query.follows;
@@ -618,6 +707,40 @@ app.post('/deleteUserByUsername', async (req, res) => {
     } catch (error) {
         console.error('Network error:', error.message);
         res.status(500).json({error: 'Internal server error'});
+    }
+});
+
+app.get('/getNewRecipesByUser', async (req, res) => {
+    const user = req.query.user;
+
+    try {
+        const response = await fetch(`http://` + host + `:3007/getLastLoginByUser?user=${encodeURIComponent(user)}`);
+        if (response.ok) {
+            const data = await response.text();
+            const receivedData = JSON.parse(data);
+            const maxID = receivedData[0].maxID;
+
+            try {
+                const response = await fetch(`http://` + host + `:3007/getNewRecipesByUser?user=${encodeURIComponent(user)}&maxID=${encodeURIComponent(maxID)}`);
+                if (response.ok) {
+                    const data = await response.text();
+                    console.log(data);
+                    res.status(200).send(data);
+                } else {
+                    console.error('API 2 Error Status:', response.status);
+                    res.status(response.status).send('Error while request');
+                }
+            } catch (error) {
+                console.error('Network error:', error.message);
+                res.status(500).send('Internal server error');
+            }
+        } else {
+            console.error('API 2 Error Status:', response.status);
+            res.status(response.status).send('Error while request');
+        }
+    } catch (error) {
+        console.error('Network error:', error.message);
+        res.status(500).send('Internal server error');
     }
 });
 

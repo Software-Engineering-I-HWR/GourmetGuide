@@ -155,20 +155,20 @@ const Categories: React.FC = () => {
     );
 
     return (
-        <div className="main-content">
+        <div className="main-content" style={{width:'80%'}}>
             <div className="categories-main-content">
                 <div className="categories">
                     <img src="/images/menu.png" alt="Menü Button Mobile" className="menu-button-mobile-categories"
                          onClick={() => setShowMobileMenu(!showMobileMenu)}/>
                     <h1 className="categories__title">Kategorien</h1>
                     <div className="categories__list">
-                        {sampleCategories!.sort().map((recipe, index) => (
+                        {sampleCategories!.sort((a, b) => a.title.localeCompare(b.title)).map((recipe, index) => (
                             <CategoryCard key={index} {...recipe}/>
                         ))}
                     </div>
                 </div>
                 {showMobileMenu && <div className="categories-actions-mobile">
-                    {sampleCategories!.sort().map((item) => (
+                    {sampleCategories!.map((item) => (
                         <button className="categories-mobile-menu-buttons" disabled={!item.active} onClick={() => {
                             setShowMobileMenu(false);
                             setCurrentCategory(item.title)
@@ -191,7 +191,7 @@ const Categories: React.FC = () => {
                             {allRecipesCurrentCategory!.sort().map((recipe, index) => (
                                 <tr onClick={() => window.location.href = `/recipe/${recipe.id}/`}>
                                     <th scope="row">{index + 1}</th>
-                                    <td>{recipe.title}</td>
+                                    <td style={{overflowWrap: "break-word"}}>{recipe.title.length <= 45 ? recipe.title : recipe.title.slice(0, 45)+"..."}</td>
                                     <td>{recipe.category}</td>
                                     <td>
                                         <img src={recipe.imageUrl}

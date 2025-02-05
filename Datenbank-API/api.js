@@ -48,6 +48,21 @@ app.get('/getRecipes', (req, res) => {
     });
 });
 
+app.get('/getBestRecipes', (req, res) => {
+    const query = 'SELECT R.ID, R.Title, R.Category, R.Image, AVG(B.Bewertung) AS Average FROM Rezept AS R INNER JOIN Bewertung AS B ON R.ID = B.ID GROUP BY R.ID, R.Title, R.Category, R.Image ORDER BY Average DESC;';
+
+    console.log(query);
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 app.get('/getAllCategories', (req, res) => {
     const query = 'SELECT DISTINCT Category FROM Rezept';
 
@@ -420,6 +435,90 @@ app.post('/saveBookmark', (req, res) => {
             res.status(500).send('Fehler beim Speichern der Bewertung');
         } else {
             res.status(200).send('Bewertung erfolgreich gespeichert');
+        }
+    });
+});
+
+app.get('/getLastLoginByUser', (req, res) => {
+    const user = req.query.user;
+    const query = 'SELECT * FROM LastLogin WHERE username = ?';
+
+    connection.query(query, [user], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen des letzten Logins');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.post('/setLastLoginByUser', (req, res) => {
+    const data = req.query;
+    console.log("Received data:", data);
+
+    const now = new Date();
+
+    const formattedDate = now.toLocaleString('de-DE', {
+        timeZone: 'Europe/Berlin',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(',', '').replace(/\./g, '-');
+
+    const [datePart, timePart] = formattedDate.split(' ');
+    const [day, month, year] = datePart.split('-');
+    const isoFormattedDate = `${year}-${month}-${day} ${timePart}`;
+
+    console.log("Formatted Date:", isoFormattedDate);
+
+    const query = `INSERT INTO LastLogin (username, time, maxID) VALUES (?, ?, ?) ON DUPLICATE KEY
+        UPDATE time = VALUES (time), maxID = VALUES (maxID);`;
+
+    console.log(query);
+
+    connection.query(query, [data.user, isoFormattedDate, data.maxID], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Speichern des letzten Logins');
+        } else {
+            res.status(200).send('Last Login erfolgreich gespeichert');
+        }
+    });
+});
+
+app.get('/getMaxID', (req, res) => {
+    const query = 'SELECT MAX(ID) AS max_id FROM Rezept;';
+
+    connection.query(query, [], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der maxID');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+app.get('/getNewRecipesByUser', (req, res) => {
+    const user = req.query.user;
+    const maxID = req.query.maxID;
+
+    const query = 'SELECT R.ID, R.Title, R.Category, R.Image, R.Creator FROM Rezept AS R, UserFolgen AS U WHERE U.UserFollowing = ? AND U.UserFollowed = R.Creator AND R.ID > ?;';
+
+    console.log(req.query);
+    console.log(query);
+
+    connection.query(query, [user, maxID], (error, results) => {
+        if (error) {
+            console.error("Database Error:", error);
+            res.status(500).send('Fehler beim Abrufen der Rezepte');
+        } else {
+            res.status(200).json(results);
         }
     });
 });
