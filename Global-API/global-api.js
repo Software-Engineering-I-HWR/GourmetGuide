@@ -459,7 +459,7 @@ app.post('/setLastLoginByUser', async (req, res) => {
         if (response.ok) {
             const data = await response.text();
             const id = JSON.parse(data);
-            const maxID = id.max_id;
+            const maxID = id[0].max_id;
 
             try {
                 const response = await fetch(`http://` + host + `:3007/setLastLoginByUser?user=${encodeURIComponent(user)}&maxID=${encodeURIComponent(maxID)}`, {
