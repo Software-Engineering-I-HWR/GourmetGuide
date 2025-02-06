@@ -39,6 +39,8 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
         const [showMessage, setShowMessage] = useState<boolean>(false);
         const [showLoading1, setShowLoading1] = useState(0);
         const [showLoading2, setShowLoading2] = useState(0);
+        const [noOwnRecipes, setNoOwnRecipes] = useState(false)
+        const [noRatedRecipes, setNoRatedRecipes] = useState(false)
 
 
         const handlePrev = () => {
@@ -138,6 +140,10 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
+                        if (ids[0] == null) {
+                            setNoOwnRecipes(true)
+                            setShowLoading2(0)
+                        }
                         setOwnIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -185,6 +191,12 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     if (response.ok) {
                         const indexes = await response.json();
                         const ids = indexes.map((item: { ID: number }) => item.ID);
+                        console.log("hier", ids)
+                        if (ids[0] == null) {
+                            console.log("here")
+                            setNoRatedRecipes(true)
+                            setShowLoading1(0)
+                        }
                         setRatedIds(ids);
                     } else {
                         console.error("API request error:", response.status);
@@ -215,7 +227,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     recentRecipes: loadedRecipes,
                 }));
-                setShowLoading1(0)
+                setShowLoading2(0)
             };
 
             if (ownIds.length > 0) {
@@ -279,7 +291,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     ...prevUser,
                     likedRecipes: loadedRecipes,
                 }));
-                setShowLoading2(0)
+                setShowLoading1(0)
             };
             if (ratedIds.length > 0) {
                 fetchRecipes2();
@@ -287,14 +299,14 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
         }, [ratedIds]);
 
         useEffect(() => {
-            setShowLoading1(1)
+            setShowLoading2(1)
             if (usernameToShow) {
                 getOwnRecipes();
             }
         }, [usernameToShow]);
 
         useEffect(() => {
-            setShowLoading2(1)
+            setShowLoading1(1)
             if (usernameToShow) {
                 getRatedRecipes();
             }
@@ -350,6 +362,9 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                         <div className="spinner-border" style={{color: "#07536D"}} role="status">
                                             <span className="sr-only"></span>
                                         </div>
+                                    </div>}
+                                    {showLoading2 == 0 && noOwnRecipes && <div className="text-center">
+                                        <p>Der User hat noch keine Rezepte erstellt!</p>
                                     </div>}
                                     {showLoading2 == 0 && user.recentRecipes
                                         .reduce((slides, recipe, index) => {
@@ -433,6 +448,9 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                         <div className="spinner-border" style={{color: "#07536D"}} role="status">
                                             <span className="sr-only"></span>
                                         </div>
+                                    </div>}
+                                    {showLoading1 == 0 && noRatedRecipes && <div className="text-center">
+                                        <p>Der User hat noch keine Rezepte gut bewertet!</p>
                                     </div>}
                                     {showLoading1 == 0 && user.likedRecipes
                                         .reduce((slides, recipe, index) => {

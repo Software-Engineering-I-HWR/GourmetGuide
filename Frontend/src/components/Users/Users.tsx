@@ -111,6 +111,8 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                             loadedUsers.push(newUser);
                             gourmetGuideTeamAlreadyDone = true;
                         }
+                    }else{
+                        index--;
                     }
                 } else {
                     const userInfo = await getUserInfo(user);
@@ -142,6 +144,23 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
         setShowLoading(true);
         getUsers();
     }, []);
+
+    useEffect(() => {
+        console.log("geändert!")
+    }, [users]);
+
+    const filterByFollower = () =>{
+        setFilteredUsers([...users].sort((a, b) => b.follower - a.follower))
+    }
+    const filterByRecipe = () =>{
+        setFilteredUsers([...users].sort((a, b) => b.rezepte - a.rezepte))
+    }
+    const filterByName = () =>{
+        setFilteredUsers([...users].sort((a, b) => a.user.localeCompare(b.user)))
+    }
+    const filterByIndex = () =>{
+        setFilteredUsers([...users].sort((a, b) => a.id - b.id))
+    }
 
 
     return (
@@ -184,17 +203,17 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button className="dropdown-item"
-                                    onClick={() => setUsers([...users].sort((a, b) => a.id - b.id))}>ID
+                                    onClick={filterByIndex}>ID
                             </button>
                             <button className="dropdown-item"
-                                    onClick={() => setUsers([...users].sort((a, b) => a.user.localeCompare(b.user)))}>Name
+                                    onClick={filterByName}>Name
                             </button>
                             <button className="dropdown-item"
-                                    onClick={() => setUsers([...users].sort((a, b) => b.rezepte - a.rezepte))}>Rezept
+                                    onClick={filterByRecipe}>Rezept
                                 Anzahl
                             </button>
                             <button className="dropdown-item"
-                                    onClick={() => setUsers([...users].sort((a, b) => b.follower - a.follower))}>Follower
+                                    onClick={filterByFollower}>Follower
                                 Anzahl
                             </button>
                         </div>
@@ -213,7 +232,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                             Rezepte
                         </th>
                         <th scope="col4"
-                            onClick={() => setUsers([...users].sort((a, b) => a.follower - b.follower))}>Follower
+                            onClick={() => setFilteredUsers([...users].sort((a, b) => a.follower - b.follower))}>Follower
                         </th>
                     </tr>
                     </thead>

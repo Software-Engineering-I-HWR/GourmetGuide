@@ -48,3 +48,52 @@
     border-color: rgba(0, 0, 0, 0.4); /* Etwas kräftigerer Rand bei Fokus */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Hellerer Schatten bei Fokus */
 }
+
+
+.podium {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.podium-place {
+    width: 100%;
+    max-width: 150px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    background: #dee2e6;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Höhe und Farben für die Plätze */
+.first {
+    background-color: gold;
+    height: 150px;
+}
+
+.second {
+    background-color: silver;
+    height: 120px;
+}
+
+.third {
+    background-color: #cd7f32;
+    height: 100px;
+}
+
+/* Styling für die Platzierungen */
+.position {
+    display: block;
+    font-size: 1.5rem;
+}
+
+.best-user-column {
+    display: flex;
+    float: left;
+    font-weight: bold;
+    align-items: center;
+    width: calc(100% / 5);
+    flex: 1;
+}

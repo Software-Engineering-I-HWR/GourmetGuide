@@ -74,7 +74,7 @@ const App: React.FC = () => {
                     <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
                             links={navLinks}/>}
                 <Routes>
-                    <Route path="/" element={<Home></Home>}/>
+                    <Route path="/" element={<Home isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!}></Home>}/>
                     <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Rating?/:Allergien?"
                            element={<MainSearch/>}/>
                     <Route path="/categories" element={<Categories/>}/>/
