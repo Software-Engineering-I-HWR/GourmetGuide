@@ -16,6 +16,7 @@ import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
 import AdminSuperView from './components/AdminSuperView/AdminSuperView';
 import {jwtDecode} from "jwt-decode";
 import Users from "./components/Users/Users.tsx";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App: React.FC = () => {
     const navLinks = [
@@ -71,7 +72,7 @@ const App: React.FC = () => {
         <Router>
             <>
                 {shouldShowNavbarFooter &&
-                    <Navbar isLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
+                    <Navbar isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
                             links={navLinks}/>}
                 <Routes>
                     <Route path="/" element={<Home></Home>}/>

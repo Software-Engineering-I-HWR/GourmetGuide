@@ -90,11 +90,10 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
     useEffect(() => {
         const fetchUsers = async () => {
             const loadedUsers: User[] = [];
-            let gourmetGuideTeamAlreadyDone: boolean = false;
             let index = 1;
 
             for (const user of usernames) {
-                if ((user == "1" || user == "12345")) {
+                /*if ((user == "1" || user == "12345")) {
                     if (!gourmetGuideTeamAlreadyDone) {
                         const userInfo = await getUserInfo("1");
                         const userInfo2 = await getUserInfo("12345");
@@ -112,7 +111,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                             gourmetGuideTeamAlreadyDone = true;
                         }
                     }
-                } else {
+                } else {*/
                     const userInfo = await getUserInfo(user);
                     if (userInfo) {
                         const newUser: User = {
@@ -126,7 +125,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                         };
                         loadedUsers.push(newUser);
                     }
-                }
+                //}
                 index++;
             }
             setUsers(loadedUsers);
