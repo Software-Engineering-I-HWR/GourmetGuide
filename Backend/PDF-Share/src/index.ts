@@ -56,6 +56,10 @@ const addImageToPage = async (
             finalHeight *= scaleRatio;
         }
 
+        while (y + finalHeight > 599){
+            y--;
+        }
+
         if (recipeImage == 1) {
             finalImageHeight = finalHeight;
         }
