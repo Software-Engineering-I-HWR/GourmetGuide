@@ -452,7 +452,7 @@ const PersonalHome: React.FC = () => {
                                         key={recipe.id} // Verwende die ID als eindeutigen Schlüssel
                                         onClick={() => (window.location.href = `/recipe/${recipe.id}/`)}
                                     >
-                                        <th scope="row">{index + 1}</th>
+                                        <th scope="notification-row">{index + 1}</th>
                                         <td>{recipe.title}</td>
                                         <td>{recipe.category}</td>
                                         <td>
@@ -482,7 +482,7 @@ const PersonalHome: React.FC = () => {
                         </div>
                     )}
 
-                    {whichIsDisable === 0 && newRecipes.length != 0 && <div className="row notification-container">
+                    {whichIsDisable === 0 && newRecipes.length != 0 && <div className="notification-row notification-container">
                         {newRecipes.map((a) => (
                             <div className="card notification-card notification-invitation">
                                 <div className="card-body align-items-center">
@@ -548,7 +548,7 @@ const PersonalHome: React.FC = () => {
                                         key={recipe.id} // Verwende die ID als eindeutigen Schlüssel
                                         onClick={() => (window.location.href = `/recipe/${recipe.id}/`)}
                                     >
-                                        <th scope="row">{index + 1}</th>
+                                        <th scope="notification-row">{index + 1}</th>
                                         <td>{recipe.title}</td>
                                         <td>{recipe.category}</td>
                                         <td>
@@ -582,7 +582,7 @@ const PersonalHome: React.FC = () => {
                                         key={recipe.id} // Verwende die ID als eindeutigen Schlüssel
                                         onClick={() => (window.location.href = `/recipe/${recipe.id}/`)}
                                     >
-                                        <th scope="row">{index + 1}</th>
+                                        <th scope="notification-row">{index + 1}</th>
                                         <td>{recipe.title}</td>
                                         <td>{recipe.category}</td>
                                         <td>

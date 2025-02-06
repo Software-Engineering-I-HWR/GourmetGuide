@@ -380,7 +380,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                 }`}
                                                 key={index}
                                             >
-                                                <div className="row">
+                                                <div className="row d-flex justify-content-between">
                                                     {slide.map((recipe) => (
                                                         <div
                                                             className="col-md-4 w-25"
@@ -466,7 +466,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                                                 }`}
                                                 key={index}
                                             >
-                                                <div className="row">
+                                                <div className="row d-flex justify-content-between">
                                                     {slide.map((recipe) => (
                                                         <div
                                                             className="col-md-4 w-25"

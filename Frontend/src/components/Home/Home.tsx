@@ -229,7 +229,7 @@ const Home: React.FC<HomeProps> = ({isLoggedIn, username}) => {
             <Hero title="Willkommen bei GourmetGuide: Gaumenschmaus!" subtitle="Entdecke und teile coole Rezepte."/>
             <main className="main-content">
                 <section className="recipes">
-                    <div className="row justify-content-center align-items-center">
+                    <div className="row justify-content-center d-flex flex-row align-items-center w-100 m-0">
                         <button
                             className="navigation-button w-auto"
                             onClick={prevPage}
