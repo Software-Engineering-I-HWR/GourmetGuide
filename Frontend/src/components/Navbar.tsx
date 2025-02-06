@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import './Navbar.css';
 import PopupWindow from "../PopupWindow.tsx";
+import configData from "../../../config/frontend-config.json";
 
 interface NavbarProps {
     title: string;
     links: Array<{ name: string; path: string }>;
     isLoggedIn: boolean;
     setIsUserLoggedIn: (isLoggedIn: boolean) => void;
+    username: string |null;
 }
 
 function getLink(temp: string) {
@@ -17,10 +19,20 @@ function getLink(temp: string) {
 
 }
 
-const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) => {
+interface Config {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+}
+
+const hostData: Config = configData;
+
+const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn, username}) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [loginMessage, setLoginMessage] = useState('');
     const [showPopupMessage, setShowPopupMessage] = useState(false);
+    const [showPoint, setShowPoint] = useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -50,6 +62,35 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
     useEffect(() => {
 
     }, [handleLogout]);
+
+    async function getNewRecipes(): Promise<void> {
+        try {
+            const response = await fetch(
+                `https://` + hostData.host + `:30155/getNewRecipesByUser?user=${encodeURIComponent(username!)}`,
+                {
+                    method: "GET",
+                }
+            );
+            if (response.ok) {
+                const recipes = await response.json();
+                if (recipes.length != 0) {
+                    setShowPoint(true);
+                } else {
+                    setShowPoint(false);
+                }
+            } else {
+                console.error("API request error:", response.status);
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+        }
+    }
+
+    useEffect(() => {
+        if (username != null) {
+            getNewRecipes();
+        }
+    }, []);
 
 
     return (
@@ -104,10 +145,15 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                     </a>
                 </form>
                 <div className="navbar-actions">
-                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link"
+                    <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}}
+                       className="navbar__link position-relative"
                        data-toggle="tooltip" data-placement="bottom" title="Eigener Bereich">
                         <img src="/images/Navbar/own-page.png" alt="Eigener Bereich"
                              className="navbar__icons_to_navigate"/>
+                        {showPoint && (<span
+                            className="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                    <span className="visually-hidden">ungelesene Nachrichten</span>
+                                </span>)}
                     </a>
                     <a href='/users' className="navbar__link" data-toggle="tooltip" data-placement="bottom"
                        title="User">

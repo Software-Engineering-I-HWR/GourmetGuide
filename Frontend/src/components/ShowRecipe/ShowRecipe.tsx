@@ -69,11 +69,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [chosenStar, setChosenStar] = useState<number>(0);
     const [showMessage, setShowMessage] = useState<boolean>(false);
     const [avRating, setAvRating] = useState<number>(0);
-    const isValidCreator = (creator: string | undefined) => {
-        const invalidCreators = ["1", "12345"];
-        return creator && !invalidCreators.includes(creator);
-    };
-    const validCreator = sampleRecipe?.creator && isValidCreator(sampleRecipe.creator) ? sampleRecipe.creator : "GourmetGuide Team";
+    const validCreator = sampleRecipe?.creator;
     const [showPopup, setShowPopup] = useState(false);
     const [showLoading, setShowLoading] = useState(0);
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
@@ -514,7 +510,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 </div>
             </div>}
 
-        {showUser && <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={validCreator}
+        {showUser && <ShowUser isLoggedIn={isLoggedIn} usernameLoggedIn={username} usernameToShow={validCreator!}
                                closeModal={() => setShowUser(false)}/>}
         </body>
     );

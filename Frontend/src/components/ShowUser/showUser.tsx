@@ -106,7 +106,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
         async function getOwnRecipes(): Promise<void> {
             try {
-                if (usernameToShow == "GourmetGuide Team") {
+                /*if (usernameToShow == "GourmetGuide Team") {
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getRecipesByUser?user=${encodeURIComponent("1")}`,
                         {
@@ -130,7 +130,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     } else {
                         console.error("API request error:", response.status);
                     }
-                } else {
+                } else {*/
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getRecipesByUser?user=${encodeURIComponent(usernameToShow!)}`,
                         {
@@ -148,7 +148,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     } else {
                         console.error("API request error:", response.status);
                     }
-                }
+                //}
             } catch
                 (error) {
                 console.error("Network error:", error);
@@ -157,7 +157,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
 
         async function getRatedRecipes(): Promise<void> {
             try {
-                if (usernameToShow == "GourmetGuide Team") {
+                /*if (usernameToShow == "GourmetGuide Team") {
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getHighRatedRecipesByUser?user=${encodeURIComponent("1")}`,
                         {
@@ -181,7 +181,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     } else {
                         console.error("API request error:", response.status);
                     }
-                } else {
+                } else {*/
                     const response = await fetch(
                         `https://` + hostData.host + `:30155/getRatedRecipesByUser?user=${encodeURIComponent(usernameToShow!)}`,
                         {
@@ -201,7 +201,7 @@ const ShowUser: React.FC<UserModalProps> = ({isLoggedIn, usernameLoggedIn, usern
                     } else {
                         console.error("API request error:", response.status);
                     }
-                }
+                //}
             } catch (error) {
                 console.error("Network error:", error);
             }
