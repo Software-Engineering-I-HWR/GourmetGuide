@@ -56,7 +56,7 @@ const addImageToPage = async (
             finalHeight *= scaleRatio;
         }
 
-        while (y + finalHeight > 630){
+        while (y + finalHeight > 599){
             y--;
         }
 
