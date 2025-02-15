@@ -101,6 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn}) =
                     </a>
                 </form>
                 <div className="navbar-actions">
+                    <a href='/users' className="navbar__link">User Liste</a>
                     <a href='/personal-home' style={isLoggedIn ? {} : {display: 'none'}} className="navbar__link">Eigener
                         Bereich</a>
                     <a href='/categories' className="navbar__link">Kategorien</a>

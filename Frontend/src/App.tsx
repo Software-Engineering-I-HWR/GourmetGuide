@@ -15,6 +15,7 @@ import PersonalHome from "./components/PersonalHome/PersonalHome.tsx";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
 import AdminSuperView from './components/AdminSuperView/AdminSuperView';
 import {jwtDecode} from "jwt-decode";
+import Users from "./components/Users/Users.tsx";
 
 const App: React.FC = () => {
     const navLinks = [
@@ -80,6 +81,8 @@ const App: React.FC = () => {
                     <Route path="/log-in"
                            element={<Login isUserLoggedIn={isLoggedIn} setIsUserLoggedIn={setIsLoggedIn}/>}/>
                     <Route path="/register" element={<Register/>}/>
+                    <Route path="/users" element={<Users isLoggedIn={isLoggedIn}
+                                                         username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
                     <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn}
                                                                  username={localStorage.getItem('userEmail')!}/>}/>
