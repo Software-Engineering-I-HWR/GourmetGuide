@@ -93,28 +93,7 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
             let index = 1;
 
             for (const user of usernames) {
-                /*if ((user == "1" || user == "12345")) {
-                    if (!gourmetGuideTeamAlreadyDone) {
-                        const userInfo = await getUserInfo("1");
-                        const userInfo2 = await getUserInfo("12345");
-                        if (userInfo && userInfo2) {
-                            const newUser: User = {
-                                id: index,
-                                user: "GourmetGuide Team",
-                                bewertungen: userInfo.bewertungen + userInfo2.bewertungen,
-                                lesezeichen: userInfo.lesezeichen,
-                                rezepte: userInfo.rezepte + userInfo2.rezepte,
-                                folgt: userInfo.folgt,
-                                follower: userInfo.follower + userInfo2.follower,
-                            };
-                            loadedUsers.push(newUser);
-                            gourmetGuideTeamAlreadyDone = true;
-                        }
-                    }else{
-                        index--;
-                    }
-                } else {*/
-                    const userInfo = await getUserInfo(user);
+                const userInfo = await getUserInfo(user);
                     if (userInfo) {
                         const newUser: User = {
                             id: index,
@@ -127,7 +106,6 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                         };
                         loadedUsers.push(newUser);
                     }
-                //}
                 index++;
             }
             setUsers(loadedUsers);
@@ -194,10 +172,17 @@ const Users: React.FC<UserProps> = ({isLoggedIn, username}) => {
                                 type="button"
                                 id="dropdownMenuButton1"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 className="bi bi-funnel w-75 h-75" viewBox="0 0 16 16">
-                                <path
-                                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                            <svg
+                                fill="currentColor"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 490 490"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <g>
+                                    <polygon points="85.877,154.014 85.877,428.309 131.706,428.309 131.706,154.014 180.497,221.213 217.584,194.27 108.792,44.46 0,194.27 37.087,221.213" />
+                                    <polygon points="404.13,335.988 404.13,61.691 358.301,61.691 358.301,335.99 309.503,268.787 272.416,295.73 381.216,445.54 490,295.715 452.913,268.802" />
+                                </g>
                             </svg>
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
