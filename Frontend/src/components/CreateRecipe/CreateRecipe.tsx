@@ -56,6 +56,48 @@ const CreateRecipe: React.FC = () => {
         }
     }
 
+    useEffect(() => {
+        // Get the id from the last part of the URL
+        const pathParts = window.location.pathname.split('/');
+        const id = pathParts[pathParts.length - 1]; // Get the last element from URL path
+
+        // Only fetch data if id exists and is a valid number
+        if (id && !isNaN(Number(id))) {
+            fetch(`https://${hostData.host}:30155/getRecipeByID?id=${encodeURIComponent(id)}`, {
+                method: 'GET',
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Recipe not found');
+                    }
+                    return response.json();
+                })
+                .then((recipe) => {
+                    setTitle(recipe[0].Title)
+                    setSelectedCategory(recipe[0].Category)
+                    setImageUrl(recipe[0].Image)
+                    setDifficulty(recipe[0].Difficulty)
+                    setIngredientsList(recipe[0].Ingredients.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
+                    setDescriptionAsArray(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
+                    setSelectedTags(recipe[0].Allergen.split(',').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+
+                    if(recipe[0].Vegan){
+                        setSelectedTags(selectedTags => [...selectedTags, "Vegan"])
+                    }
+
+                    if(recipe[0].Vegetarian){
+                        setSelectedTags(selectedTags => [...selectedTags, "Vegetarisch"])
+                    }
+
+                    console.log(recipe)
+                })
+                .catch((error) => {
+                    console.error('Error fetching recipe:', error);
+                });
+        }
+    }, []); // Only run this effect once when the component loads
+
+
     const [categories, setCategories] = useState<string[]>([]);
     useEffect(() => {
         const fetchCategories = async () => {
