@@ -442,8 +442,8 @@ const PersonalHome: React.FC = () => {
                                     <th scope="col2">Titel</th>
                                     <th scope="col3">Kategorie</th>
                                     <th scope="col4">Bild</th>
-                                    <th scope="col5">Löschen</th>
                                     <th scope="col6">Bearbeiten</th>
+                                    <th scope="col5">Löschen</th>
                                     {/* Added a new column for actions */}
                                 </tr>
                                 </thead>
@@ -463,18 +463,6 @@ const PersonalHome: React.FC = () => {
                                                 alt="Bild Rezept"
                                             />
                                         </td>
-                                        <td>
-                                            {/* Add Delete Button Here */}
-                                            <button className="delete-button"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleDeleteRecipe(recipe.id);
-                                                    }}
-                                            >
-                                                <img src="/images/delete.png" alt="Delete recipe"
-                                                     className="delete-icon"/>
-                                            </button>
-                                        </td>
                                         {/* Added delete button */}
                                         <td>
                                             {/* Add Delete Button Here */}
@@ -485,6 +473,18 @@ const PersonalHome: React.FC = () => {
                                                     }}
                                             >
                                                 <img src="/images/edit.png" alt="Edit recipe"
+                                                     className="delete-icon"/>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            {/* Add Delete Button Here */}
+                                            <button className="delete-button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteRecipe(recipe.id);
+                                                    }}
+                                            >
+                                                <img src="/images/delete.png" alt="Delete recipe"
                                                      className="delete-icon"/>
                                             </button>
                                         </td>
