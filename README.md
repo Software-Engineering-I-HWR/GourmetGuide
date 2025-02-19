@@ -40,7 +40,7 @@ GourmetGuide ist eine Anwendung zur Verwaltung und Darstellung von Kochrezepten.
 
 1. **🌍 Aufruf der Webseite**:
 
-   - Die Website ist über die URL [https://canoob.de:4000](https://canoob.de:4000) erreichbar.
+   - Die Website ist über diese [URL](https://gourmet-guide.com) erreichbar.
 
 2. **📋 Registrierung und Anmeldung**:
 
