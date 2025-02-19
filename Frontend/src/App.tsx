@@ -16,6 +16,7 @@ import CreateRecipe from "./components/CreateRecipe/CreateRecipe.tsx";
 import AdminSuperView from './components/AdminSuperView/AdminSuperView';
 import {jwtDecode} from "jwt-decode";
 import Users from "./components/Users/Users.tsx";
+import Impressum from "./components/Impressum/impressum.tsx";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App: React.FC = () => {
@@ -89,6 +90,7 @@ const App: React.FC = () => {
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                     <Route path="/superview" element={<AdminSuperView token={localStorage.getItem('access token')!}/>}/>
+                    <Route path="/impressum" element={<Impressum/>}/>/
                 </Routes>
                 {shouldShowNavbarFooter && <Footer/>}
                 {showPopup && localStorage.getItem('loginMessage') != undefined && (
