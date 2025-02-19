@@ -41,6 +41,8 @@ const CreateRecipe: React.FC = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean | null>(null);
 
+    const [editingIndex, setEditingIndex] = useState(null);
+
     async function getAllCategories(): Promise<Category[] | null> {
         try {
             const response = await fetch('https://' + hostData.host + ':30155/getAllCategories');
@@ -78,8 +80,11 @@ const CreateRecipe: React.FC = () => {
                     setImageUrl(recipe[0].Image)
                     setDifficulty(recipe[0].Difficulty)
                     setIngredientsList(recipe[0].Ingredients.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
-                    setDescriptionAsArray(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
+                    //setDescriptionAsArray(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
                     setSelectedTags(recipe[0].Allergen.split(',').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+                    setDescription(recipe[0].Steps)
+
+                    setIsDescriptionEmpty(false)
 
                     if(recipe[0].Vegan){
                         setSelectedTags(selectedTags => [...selectedTags, "Vegan"])
@@ -136,6 +141,15 @@ const CreateRecipe: React.FC = () => {
             setStep('');
         }
     };
+
+    const handleEditStep = (index: number,  newText) => {
+        const updatedSteps = description.split('|').map(step => step.trim());
+        updatedSteps[index] = newText;
+        //setDescriptionAsArray(updatedSteps);
+        setDescription(updatedSteps.join('|')); // Keep string format updated
+    };
+
+    const exitEditMode = () => setEditingIndex(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
@@ -502,9 +516,31 @@ const CreateRecipe: React.FC = () => {
                 <div className="separator-line"></div>
                 <div className="showRecipe-properties-steps">
                     <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
-                    <div className="showRecipe-properties-step">{descriptionAsArray.map((element, index) => (
-                        <p key={index} className="recipes-step" style={{fontSize: "120%"}}>{element}</p>
-                    ))}</div>
+                    <div className="showRecipe-properties-step">
+                        {descriptionAsArray.map((step, index) => (
+                            <div key={index} style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                                {editingIndex === index ? (
+                                    // Input field when editing
+                                    <input
+                                        type="text"
+                                        value={step}
+                                        onChange={(e) => handleEditStep(index, e.target.value)}
+                                        onBlur={exitEditMode}  // Save and exit when clicking outside
+                                        onKeyDown={(e) => e.key === "Enter" && exitEditMode()} // Save on Enter
+                                        autoFocus
+                                    />
+                                ) : (
+                                    // Regular text display when not editing
+                                    <p className="recipes-step" style={{fontSize: "120%"}}>
+                                        {step}
+                                    </p>
+                                )}
+
+                                {/* Edit button */}
+                                <button onClick={(e) => {e.stopPropagation(); e.preventDefault(); setEditingIndex(index)}}>✏️ Edit</button>
+                            </div>
+                        ))}
+                    </div>
                     <div className="step-row">
                         <input
                             type="text"
