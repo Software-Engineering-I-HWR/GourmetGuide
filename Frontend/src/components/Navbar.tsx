@@ -140,8 +140,10 @@ const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn, us
                         }}
                         className="navbar__link-words"
                         style={{marginBottom: '0.5%', marginTop: '0.5%', marginRight: "0.5%", padding: "0.5% 0.5%"}}
+                        data-toggle="tooltip" data-placement="bottom" title="Suchen"
                     >
-                        Suchen
+                        <img src="/images/Navbar/search.png" alt="Search"
+                             className="navbar__icons_to_navigate"/>
                     </a>
                 </form>
                 <div className="navbar-actions">

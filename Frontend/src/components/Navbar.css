@@ -62,16 +62,12 @@
     display: flex;
     padding: 0.1% 1.1%;
     font-size: 1.25vw;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    border: 1px solid #cbd6dd;
+    border-radius: 5px;
     outline: none;
     margin: 1% 1%;
     width: 100%;
     background-color: #cbd6dd;
-}
-
-.navbar__search-input:focus {
-    border-color: #007acc;
 }
 
 .navbar__search-button {
@@ -124,9 +120,9 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 2% 2%;
+    margin: 1% 1%;
     align-items: center;
-    max-width: 30%;
+    max-width: 9%;
 }
 
 .navbar__link:hover {
@@ -305,4 +301,8 @@
 .navbar__icons_to_navigate {
     max-width: 80%;
     margin: 10% 10%;
+}
+
+.navbar__icon_search {
+    max-width: 8%;
 }
