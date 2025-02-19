@@ -1,5 +1,5 @@
 import "./CreateRecipe.css";
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import configData from '../../../../config/frontend-config.json';
 import {useParams} from "react-router-dom";
