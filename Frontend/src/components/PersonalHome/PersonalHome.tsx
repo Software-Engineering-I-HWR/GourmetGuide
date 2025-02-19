@@ -463,19 +463,19 @@ const PersonalHome: React.FC = () => {
                                                 alt="Bild Rezept"
                                             />
                                         </td>
-                                        {/* Added delete button */}
                                         <td>
-                                            {/* Add Delete Button Here */}
-                                            <button className="delete-button"
+                                            {/* Add Edit Button Here */}
+                                            <button className="edit-button"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         window.location.href = `/create-recipe/${recipe.id}`
                                                     }}
                                             >
                                                 <img src="/images/edit.png" alt="Edit recipe"
-                                                     className="delete-icon"/>
+                                                     className="edit-icon"/>
                                             </button>
                                         </td>
+                                        {/* Added Edit button */}
                                         <td>
                                             {/* Add Delete Button Here */}
                                             <button className="delete-button"
