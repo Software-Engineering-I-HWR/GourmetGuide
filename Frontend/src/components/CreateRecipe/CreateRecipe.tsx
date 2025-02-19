@@ -1,5 +1,5 @@
 import "./CreateRecipe.css";
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 import configData from '../../../../config/frontend-config.json';
 import {useParams} from "react-router-dom";
@@ -42,6 +42,7 @@ const CreateRecipe: React.FC = () => {
     const [isValid, setIsValid] = useState<boolean | null>(null);
 
     const [editingIndex, setEditingIndex] = useState(null);
+    const [inputValues, setInputValues] = useState<string[]>(descriptionAsArray);
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -80,8 +81,8 @@ const CreateRecipe: React.FC = () => {
                     setImageUrl(recipe[0].Image)
                     setDifficulty(recipe[0].Difficulty)
                     setIngredientsList(recipe[0].Ingredients.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
-                    //setDescriptionAsArray(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
                     setSelectedTags(recipe[0].Allergen.split(',').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+                    setInputValues(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
                     setDescription(recipe[0].Steps)
 
                     setIsDescriptionEmpty(false)
@@ -100,7 +101,7 @@ const CreateRecipe: React.FC = () => {
                     console.error('Error fetching recipe:', error);
                 });
         }
-    }, []); // Only run this effect once when the component loads
+    }, []);
 
 
     const [categories, setCategories] = useState<string[]>([]);
@@ -142,11 +143,16 @@ const CreateRecipe: React.FC = () => {
         }
     };
 
-    const handleEditStep = (index: number,  newText) => {
-        const updatedSteps = description.split('|').map(step => step.trim());
-        updatedSteps[index] = newText;
-        //setDescriptionAsArray(updatedSteps);
-        setDescription(updatedSteps.join('|')); // Keep string format updated
+
+    // Handle input changes while maintaining the cursor position
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const updatedText = e.target.value;
+        const updatedSteps = [...inputValues];
+        updatedSteps[index] = updatedText;
+        setInputValues(updatedSteps);
+
+        // Update the string in the parent component
+        setDescription(updatedSteps.join('|'));
     };
 
     const exitEditMode = () => setEditingIndex(null);
@@ -517,14 +523,14 @@ const CreateRecipe: React.FC = () => {
                 <div className="showRecipe-properties-steps">
                     <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
                     <div className="showRecipe-properties-step">
-                        {descriptionAsArray.map((step, index) => (
+                        {inputValues.map((step, index) => (
                             <div key={index} style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 {editingIndex === index ? (
                                     // Input field when editing
                                     <input
                                         type="text"
                                         value={step}
-                                        onChange={(e) => handleEditStep(index, e.target.value)}
+                                        onChange={(e) => handleInputChange(e, index)}
                                         onBlur={exitEditMode}  // Save and exit when clicking outside
                                         onKeyDown={(e) => e.key === "Enter" && exitEditMode()} // Save on Enter
                                         autoFocus
