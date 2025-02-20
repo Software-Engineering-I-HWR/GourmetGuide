@@ -41,6 +41,9 @@ const CreateRecipe: React.FC = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean | null>(null);
 
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [inputValues, setInputValues] = useState<string[]>(descriptionAsArray);
+
     async function getAllCategories(): Promise<Category[] | null> {
         try {
             const response = await fetch('https://' + hostData.host + ':30155/getAllCategories');
@@ -55,6 +58,51 @@ const CreateRecipe: React.FC = () => {
             return null;
         }
     }
+
+    useEffect(() => {
+        // Get the id from the last part of the URL
+        const pathParts = window.location.pathname.split('/');
+        const id = pathParts[pathParts.length - 1]; // Get the last element from URL path
+
+        // Only fetch data if id exists and is a valid number
+        if (id && !isNaN(Number(id))) {
+            fetch(`https://${hostData.host}:30155/getRecipeByID?id=${encodeURIComponent(id)}`, {
+                method: 'GET',
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Recipe not found');
+                    }
+                    return response.json();
+                })
+                .then((recipe) => {
+                    setTitle(recipe[0].Title)
+                    setSelectedCategory(recipe[0].Category)
+                    setImageUrl(recipe[0].Image)
+                    setDifficulty(recipe[0].Difficulty)
+                    setIngredientsList(recipe[0].Ingredients.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
+                    setSelectedTags(recipe[0].Allergen.split(',').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+                    setInputValues(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+                    setDescription(recipe[0].Steps)
+
+                    setIsDescriptionEmpty(false)
+
+                    if(recipe[0].Vegan){
+                        setSelectedTags(selectedTags => [...selectedTags, "Vegan"])
+                    }
+
+                    if(recipe[0].Vegetarian){
+                        setSelectedTags(selectedTags => [...selectedTags, "Vegetarisch"])
+                    }
+
+                    console.log(recipe)
+                })
+                .catch((error) => {
+                    console.error('Error fetching recipe:', error);
+                });
+        }
+    }, []);
+
 
     const [categories, setCategories] = useState<string[]>([]);
     useEffect(() => {
@@ -91,9 +139,26 @@ const CreateRecipe: React.FC = () => {
     const handleAddStep = () => {
         if (step.trim() !== '') {
             setDescription(description + step + "|");
+            inputValues.push(step)
             setStep('');
         }
     };
+
+
+    // Handle input changes while maintaining the cursor position
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const updatedText = e.target.value;
+        const updatedSteps = [...inputValues];
+        updatedSteps[index] = updatedText;
+        setInputValues(updatedSteps);
+
+        // Update the string in the parent component
+        setDescription(updatedSteps.join('|'));
+
+        console.log(description)
+    };
+
+    const exitEditMode = () => setEditingIndex(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
@@ -460,9 +525,31 @@ const CreateRecipe: React.FC = () => {
                 <div className="separator-line"></div>
                 <div className="showRecipe-properties-steps">
                     <h1 className="showRecipe-properties-step-title"> Zubereitung: </h1>
-                    <div className="showRecipe-properties-step">{descriptionAsArray.map((element, index) => (
-                        <p key={index} className="recipes-step" style={{fontSize: "120%"}}>{element}</p>
-                    ))}</div>
+                    <div className="showRecipe-properties-step">
+                        {inputValues.map((step, index) => (
+                            <div key={index} style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                                {editingIndex === index ? (
+                                    // Input field when editing
+                                    <input
+                                        type="text"
+                                        value={step}
+                                        onChange={(e) => handleInputChange(e, index)}
+                                        onBlur={exitEditMode}  // Save and exit when clicking outside
+                                        onKeyDown={(e) => e.key === "Enter" && exitEditMode()} // Save on Enter
+                                        autoFocus
+                                    />
+                                ) : (
+                                    // Regular text display when not editing
+                                    <p className="recipes-step" style={{fontSize: "120%"}}>
+                                        {step}
+                                    </p>
+                                )}
+
+                                {/* Edit button */}
+                                <button onClick={(e) => {e.stopPropagation(); e.preventDefault(); setEditingIndex(index)}}>✏️ Edit</button>
+                            </div>
+                        ))}
+                    </div>
                     <div className="step-row">
                         <input
                             type="text"

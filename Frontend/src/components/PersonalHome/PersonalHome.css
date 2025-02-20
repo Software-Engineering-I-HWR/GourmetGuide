@@ -166,7 +166,20 @@
 
 .delete-icon {
     display: flex;
-    width: 75%;
+    width: 90%;
+}
+
+.edit-button {
+    display: flex;
+    background-color: transparent;
+    border: none;
+    justify-content: center;
+    margin: 10% 10%;
+}
+
+.edit-icon {
+    display: flex;
+    width: 65%;
 }
 
 @media only screen and (max-width: 768px) {
