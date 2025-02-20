@@ -139,6 +139,7 @@ const CreateRecipe: React.FC = () => {
     const handleAddStep = () => {
         if (step.trim() !== '') {
             setDescription(description + step + "|");
+            inputValues.push(step)
             setStep('');
         }
     };
@@ -153,6 +154,8 @@ const CreateRecipe: React.FC = () => {
 
         // Update the string in the parent component
         setDescription(updatedSteps.join('|'));
+
+        console.log(description)
     };
 
     const exitEditMode = () => setEditingIndex(null);
