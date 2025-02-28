@@ -60,9 +60,14 @@ interface ListItem2 {
     id: number;
 }
 
+interface PersonalHomeProps {
+    showPoint: boolean;
+    setShowPoint: (showPoint: boolean) => void;
+}
+
 const hostData: Config = configData;
 
-const PersonalHome: React.FC = () => {
+const PersonalHome: React.FC<PersonalHomeProps> = ({showPoint, setShowPoint}) => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [whichIsDisable, setWhichIsDisable] = useState(1);
     const [ownRecipes, setOwnRecipes] = useState<ListItem[]>([]);
@@ -274,6 +279,9 @@ const PersonalHome: React.FC = () => {
                 }
             }
             setNewRecipes(loadedRecipes);
+            if (newRecipes!.length > 0) {
+                setShowPoint(true)
+            }
         };
 
         fetchNewRecipes();
@@ -419,12 +427,13 @@ const PersonalHome: React.FC = () => {
                                 getNewRecipes()
                                 setTimeout(() => {
                                     setlastLogin();
-                                }, 5000);
+                                    setShowPoint(false)
+                                }, 3000);
                             }}
                             value={whichIsDisable === 0 ? "enable" : "disable"}
                         >
                             Benachrichtigungen
-                            {newRecipes[0] != null && (
+                            {showPoint && (
                                 <span
                                     className="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
                                     <span className="visually-hidden">ungelesene Nachrichten</span>

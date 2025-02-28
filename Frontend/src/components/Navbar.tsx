@@ -9,6 +9,8 @@ interface NavbarProps {
     isLoggedIn: boolean;
     setIsUserLoggedIn: (isLoggedIn: boolean) => void;
     username: string |null;
+    showPoint: boolean;
+    setShowPoint: (showPoint: boolean)=>void;
 }
 
 function getLink(temp: string) {
@@ -28,11 +30,10 @@ interface Config {
 
 const hostData: Config = configData;
 
-const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn, username}) => {
+const Navbar: React.FC<NavbarProps> = ({title, isLoggedIn, setIsUserLoggedIn, username, showPoint, setShowPoint}) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [loginMessage, setLoginMessage] = useState('');
     const [showPopupMessage, setShowPopupMessage] = useState(false);
-    const [showPoint, setShowPoint] = useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);

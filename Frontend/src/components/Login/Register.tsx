@@ -58,7 +58,6 @@ const Register: React.FC = () => {
                             .then(data => data.json());
                     };
                     const responseLogin = await sendLoginRequest(email, password);
-                    console.log(responseLogin.token);
                     if (responseLogin.message === "Login erfolgreich") {
                         // Speichere das E-Mail und den Token im Local Storage
                         localStorage.setItem('userEmail', email);
