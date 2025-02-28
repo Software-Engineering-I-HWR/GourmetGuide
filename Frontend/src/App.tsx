@@ -90,6 +90,7 @@ const App: React.FC = () => {
                                                                  username={localStorage.getItem('userEmail')!}/>}/>
                     <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome showPoint={showPoint} setShowPoint={setShowPoint}/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
+                    <Route path="/create-recipe/:id" element={isLoggedIn ? (<CreateRecipe />) : (<ErrorPage/>)} />
                     <Route path="/superview" element={<AdminSuperView token={localStorage.getItem('access token')!}/>}/>
                     <Route path="/impressum" element={<Impressum/>}/>/
                 </Routes>
