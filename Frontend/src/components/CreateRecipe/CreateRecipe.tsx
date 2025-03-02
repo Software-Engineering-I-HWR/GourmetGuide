@@ -40,8 +40,8 @@ const CreateRecipe: React.FC = () => {
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean | null>(null);
-
     const [editingIndex, setEditingIndex] = useState(null);
+    const [id, setId] = useState<number>();
     const [inputValues, setInputValues] = useState<string[]>(descriptionAsArray);
 
     async function getAllCategories(): Promise<Category[] | null> {
@@ -60,13 +60,35 @@ const CreateRecipe: React.FC = () => {
     }
 
     useEffect(() => {
-        // Get the id from the last part of the URL
         const pathParts = window.location.pathname.split('/');
-        const id = pathParts[pathParts.length - 1]; // Get the last element from URL path
+        const newId = pathParts[pathParts.length - 1];
+        const user = localStorage.getItem('userEmail') ?? "";
 
-        // Only fetch data if id exists and is a valid number
-        if (id && !isNaN(Number(id))) {
-            fetch(`https://${hostData.host}:30155/getRecipeByID?id=${encodeURIComponent(id)}`, {
+        if (newId && !isNaN(Number(newId))) {
+            setId(parseInt(newId));
+            fetch(`https://${hostData.host}:30155/getRecipesByUser?user=${encodeURIComponent(user)}`, {
+                method: 'GET',
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        window.location.href = "/hierStehtJetztScheiße";
+                        throw new Error('Recipe not found');
+                    }
+                    return response.json();
+                })
+                .then((indexes) => {
+                    const ids = indexes.map((item: { ID: number }) => item.ID);
+
+                    console.log(ids);
+                    if (!ids.includes(newId)) {
+                        window.location.href = "/hierStehtJetztScheiße";
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching recipe:', error);
+                });
+
+            fetch(`https://${hostData.host}:30155/getRecipeByID?id=${encodeURIComponent(newId)}`, {
                 method: 'GET',
             })
                 .then((response) => {
@@ -80,18 +102,18 @@ const CreateRecipe: React.FC = () => {
                     setSelectedCategory(recipe[0].Category)
                     setImageUrl(recipe[0].Image)
                     setDifficulty(recipe[0].Difficulty)
-                    setIngredientsList(recipe[0].Ingredients.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()));
-                    setSelectedTags(recipe[0].Allergen.split(',').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
-                    setInputValues(recipe[0].Steps.split('|').filter(ingredient => ingredient !== "").map(ingredient => ingredient.trim()))
+                    setIngredientsList(recipe[0].Ingredients.split('|').filter((ingredient: string) => ingredient !== "").map((ingredient: string) => ingredient.trim()));
+                    setSelectedTags(recipe[0].Allergen.split(',').filter((ingredient: string) => ingredient !== "").map((ingredient: string) => ingredient.trim()))
+                    setInputValues(recipe[0].Steps.split('|').filter((ingredient: string) => ingredient !== "").map((ingredient: string) => ingredient.trim()))
                     setDescription(recipe[0].Steps)
 
                     setIsDescriptionEmpty(false)
 
-                    if(recipe[0].Vegan){
+                    if (recipe[0].Vegan) {
                         setSelectedTags(selectedTags => [...selectedTags, "Vegan"])
                     }
 
-                    if(recipe[0].Vegetarian){
+                    if (recipe[0].Vegetarian) {
                         setSelectedTags(selectedTags => [...selectedTags, "Vegetarisch"])
                     }
 
@@ -100,6 +122,8 @@ const CreateRecipe: React.FC = () => {
                 .catch((error) => {
                     console.error('Error fetching recipe:', error);
                 });
+        } else {
+            setId(0);
         }
     }, []);
 
@@ -144,15 +168,12 @@ const CreateRecipe: React.FC = () => {
         }
     };
 
-
-    // Handle input changes while maintaining the cursor position
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const updatedText = e.target.value;
         const updatedSteps = [...inputValues];
         updatedSteps[index] = updatedText;
         setInputValues(updatedSteps);
 
-        // Update the string in the parent component
         setDescription(updatedSteps.join('|'));
 
         console.log(description)
@@ -258,6 +279,7 @@ const CreateRecipe: React.FC = () => {
         }
 
         const newRecipe = {
+            id: id,
             title: title,
             steps: description,
             image: newImageUrl,
@@ -324,7 +346,7 @@ const CreateRecipe: React.FC = () => {
 
         if (value === "" && !darfleersein) {
             if (nichtakzeptierRot.startsWith("input")) {
-                e.target.setCustomValidity('Der Titel darf nicht lehr sein!');
+                e.target.setCustomValidity('Der Titel darf nicht leer sein!');
             } else if (nichtakzeptierRot.startsWith("ingredient")) {
                 e.target.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
             } else if (nichtakzeptierRot.startsWith("step")) {
@@ -529,24 +551,27 @@ const CreateRecipe: React.FC = () => {
                         {inputValues.map((step, index) => (
                             <div key={index} style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 {editingIndex === index ? (
-                                    // Input field when editing
                                     <input
                                         type="text"
                                         value={step}
                                         onChange={(e) => handleInputChange(e, index)}
-                                        onBlur={exitEditMode}  // Save and exit when clicking outside
-                                        onKeyDown={(e) => e.key === "Enter" && exitEditMode()} // Save on Enter
+                                        onBlur={exitEditMode}
+                                        onKeyDown={(e) => e.key === "Enter" && exitEditMode()}
                                         autoFocus
                                     />
                                 ) : (
-                                    // Regular text display when not editing
                                     <p className="recipes-step" style={{fontSize: "120%"}}>
                                         {step}
                                     </p>
                                 )}
 
                                 {/* Edit button */}
-                                <button onClick={(e) => {e.stopPropagation(); e.preventDefault(); setEditingIndex(index)}}>✏️ Edit</button>
+                                <button onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    setEditingIndex(index)
+                                }}>✏️ Edit
+                                </button>
                             </div>
                         ))}
                     </div>
