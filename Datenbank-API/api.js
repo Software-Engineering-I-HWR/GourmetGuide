@@ -16,21 +16,43 @@ app.post('/saveRecipe', (req, res) => {
     const data = req.body;
     console.log("Received data:", data);
 
-    const query = `
-        INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen,
-                            Creator)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    if (data.id === 0) {
+        const query = `
+            INSERT INTO Rezept (Title, Image, Difficulty, Ingredients, Steps, Category, Vegan, Vegetarian, Allergen,
+                                Creator)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    console.log(query);
+        console.log(query);
 
-    connection.query(query, [data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator], (error, results) => {
-        if (error) {
-            console.error("Database Error:", error);
-            res.status(500).send('Fehler beim Speichern des Rezepts');
-        } else {
-            res.status(200).send('Rezept erfolgreich gespeichert');
-        }
-    });
+        connection.query(query, [data.title, data.image, data.difficulty, data.ingredients, data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator], (error, results) => {
+            if (error) {
+                console.error("Database Error:", error);
+                res.status(500).send('Fehler beim Speichern des Rezepts');
+            } else {
+                res.status(200).send('Rezept erfolgreich gespeichert');
+            }
+        });
+    } else {
+        const query = `
+            UPDATE Rezept SET Title = ?, Image = ?, Difficulty = ?, Ingredients = ?, Steps = ?, Category = ?,
+                              Vegan = ?, Vegetarian = ?, Allergen = ?, Creator = ? WHERE ID = ?
+        `;
+
+        console.log(query);
+
+        connection.query(query, [
+            data.title, data.image, data.difficulty, data.ingredients,
+            data.steps, data.category, data.vegan, data.vegetarian, data.allergen, data.creator, data.id
+        ], (error, results) => {
+            if (error) {
+                console.error("Database Error:", error);
+                res.status(500).send('Fehler beim Speichern des Rezepts');
+            } else {
+                res.status(200).send('Rezept erfolgreich gespeichert');
+            }
+        });
+
+    }
 });
 
 app.get('/getRecipes', (req, res) => {
@@ -476,8 +498,11 @@ app.post('/setLastLoginByUser', (req, res) => {
 
     console.log("Formatted Date:", isoFormattedDate);
 
-    const query = `INSERT INTO LastLogin (username, time, maxID) VALUES (?, ?, ?) ON DUPLICATE KEY
-        UPDATE time = VALUES (time), maxID = VALUES (maxID);`;
+    const query = `INSERT INTO LastLogin (username, time, maxID)
+                   VALUES (?, ?, ?) ON DUPLICATE KEY
+    UPDATE time =
+    VALUES (time), maxID =
+    VALUES (maxID);`;
 
     console.log(query);
 
