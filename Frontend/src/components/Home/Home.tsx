@@ -201,7 +201,7 @@ const Home: React.FC<HomeProps> = ({isLoggedIn, username}) => {
         setShowLoading(false)
 
         fetchRecipes()
-    }, [bestUsers, usernames, whichPage]);
+    }, [usernames]);
 
     function nextPage() {
         setAnimationClass('fade-out');

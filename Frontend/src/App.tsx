@@ -29,6 +29,7 @@ const App: React.FC = () => {
     const noNavbarFooterRoutes = ['/log-in', '/register'];
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [showPoint, setShowPoint] = useState(false);
 
     useEffect(() => {
         const isTokenValid = (token: string) => {
@@ -74,7 +75,7 @@ const App: React.FC = () => {
             <>
                 {shouldShowNavbarFooter &&
                     <Navbar isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!} setIsUserLoggedIn={setIsLoggedIn} title="GourmetGuide"
-                            links={navLinks}/>}
+                            links={navLinks} showPoint={showPoint} setShowPoint={setShowPoint}/>}
                 <Routes>
                     <Route path="/" element={<Home isLoggedIn={isLoggedIn} username={localStorage.getItem('userEmail')!}></Home>}/>
                     <Route path="/mainsearch/:receptName?/:Category?/:Difficulty?/:zutaten?/:Rating?/:Allergien?"
@@ -87,7 +88,7 @@ const App: React.FC = () => {
                     <Route path="*" element={<ErrorPage/>}/>
                     <Route path="/recipe/*" element={<ShowRecipe isLoggedIn={isLoggedIn}
                                                                  username={localStorage.getItem('userEmail')!}/>}/>
-                    <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome/>) : (<ErrorPage/>)}/>
+                    <Route path="/personal-home" element={isLoggedIn ? (<PersonalHome showPoint={showPoint} setShowPoint={setShowPoint}/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe" element={isLoggedIn ? (<CreateRecipe/>) : (<ErrorPage/>)}/>
                     <Route path="/create-recipe/:id" element={isLoggedIn ? (<CreateRecipe />) : (<ErrorPage/>)} />
                     <Route path="/superview" element={<AdminSuperView token={localStorage.getItem('access token')!}/>}/>

@@ -43,6 +43,7 @@ const CreateRecipe: React.FC = () => {
     const [editingIndex, setEditingIndex] = useState(null);
     const [id, setId] = useState<number>();
     const [inputValues, setInputValues] = useState<string[]>(descriptionAsArray);
+    const [hasImageLink, setHasImageLink] = useState(false)
 
     async function getAllCategories(): Promise<Category[] | null> {
         try {
@@ -193,6 +194,7 @@ const CreateRecipe: React.FC = () => {
 
     const handleRemoveImage = () => {
         setUploadedImage(null);
+        setHasImageLink(false);
         setImageUrl('');
     };
 
@@ -375,14 +377,18 @@ const CreateRecipe: React.FC = () => {
             img.src = url;
         });
     };
-
     useEffect(() => {
         if (imageUrl.trim() === "") {
             setIsValid(null);
             return;
         }
 
-        checkImageURL(imageUrl).then((isValid) => setIsValid(isValid));
+        checkImageURL(imageUrl).then((isValid) => {
+            setIsValid(isValid);
+            if (isValid==true){
+                setHasImageLink(true);
+            }
+        });
     }, [imageUrl]);
 
     return (
@@ -455,11 +461,11 @@ const CreateRecipe: React.FC = () => {
             <div className="showRecipe-main">
                 <div className="showRecipe-main-head">
                     <div className="image-upload-container">
-                        {uploadedImage ? (
+                        {uploadedImage || hasImageLink ? (
                             <div className="image-preview">
                                 <img
                                     className="hero__preimg"
-                                    src={URL.createObjectURL(uploadedImage)}
+                                    src={ uploadedImage ? URL.createObjectURL(uploadedImage) : imageUrl}
                                     alt="Hochgeladenes Bild"
                                 />
                                 <button
