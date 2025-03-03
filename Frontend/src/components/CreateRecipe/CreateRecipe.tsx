@@ -40,7 +40,7 @@ const CreateRecipe: React.FC = () => {
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean | null>(null);
-    const [editingIndex, setEditingIndex] = useState(null);
+    const [editingIndex, setEditingIndex] = useState<null | number>(null);
     const [id, setId] = useState<number>();
     const [inputValues, setInputValues] = useState<string[]>(descriptionAsArray);
     const [hasImageLink, setHasImageLink] = useState(false)
@@ -80,7 +80,7 @@ const CreateRecipe: React.FC = () => {
                 .then((indexes) => {
                     const ids = indexes.map((item: { ID: number }) => item.ID);
 
-                    console.log(ids);
+                    console.log(ids,newId, ids.includes(newId));
                     if (!ids.includes(newId)) {
                         window.location.href = "/hierStehtJetztScheiße";
                     }
@@ -575,7 +575,7 @@ const CreateRecipe: React.FC = () => {
                                 <button onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
-                                    setEditingIndex(index)
+                                    setEditingIndex(index);
                                 }}>✏️ Edit
                                 </button>
                             </div>
