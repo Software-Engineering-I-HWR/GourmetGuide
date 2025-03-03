@@ -5,6 +5,7 @@ import bookmarkFilledIcon from '/images/fullBookmark.png';
 import bookmarkEmptyIcon from '/images/lightBookmark.png';
 import configData from '../../../../config/frontend-config.json';
 import ShowUser from "../ShowUser/showUser.tsx";
+import { useNavigate } from 'react-router-dom';
 
 interface Config {
     host: string;
@@ -74,6 +75,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
     const [showLoading, setShowLoading] = useState(0);
     const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
     const [showUser, setShowUser] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const getBookmark = async () => {
         try {
@@ -287,6 +289,10 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
         const fetchRecipe = async () => {
             const recipe = await getRecipes();
             if (recipe && Array.isArray(recipe)) {
+                console.log(1)
+                if (recipe[0] == undefined){
+                    navigate('/error');
+                }
                 const newRecipe: ListItem = {
                     title: recipe[0].Title,
                     category: recipe[0].Category,
@@ -299,6 +305,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     vegetarian: recipe[0].Vegetarian,
                     creator: recipe[0].Creator,
                 };
+                console.log(newRecipe)
                 formatIngredients(newRecipe.ingredients);
                 formatSteps(newRecipe.steps);
                 setSampleRecipe(newRecipe);
