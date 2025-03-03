@@ -80,8 +80,7 @@ const CreateRecipe: React.FC = () => {
                 .then((indexes) => {
                     const ids = indexes.map((item: { ID: number }) => item.ID);
 
-                    console.log(ids,newId, ids.includes(newId));
-                    if (!ids.includes(newId)) {
+                    if (!ids.includes(Number(newId))) {
                         window.location.href = "/hierStehtJetztScheiße";
                     }
                 })
