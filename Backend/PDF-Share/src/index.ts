@@ -56,11 +56,11 @@ const addImageToPage = async (
             finalHeight *= scaleRatio;
         }
 
-        while (y + finalHeight > 599){
-            y--;
-        }
-
         if (recipeImage == 1) {
+            while (y + finalHeight > 599){
+                y--;
+            }
+
             finalImageHeight = finalHeight;
         }
 
@@ -164,9 +164,6 @@ const createRecipePDF = async (recipe: any) => {
         color: rgb(1, 1, 1),
     });
 
-    //Image
-    await addImageToPage(page, recipe.image, 30, 450, 250, 250, 'URL NOT FOUND', 1);
-
     //Allergen
     const tagLookupTable: { [key: string]: any } = {
         Vegan: 'vegan.png',
@@ -188,6 +185,9 @@ const createRecipePDF = async (recipe: any) => {
             x -= 40;
         }
     }
+
+    //Image
+    await addImageToPage(page, recipe.image, 30, 450, 250, 250, 'URL NOT FOUND', 1);
 
     //Ingredients
     page.drawText(`Zutaten:`, {
