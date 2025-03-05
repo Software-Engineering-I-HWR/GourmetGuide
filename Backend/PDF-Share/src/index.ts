@@ -296,9 +296,9 @@ const createRecipePDF = async (recipe: any) => {
 
     // Author
     page.drawText(
-        `Erstellt von ${recipe.creator} auf https://canoob.de:4000/recipe/${recipe.id}/`,
+        `Erstellt von ${recipe.creator} auf https://gourmet-guide.com/recipe/${recipe.id}/`,
         {
-            x: (page_width - normalFont.widthOfTextAtSize(`Erstellt von ${recipe.creator} auf https://canoob.de:4000/recipe/${recipe.id}/`, 12)) / 2,
+            x: (page_width - normalFont.widthOfTextAtSize(`Erstellt von ${recipe.creator} auf https://gourmet-guide.com/recipe/${recipe.id}/`, 12)) / 2,
             y: nextY,
             size: 12,
             font: normalFont,

@@ -396,7 +396,7 @@ const AdminSuperView: React.FC<AdminSuperViewProps> = ({token}) => {
                                 <td>{user.lesezeichen}</td>
                                 <td>{user.follower}</td>
                                 <td>{user.folgt}</td>
-                                {!ignoredUsers.includes(user.user) && (
+                                {!ignoredUsers.includes(user.user) && "GourmetGuide Team" != user.user && (
                                     <>
                                         <td>
                                             {}
