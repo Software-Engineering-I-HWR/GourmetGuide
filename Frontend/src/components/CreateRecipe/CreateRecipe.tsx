@@ -340,31 +340,31 @@ const CreateRecipe: React.FC = () => {
         description == "" ? setIsDescriptionEmpty(true) : setIsDescriptionEmpty(false);
     }, [description]);
 
-    const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfleersein: boolean, nichtakzeptierRot: string, aktzeptiertWeis: string) => {
-        console.log(e, darfleersein, nichtakzeptierRot, e.target.value);
+    const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfLeerSein: boolean, nichtAkzeptiertRot: string, akzeptiertWeiss: string) => {
+        console.log(e, darfLeerSein, nichtAkzeptiertRot, e.target.value);
         const value = e.target.value;
         const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
 
-        if (value === "" && !darfleersein) {
-            if (nichtakzeptierRot.startsWith("input")) {
+        if (value === "" && !darfLeerSein) {
+            if (nichtAkzeptiertRot.startsWith("input")) {
                 e.target.setCustomValidity('Der Titel darf nicht leer sein!');
-            } else if (nichtakzeptierRot.startsWith("ingredient")) {
+            } else if (nichtAkzeptiertRot.startsWith("ingredient")) {
                 e.target.setCustomValidity('Es muss mindestens eine Zutat hinzugefügt werden!');
-            } else if (nichtakzeptierRot.startsWith("step")) {
+            } else if (nichtAkzeptiertRot.startsWith("step")) {
                 e.target.setCustomValidity('Es muss mindestens ein Zubereitungsschritt hinzugefügt werden!');
             }
 
             e.target.reportValidity();
-            e.target.className = nichtakzeptierRot;
+            e.target.className = nichtAkzeptiertRot;
             return;
         }
         if (pattern.test(value)) {
             e.target.setCustomValidity('');
-            e.target.className = aktzeptiertWeis;
+            e.target.className = akzeptiertWeiss;
         } else {
             e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
             e.target.reportValidity();
-            e.target.className = nichtakzeptierRot;
+            e.target.className = nichtAkzeptiertRot;
         }
     };
 
