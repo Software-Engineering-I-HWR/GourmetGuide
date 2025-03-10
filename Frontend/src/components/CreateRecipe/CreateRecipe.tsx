@@ -366,7 +366,7 @@ const CreateRecipe: React.FC = () => {
             e.target.reportValidity();
             e.target.className = nichtAkzeptiertRot;
         }else {
-            e.target.setCustomValidity('Es dürfen nur Bustaben und zahlen sowie leerzeichen und , oder . oder ! oder ?');
+            e.target.setCustomValidity('Es dürfen nur Buchstaben, Zahlen, Leerzeichen und , oder . oder ! oder ? enthalten sein!');
             e.target.reportValidity();
             e.target.className = nichtAkzeptiertRot;
         }
