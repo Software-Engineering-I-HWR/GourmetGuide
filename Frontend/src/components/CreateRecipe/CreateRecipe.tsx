@@ -343,7 +343,7 @@ const CreateRecipe: React.FC = () => {
     const handleInputUberprufung = (e: React.ChangeEvent<HTMLInputElement>, darfLeerSein: boolean, nichtAkzeptiertRot: string, akzeptiertWeiss: string) => {
         console.log(e, darfLeerSein, nichtAkzeptiertRot, e.target.value);
         const value = e.target.value;
-        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{0,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/);
+        const pattern = new RegExp(/^([A-Za-z0-9ÄÖÜäöüß .,!?"]{0,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß .,!?"]{1,25})*$/);
 
         if (value === "" && !darfLeerSein) {
             if (nichtAkzeptiertRot.startsWith("input")) {
@@ -361,8 +361,12 @@ const CreateRecipe: React.FC = () => {
         if (pattern.test(value)) {
             e.target.setCustomValidity('');
             e.target.className = akzeptiertWeiss;
-        } else {
+        } else if(new RegExp(/^([A-Za-z0-9ÄÖÜäöüß .,!?"]*)*$/).test(value)) {
             e.target.setCustomValidity('Jedes Wort darf maximal 25 zeichen lang sein, danach muss ein Leerzeichen oder - folgen.');
+            e.target.reportValidity();
+            e.target.className = nichtAkzeptiertRot;
+        }else {
+            e.target.setCustomValidity('Es dürfen nur Bustaben und zahlen sowie leerzeichen und , oder . oder ! oder ?');
             e.target.reportValidity();
             e.target.className = nichtAkzeptiertRot;
         }
@@ -526,7 +530,7 @@ const CreateRecipe: React.FC = () => {
 
                                 onClick={() => {
                                     handleInputUberprufung({target: (document.querySelectorAll('[data-notwendigEinzhinzu="ingredient"]').item(0))} as React.ChangeEvent<HTMLInputElement>, isIngredientsEmpty, "ingredient-input-empty", "ingredient-input-filled");
-                                    if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(ingredient)) {
+                                    if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß .,!?"]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß .,!?"]{1,25})*$/).test(ingredient)) {
                                         handleAddIngredient()
                                     }
                                 }
@@ -598,7 +602,7 @@ const CreateRecipe: React.FC = () => {
                             className="add-ingredient-button"
                             onClick={() => {
                                 handleInputUberprufung({target: document.querySelectorAll('[data-notwendigEinzhinzu="step"]').item(0)} as React.ChangeEvent<HTMLInputElement>, !isDescriptionEmpty, "step-input-field-empty", "step-input-field-filled");
-                                if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß]{1,25})*$/).test(step)) {
+                                if (new RegExp(/^([A-Za-z0-9ÄÖÜäöüß .,!?"]{1,25})([-\s]+[A-Za-z0-9ÄÖÜäöüß .,!?"]{1,25})*$/).test(step)) {
                                     handleAddStep()
                                 }
                             }}
