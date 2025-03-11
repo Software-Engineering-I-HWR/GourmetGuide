@@ -25,6 +25,7 @@ interface Recipe {
     Vegan: number;
     Vegetarian: number;
     Creator: string;
+    Difficulty: string;
 }
 
 interface ListItem {
@@ -38,6 +39,7 @@ interface ListItem {
     vegan: number;
     vegetarian: number;
     creator: string;
+    difficulty: string;
 }
 
 interface showRecipeProps {
@@ -304,6 +306,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     vegan: recipe[0].Vegan,
                     vegetarian: recipe[0].Vegetarian,
                     creator: recipe[0].Creator,
+                    difficulty: recipe[0].Difficulty,
                 };
                 console.log(newRecipe)
                 formatIngredients(newRecipe.ingredients);
@@ -351,6 +354,7 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                     <div className="showRecipe-contentfield-left">
                         <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
                         <p className="showRecipe-category">{sampleRecipe?.category}</p>
+                        <p className="showRecipe-category" style={{fontSize: "1.25rem"}}>{sampleRecipe?.difficulty == "1" ? "sehr einfach" : sampleRecipe?.difficulty == "2" ? "einfach" : sampleRecipe?.difficulty == "3" ? "mittel" : sampleRecipe?.difficulty == "4" ? "schwer" : "sehr schwer"}</p>
                         {avRating != 0 && <div className="rating-system-header">
                             <img className="first-star"
                                  alt={avRating >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
