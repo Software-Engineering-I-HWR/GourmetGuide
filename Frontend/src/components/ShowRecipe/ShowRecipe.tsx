@@ -17,6 +17,7 @@ interface Config {
 interface Recipe {
     Title: string;
     Category: string;
+    Difficulty: string;
     Image: string;
     ID: number;
     Allergen: string | null;
@@ -25,12 +26,12 @@ interface Recipe {
     Vegan: number;
     Vegetarian: number;
     Creator: string;
-    Difficulty: string;
 }
 
 interface ListItem {
     title: string;
     category: string;
+    difficulty: string;
     imageUrl: string;
     id: number
     allergen: string[] | null;
@@ -39,7 +40,6 @@ interface ListItem {
     vegan: number;
     vegetarian: number;
     creator: string;
-    difficulty: string;
 }
 
 interface showRecipeProps {
@@ -353,8 +353,8 @@ const ShowRecipe: React.FC<showRecipeProps> = ({isLoggedIn, username}) => {
                 <div className="showRecipe-contentfield">
                     <div className="showRecipe-contentfield-left">
                         <h1 className="showRecipe-title">{sampleRecipe?.title}</h1>
-                        <p className="showRecipe-category">{sampleRecipe?.category}</p>
                         <p className="showRecipe-category" style={{fontSize: "1.25rem"}}>{sampleRecipe?.difficulty == "1" ? "sehr einfach" : sampleRecipe?.difficulty == "2" ? "einfach" : sampleRecipe?.difficulty == "3" ? "mittel" : sampleRecipe?.difficulty == "4" ? "schwer" : "sehr schwer"}</p>
+                        <p className="showRecipe-category">{sampleRecipe?.category}</p>
                         {avRating != 0 && <div className="rating-system-header">
                             <img className="first-star"
                                  alt={avRating >= 1 ? "ausgefüllter Stern" : "leerer Stern"}
