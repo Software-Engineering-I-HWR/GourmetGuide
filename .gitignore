@@ -17,3 +17,4 @@
 /Frontend/node_modules/
 /Global-API/node_modules/
 /Datenbank-API/encrypt.js
+package-lock.json
