@@ -43,7 +43,7 @@ interface NewRecipeItemFromDB {
     Category: string;
     Title: string;
     Image: string;
-    Id: number;
+    ID: number;
 }
 
 interface ListItem2 {
@@ -272,7 +272,7 @@ const PersonalHome: React.FC<PersonalHomeProps> = ({showPoint, setShowPoint}) =>
                         title: i.Title,
                         category: i.Category,
                         imageUrl: i.Image,
-                        id: i.Id,
+                        id: i.ID,
                         creator: i.Creator
                     };
                     loadedRecipes.push(newRecipe);
