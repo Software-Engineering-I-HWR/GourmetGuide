@@ -44,17 +44,3 @@ jobs:
             echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-ImageUpload-API
             echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-Global-API
             echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker restart GourmetGuide-UI
-
-  get-secrets:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restart containers
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.NAS_HOST }}
-          username: ${{ secrets.NAS_USER }}
-          password: ${{ secrets.NAS_SSH_KEY }}
-          script: |
-            echo "${{ secrets.NAS_HOST }}" >> /volume1/docker/sec
-            echo "${{ secrets.NAS_USER }}" >> /volume1/docker/sec
-            echo "${{ secrets.NAS_SSH_KEY }}" >> /volume1/docker/sec
