@@ -24,7 +24,9 @@ jobs:
           username: ${{ secrets.NAS_USER }}
           password: ${{ secrets.NAS_SSH_KEY }}
           script: |
-            echo "${{ secrets.NAS_SSH_KEY }}" | sudo -S /usr/local/bin/docker start GourmetGuide-Pull-From-Git
+            cd ${{ secrets.REPO_PATH }}
+            /opt/bin/git config --global --add safe.directory ${{ secrets.REPO_PATH }}
+            /opt/bin/git pull https://${{ secrets.PULL_GITHUB_USER }}:${{ secrets.PULL_GITHUB_TOKEN }}@github.com/Software-Engineering-I-HWR/GourmetGuide.git
 
   restart-containers:
     needs: pull-repo

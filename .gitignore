@@ -18,3 +18,4 @@
 /Global-API/node_modules/
 /Datenbank-API/encrypt.js
 package-lock.json
+/Frontend/dist/
