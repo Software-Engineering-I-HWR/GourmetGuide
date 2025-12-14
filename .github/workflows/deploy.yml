@@ -25,8 +25,7 @@ jobs:
           password: ${{ secrets.NAS_SSH_KEY }}
           script: |
             cd ${{ secrets.REPO_PATH }}
-            /opt/bin/git config --global --add safe.directory ${{ secrets.REPO_PATH }}
-            /opt/bin/git pull https://${{ secrets.PULL_GITHUB_USER }}:${{ secrets.PULL_GITHUB_TOKEN }}@github.com/Software-Engineering-I-HWR/GourmetGuide.git
+            /opt/bin/git pull
 
   restart-containers:
     needs: pull-repo
