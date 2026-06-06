@@ -1,0 +1,18 @@
+name: CD
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: Deployment
+    uses: Canoobi/Workflows/.github/workflows/trigger-deploy.yml@main
+    with:
+      run_pull_changes: true
+      run_stop_compose_containers: false
+      run_build_docker_compose_file: false
+      run_start_compose_containers: false
+      run_restart_non_compose_containers: true
+      container_names: "GourmetGuide-DB-API GourmetGuide-DB-API-Login GourmetGuide-Login-API GourmetGuide-PDF-API GourmetGuide-ImageUpload-API GourmetGuide-Global-API GourmetGuide-UI"
+    secrets:
+      WORKFLOWS_REPO_TOKEN: ${{ secrets.WORKFLOWS_REPO_TOKEN }}
+      REPO_PATH: ${{ secrets.REPO_PATH }}
