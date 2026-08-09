@@ -13,6 +13,9 @@ jobs:
       run_start_compose_containers: false
       run_restart_non_compose_containers: true
       container_names: "GourmetGuide-DB-API GourmetGuide-DB-API-Login GourmetGuide-Login-API GourmetGuide-PDF-API GourmetGuide-ImageUpload-API GourmetGuide-Global-API GourmetGuide-UI"
+      health_url: https://192.168.10.99:4000/
+      health_timeout_seconds: 180
+      health_expected_status: 200
     secrets:
       WORKFLOWS_REPO_TOKEN: ${{ secrets.WORKFLOWS_REPO_TOKEN }}
       REPO_PATH: ${{ secrets.REPO_PATH }}
